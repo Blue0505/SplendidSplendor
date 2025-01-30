@@ -39,11 +39,11 @@ class Card:
             case Gem.BLACK:
                 color = f"{ansi.GRAY}k"
         return (f"{ansi.BOLD}{self.points} {color}{ansi.RESET} "
-                f"{ansi.WHITE}{self.costs[Gem.WHITE]} "
-                f"{ansi.BLUE}{self.costs[Gem.BLUE]} "
-                f"{ansi.GREEN}{self.costs[Gem.GREEN]} "
-                f"{ansi.RED}{self.costs[Gem.RED]} "
-                f"{ansi.GRAY}{self.costs[Gem.BLACK]} "
+                f"{ansi.WHITE}{self.costs[Gem.WHITE]}"
+                f"{ansi.BLUE}{self.costs[Gem.BLUE]}"
+                f"{ansi.GREEN}{self.costs[Gem.GREEN]}"
+                f"{ansi.RED}{self.costs[Gem.RED]}"
+                f"{ansi.GRAY}{self.costs[Gem.BLACK]}"
                 f"{ansi.RESET}")
         
 
@@ -60,7 +60,7 @@ class Board:
         }
         self.decks: tuple[list[Card], list[Card], list[Card]] = self._load_cards(filepath)
         for deck in self.decks:
-            pass#shuffle(deck)
+            shuffle(deck)
 
     
     def _load_cards(self, filepath: str) -> tuple[list[Card], list[Card], list[Card]]:
