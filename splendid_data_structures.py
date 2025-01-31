@@ -77,7 +77,7 @@ class Board:
 
         decks = [], [], []
         with open(filepath) as csvfile:
-            csvreader = csv.DictReader(csvfile, restval='0')
+            csvreader = csv.DictReader(csvfile)
             for row in csvreader:
                 points = int(row['points']) if row['points'] else 0
                 gem_type = csv_gem_names[row['gem-color']]
