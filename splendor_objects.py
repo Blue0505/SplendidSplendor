@@ -4,17 +4,17 @@ import csv
 
 import ansi_escape_codes as ansi
 
-BOARD_GEM_START: int = 4    # 2 player games start with 4 gems of each type
-BOARD_GOLD_START: int = 5   # All games start with 5 gold
+BOARD_GEM_START: int = 4 
+BOARD_GOLD_START: int = 5 
 PLAYER_GEMS_START: int = 0
 
 class Gem(Enum):
-    WHITE = 1
-    BLUE = 2
-    GREEN = 3
-    RED = 4
-    BLACK = 5
-    GOLD = 6
+    WHITE = enum.auto()
+    BLUE = enum.auto()
+    GREEN = enum.auto()
+    RED = enum.auto()
+    BLACK = enum.auto()
+    GOLD = enum.auto()
 
 
 class Card:
@@ -49,7 +49,7 @@ class Card:
 
 class Board:
     """A board with three levels of decks and some number of gems in the center."""
-    def __init__(self, filepath: str):
+    def __init__(self, filepath: str, shuffle_cards: bool):
         self.gems: dict[Gem, int] = {
             Gem.WHITE: BOARD_GEM_START,
             Gem.BLUE: BOARD_GEM_START,
@@ -59,8 +59,12 @@ class Board:
             Gem.GOLD: BOARD_GOLD_START
         }
         self.decks: tuple[list[Card], list[Card], list[Card]] = self._load_cards(filepath)
-        for deck in self.decks:
-            shuffle(deck)
+        if shuffle_cards: 
+            for deck in self.decks:
+                shuffle(deck)
+    
+    def __array__(self): # TODO!
+        pass 
 
     
     def _load_cards(self, filepath: str) -> tuple[list[Card], list[Card], list[Card]]:
@@ -109,3 +113,51 @@ class Player:
     
     def _get_points(self):
         return sum(card.points for card in self.purchased_cards)
+    
+    def __array__(self): # TODO
+        pass
+
+class Action(enum.IntEnum):
+    RESERVE_00 = enum.auto()
+    RESERVE_01 = enum.auto()
+    RESERVE_02 = enum.auto()
+    RESERVE_03 = enum.auto()
+    RESERVE_04 = enum.auto()
+    RESERVE_10 = enum.auto()
+    RESERVE_11 = enum.auto()
+    RESERVE_12 = enum.auto()
+    RESERVE_13 = enum.auto()
+    RESERVE_14 = enum.auto()
+    RESERVE_20 = enum.auto()
+    RESERVE_21 = enum.auto()
+    RESERVE_22 = enum.auto()
+    RESERVE_23 = enum.auto()
+    RESERVE_23 = enum.auto()
+    RESERVE_24 = enum.auto()
+    PURCHASE_00 = enum.auto()
+    PURCHASE_01 = enum.auto()
+    PURCHASE_02 = enum.auto()
+    PURCHASE_03 = enum.auto()
+    PURCHASE_10 = enum.auto()
+    PURCHASE_11 = enum.auto()
+    PURCHASE_12 = enum.auto()
+    PURCHASE_13 = enum.auto()
+    PURCHASE_20 = enum.auto()
+    PURCHASE_21 = enum.auto()
+    PURCHASE_22 = enum.auto()
+    PURCHASE_23 = enum.auto()
+    TAKE3_11100 = enum.auto()
+    TAKE3_11010 = enum.auto()
+    TAKE3_11001 = enum.auto()
+    TAKE3_10110 = enum.auto()
+    TAKE3_10101 = enum.auto()
+    TAKE3_10011 = enum.auto()
+    TAKE3_01110 = enum.auto()
+    TAKE3_01101 = enum.auto()
+    TAKE3_01011 = enum.auto()
+    TAKE3_00111 = enum.auto()
+    TAKE2_10000 = enum.auto()
+    TAKE2_01000 = enum.auto()
+    TAKE2_00100 = enum.auto()
+    TAKE2_00010 = enum.auto()
+    TAKE2_00001 = enum.auto()
