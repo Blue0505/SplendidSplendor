@@ -1,4 +1,4 @@
-from enum import Enum
+import enum
 from random import shuffle
 import csv
 
@@ -8,7 +8,7 @@ BOARD_GEM_START: int = 4
 BOARD_GOLD_START: int = 5 
 PLAYER_GEMS_START: int = 0
 
-class Gem(Enum):
+class Gem(enum.Enum):
     WHITE = enum.auto()
     BLUE = enum.auto()
     GREEN = enum.auto()
@@ -62,6 +62,7 @@ class Board:
         if shuffle_cards: 
             for deck in self.decks:
                 shuffle(deck)
+
     
     def __array__(self): # TODO!
         pass 
@@ -110,12 +111,15 @@ class Player:
         }
         self.purchased_cards: list[Card] = []
         self.reserved_cards: list[Card] = []
+
+
+    def __array__(self): # TODO
+        pass
+
     
     def _get_points(self):
         return sum(card.points for card in self.purchased_cards)
-    
-    def __array__(self): # TODO
-        pass
+
 
 class Action(enum.IntEnum):
     RESERVE_00 = enum.auto()
@@ -131,7 +135,6 @@ class Action(enum.IntEnum):
     RESERVE_20 = enum.auto()
     RESERVE_21 = enum.auto()
     RESERVE_22 = enum.auto()
-    RESERVE_23 = enum.auto()
     RESERVE_23 = enum.auto()
     RESERVE_24 = enum.auto()
     PURCHASE_00 = enum.auto()
