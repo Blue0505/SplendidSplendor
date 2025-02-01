@@ -12,23 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Lint as python3
-
 import enum
-
 import numpy as np
-
 from open_spiel.python.observation import IIGObserverForPublicInfoGame
 import pyspiel
 
-from splendid_data_structures import Card, Board, Player
+from splendor_objects import Card, Board, Player, Action
 
 _NUM_PLAYERS = 2
 _TODO_VAL = 0
 _CARDS_FILENAME = 'cards.csv'
-
-class Action(enum.IntEnum):
-  pass
 
 _GAME_TYPE = pyspiel.GameType(
     short_name="python_splendor",
@@ -40,11 +33,12 @@ _GAME_TYPE = pyspiel.GameType(
     reward_model=pyspiel.GameType.RewardModel.TERMINAL,
     max_num_players=_NUM_PLAYERS,
     min_num_players=_NUM_PLAYERS,
-    provides_information_state_string=True, # TODO: What is this? 
-    provides_information_state_tensor=False, # TODO: What is this? Need to change from Poker example. 
+    provides_information_state_string=True, # TODO: Confused.  
+    provides_information_state_tensor=True, # TODO: Confused. 
     provides_observation_string=True,
     provides_observation_tensor=True,
     parameter_specification={})
+
 _GAME_INFO = pyspiel.GameInfo( # TODO: Neccesarily needs to have these parameters? Also set the parameters if neccesary. 
     num_distinct_actions=_TODO_VAL,
     max_chance_outcomes=0,
@@ -60,9 +54,10 @@ class SplendorGame(pyspiel.Game):
 
   def __init__(self, params=None):
     super().__init__(_GAME_TYPE, _GAME_INFO, params or dict())
+    self.shuffle_cards = params.get('shuffle_cards', True)
 
   def new_initial_state(self):
-    return SplendorState(self)
+    return SplendorState(self, self.shuffle_cards)
 
   def make_py_observer(self, iig_obs_type=None, params=None): # TODO: Fix/update. 
     if ((iig_obs_type is None) or
@@ -75,12 +70,12 @@ class SplendorGame(pyspiel.Game):
 class SplendorState(pyspiel.State):
   """A python version of the Splendor state."""
 
-  def __init__(self, game):
+  def __init__(self, game, shuffle_cards: bool):
     """Constructor; should only be called by Game.new_initial_state."""
     super().__init__(game)
     self._cur_player = 0
     self._is_terminal = False
-    self.board: Board = Board(_CARDS_FILENAME)
+    self.board: Board = Board(_CARDS_FILENAME, shuffle_cards)
     self.player_0: Player = Player()
     self.player_1: Player = Player()
 
