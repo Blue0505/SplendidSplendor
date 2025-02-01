@@ -25,7 +25,7 @@ class Card:
         self.costs: dict[Gem, int] = costs
     
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         color = ''
         match self.gem_type:
             case Gem.WHITE:
