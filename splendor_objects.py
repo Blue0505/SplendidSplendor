@@ -4,9 +4,10 @@ import csv
 
 import ansi_escape_codes as ansi
 
-BOARD_GEM_START: int = 4 
-BOARD_GOLD_START: int = 5 
+BOARD_GEM_START: int = 4
+BOARD_GOLD_START: int = 5
 PLAYER_GEMS_START: int = 0
+MAX_RESERVE: int = 3
 
 class Gem(enum.Enum):
     WHITE = enum.auto()
@@ -22,9 +23,12 @@ class Card:
     def __init__(self, points: int, gem_type: Gem, costs: dict[Gem, int]):
         self.points: int = points
         self.gem_type: Gem = gem_type
-        self.costs: dict[Gem, int] = costs
+        self.white_cost = costs[Gem.WHITE]
+        self.blue_cost = costs[Gem.BLUE]
+        self.green_cost = costs[Gem.GREEN]
+        self.red_cost = costs[Gem.RED]
+        self.black_cost = costs[Gem.BLACK]
     
-
     def __repr__(self) -> str:
         color = ''
         match self.gem_type:
@@ -39,36 +43,53 @@ class Card:
             case Gem.BLACK:
                 color = f"{ansi.GRAY}k"
         return (f"{ansi.BOLD}{self.points} {color}{ansi.RESET} "
-                f"{ansi.WHITE}{self.costs[Gem.WHITE]}"
-                f"{ansi.BLUE}{self.costs[Gem.BLUE]}"
-                f"{ansi.GREEN}{self.costs[Gem.GREEN]}"
-                f"{ansi.RED}{self.costs[Gem.RED]}"
-                f"{ansi.GRAY}{self.costs[Gem.BLACK]}"
+                f"{ansi.WHITE}{self.white_cost}"
+                f"{ansi.BLUE}{self.blue_cost}"
+                f"{ansi.GREEN}{self.green_cost}"
+                f"{ansi.RED}{self.red_cost}"
+                f"{ansi.GRAY}{self.black_cost}"
                 f"{ansi.RESET}")
         
 
 class Board:
     """A board with three levels of decks and some number of gems in the center."""
     def __init__(self, filepath: str, shuffle_cards: bool):
-        self.gems: dict[Gem, int] = {
-            Gem.WHITE: BOARD_GEM_START,
-            Gem.BLUE: BOARD_GEM_START,
-            Gem.GREEN: BOARD_GEM_START,
-            Gem.RED: BOARD_GEM_START,
-            Gem.BLACK: BOARD_GEM_START,
-            Gem.GOLD: BOARD_GOLD_START
-        }
-        self.decks: tuple[list[Card], list[Card], list[Card]] = self._load_cards(filepath)
+        self.white_gems = BOARD_GEM_START
+        self.blue_gems = BOARD_GEM_START
+        self.green_gems = BOARD_GEM_START
+        self.red_gems = BOARD_GEM_START
+        self.black_gems = BOARD_GEM_START
+        self.gold_gems = BOARD_GEM_START
+    
+        self.decks: list[list[Card]] = self._load_cards(filepath)
         if shuffle_cards: 
             for deck in self.decks:
                 shuffle(deck)
+    
+    def has_gems(self, white=None, blue=None, green=None, red=None, black=None, gold=None) -> bool:
+        if white != None and self.white_gems < white:
+            return False
+        elif blue != None and self.blue_gems < blue:
+            return False
+        elif green != None and self.green_gems < green:
+            return False
+        elif red != None and self.red_gems < red:
+            return False
+        elif black != None and self.black_gems < black:
+            return False
+        elif gold != None and self.gold_gems < gold:
+            return False
+        return True
+    
+    def get_cards(self):
+        return [ element for row in self.decks for element in row ] 
 
     
     def __array__(self): # TODO!
         pass 
 
     
-    def _load_cards(self, filepath: str) -> tuple[list[Card], list[Card], list[Card]]:
+    def _load_cards(self, filepath: str) -> list[list[Card]]:
         """Loads cards from a CSV file and returns three decks. These decks
         contain all level 1, level 2, and level 3 cards respectively.
         """
@@ -80,7 +101,7 @@ class Board:
             'black': Gem.BLACK
         }
 
-        decks = [], [], []
+        decks = [[] for _ in range(3)]
         with open(filepath) as csvfile:
             csvreader = csv.DictReader(csvfile)
             for row in csvreader:
@@ -101,24 +122,61 @@ class Board:
 class Player:
     """A player that can have purchased cards, reserved cards, and counts for each gem type."""
     def __init__(self):
-        self.gems: dict[Gem, int] = {
-            Gem.WHITE: PLAYER_GEMS_START,
-            Gem.BLUE: PLAYER_GEMS_START,
-            Gem.GREEN: PLAYER_GEMS_START,
-            Gem.RED: PLAYER_GEMS_START,
-            Gem.BLACK: PLAYER_GEMS_START,
-            Gem.GOLD: PLAYER_GEMS_START
-        }
-        self.purchased_cards: list[Card] = []
-        self.reserved_cards: list[Card] = []
+        self._white_gems = PLAYER_GEMS_START
+        self._blue_gems = PLAYER_GEMS_START
+        self._green_gems = PLAYER_GEMS_START
+        self._red_gems = PLAYER_GEMS_START
+        self._black_gems = PLAYER_GEMS_START
+        self._gold_gems = PLAYER_GEMS_START
+        self._purchased_cards: list[Card] = []
+        self._reserved_cards: list[Card] = []
 
 
     def __array__(self): # TODO
         pass
 
+
     
-    def _get_points(self):
-        return sum(card.points for card in self.purchased_cards)
+
+
+    def add_card(self, card: Card) -> None:
+        self._purchased_cards.append(card)
+
+
+    def reserve_card(self, card: Card) -> None:
+        # TODO: Add gold gem
+        self._reserved_cards.append(card)
+
+
+    def purchase_reserved(self, index: int):
+        # TODO: Take gems away
+        card: Card = self._reserved_cards[index]
+        self._white_gems -= card.white_cost
+        self._blue_gems -= card.blue_cost
+        self._green_gems -= card.green_cost
+
+        self._purchased_cards.append(self._reserved_cards[index])
+        del self._reserved_cards[index]
+
+
+    def can_reserve(self) -> bool:
+        return len(self._reserved_cards) < MAX_RESERVE
+    
+    def purchase_card(self, card: Card):
+        # TODO: Take gems away and tell board to take card
+        self._purchased_cards.append(card)
+
+    def can_purchase(self, card: Card) -> bool:
+        if self._white_gems < card.white_cost: return False
+        elif self._blue_gems < card.blue_cost: return False
+        elif self._green_gems < card.green_cost: return False
+        elif self._red_gems < card.red_cost: return False
+        elif self._black_gems < card.black_cost: return False
+        return True
+    
+                                                            
+    def get_points(self):
+        return sum(card.points for card in self._purchased_cards)
 
 
 class Action(enum.IntEnum):
@@ -149,6 +207,9 @@ class Action(enum.IntEnum):
     PURCHASE_21 = enum.auto()
     PURCHASE_22 = enum.auto()
     PURCHASE_23 = enum.auto()
+    PURCHASE_RESERVE_0 = enum.auto()
+    PURCHASE_RESERVE_1 = enum.auto()
+    PURCHASE_RESERVE_2 = enum.auto()
     TAKE3_11100 = enum.auto()
     TAKE3_11010 = enum.auto()
     TAKE3_11001 = enum.auto()

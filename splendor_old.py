@@ -88,21 +88,15 @@ class SplendorState(pyspiel.State):
     player = self._player_0 if self._cur_player == 0 else self._player_1
     legal_actions: list[int] = []
 
-      # "Reserving" action. 
+    # TODO: Reserving a card.
     if player.can_reserve() and self._board.has_gems()
-
-    # "Purchasing" action
-    for card, action in zip(self._board.get, range(Action.PURCHASE_00, Action.PURCHASE_23 + 1)):
-      if player.can_purchase(card):
-        legal_actions.append(action)# # # 
+    # TODO: Buying a card.
+    for deck_num in range(len(self._board.decks)):
+      for card_num in range(len()):
+        if player.gems.values() > card.costs.values():
+          legal_actions.append(Action.purchase    
     
-    # "Purchase reversed" action
-    for card, action in zip(player._reserved_cards, range(Action.PURCHASE_REVERSE_0, Action.PURCHASE_RESERVE_2 + 1)):
-      if player.can_purchase(card):
-        legal_actions.append(action)
-        
-    
-    # "Take 2" 
+    # TODO: Take 2.
     if self._board.has_gems(white=BOARD_GEM_START):
       legal_actions.append(Action.TAKE2_10000)
     if self._board.has_gems(blue=BOARD_GEM_START):
@@ -114,29 +108,30 @@ class SplendorState(pyspiel.State):
     if self._board.has_gems(black=BOARD_GEM_START):
       legal_actions.append(Action.TAKE2_00001)
 
-    # "Take 3" actions. 
+    # TODO: Take 3.
     if (self._board.has_gems(white=1, blue=1, green=1)):
       legal_actions.append(Action.TAKE3_11100)
-    if (self._board.has_gems(white=1, blue=1, red=1)):
+    if (self._board.has_gems()):
       legal_actions.append(Action.TAKE3_11010)
-    if (self._board.has_gems(white=1, blue=1, black=1)):
+    if (self._board.has_gems()):
       legal_actions.append(Action.TAKE3_11001)
-    if (self._board.has_gems(white=1, green=1, red=1)):
-      legal_actions.append(Action.TAKE3_10110)
-    if (self._board.has_gems(white=1, green=1, red=1)):
+    if (self._board.has_gems(      legal_actions.append(Action.TAKE3_10110)
+    if (self._board.has_gems()):
       legal_actions.append(Action.TAKE3_10101)
-    if (self._board.has_gems(white=1, red=1, black=1)):
+    if (self._board.has_gems()):
       legal_actions.append(Action.TAKE3_10011)
-    if (self._board.has_gems(blue=1, green=1, red=1)):
+    if (self._board.has_gems()):
       legal_actions.append(Action.TAKE3_01110)
-    if (self._board.has_gems(blue=1, green=1, gold=1)):
+    if (self._board.has_gems()):
       legal_actions.append(Action.TAKE3_01101)
-    if (self._board.has_gems(blue=1, red=1, black=1)):
+    if (self._board.has_gems()):
       legal_actions.append(Action.TAKE3_01011)
-    if (self._board.has_gems(green=1, red=1, black=1)):
+    if (self._board.has_gems()):
       legal_actions.append(Action.TAKE3_00111)  
 
-    return legal_actions.sort()
+    # blue, green, red, black, gold
+
+    # TODO: Return actions in ascending order. 
 
   def _apply_action(self, action):
     """Applies the specified action to the state."""
