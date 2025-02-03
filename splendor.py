@@ -22,6 +22,70 @@ from splendor_objects import *
 _NUM_PLAYERS = 2
 _TODO_VAL = 0
 _CARDS_FILENAME = 'cards.csv'
+_WIN_POINTS = 15
+
+class SCategory(enum.IntEnum):
+  RESERVE = 0
+  PURCHASE = enum.auto()
+  PURCHASE_RESERVE = enum.auto()
+  TAKE3 = enum.auto()
+  TAKE2 = enum.auto()
+  CONSUME = enum.auto()
+
+class SAction(enum.IntEnum):
+    RESERVE_00 = 0
+    RESERVE_01 = enum.auto()
+    RESERVE_02 = enum.auto()
+    RESERVE_03 = enum.auto()
+    RESERVE_04 = enum.auto()
+    RESERVE_10 = enum.auto()
+    RESERVE_11 = enum.auto()
+    RESERVE_12 = enum.auto()
+    RESERVE_13 = enum.auto()
+    RESERVE_14 = enum.auto()
+    RESERVE_20 = enum.auto()
+    RESERVE_21 = enum.auto()
+    RESERVE_22 = enum.auto()
+    RESERVE_23 = enum.auto()
+    RESERVE_24 = enum.auto()
+    
+    PURCHASE_00 = enum.auto()
+    PURCHASE_01 = enum.auto()
+    PURCHASE_02 = enum.auto()
+    PURCHASE_03 = enum.auto()
+    PURCHASE_10 = enum.auto()
+    PURCHASE_11 = enum.auto()
+    PURCHASE_12 = enum.auto()
+    PURCHASE_13 = enum.auto()
+    PURCHASE_20 = enum.auto()
+    PURCHASE_21 = enum.auto()
+    PURCHASE_22 = enum.auto()
+    PURCHASE_23 = enum.auto()
+
+    PURCHASE_RESERVE_0 = enum.auto()
+    PURCHASE_RESERVE_1 = enum.auto()
+    PURCHASE_RESERVE_2 = enum.auto()
+
+    TAKE3_11100 = enum.auto()
+    TAKE3_11010 = enum.auto()
+    TAKE3_11001 = enum.auto()
+    TAKE3_10110 = enum.auto()
+    TAKE3_10101 = enum.auto()
+    TAKE3_10011 = enum.auto()
+    TAKE3_01110 = enum.auto()
+    TAKE3_01101 = enum.auto()
+    TAKE3_01011 = enum.auto()
+    TAKE3_00111 = enum.auto()
+    
+    TAKE2_0 = enum.auto()
+    TAKE2_1 = enum.auto()
+    TAKE2_2 = enum.auto()
+    TAKE2_3 = enum.auto()
+    TAKE2_4 = enum.auto()
+    
+    CONSUME_GEM = enum.auto()
+    CONSUME_GOLD = enum.auto()
+
 
 _GAME_TYPE = pyspiel.GameType(
     short_name="python_splendor",
@@ -65,6 +129,7 @@ class SplendorGame(pyspiel.Game):
       return BoardObserver(params)
     else:
       return IIGObserverForPublicInfoGame(iig_obs_type, params)
+    
 
 
 class SplendorState(pyspiel.State):
@@ -78,6 +143,10 @@ class SplendorState(pyspiel.State):
     self._board: Board = Board(_CARDS_FILENAME, shuffle_cards)
     self._player_0: Player = Player()
     self._player_1: Player = Player()
+    self._actions = Actions()
+    register_splendor_actions(self._actions)
+
+
 
   def current_player(self):
     """Returns id of the next player to move, or TERMINAL if game is over."""
@@ -140,14 +209,28 @@ class SplendorState(pyspiel.State):
 
   def _apply_action(self, action):
     """Applies the specified action to the state."""
-    self.board[_coord(action)] = "x" if self._cur_player == 0 else "o"
-    if _line_exists(self.board):
+    # TODO: Update reward score.
+    # TODO: Perform action.
+    player = self._player_0 if self._cur_player == 0 else self._player_1
+    category = self._actions.get_category(action)
+    action_object = self._actions.get_action_object(action)
+    if category == SCategory.RESERVE: pass
+      # apply_reserve(player, self._board, action_object)
+    elif category == SCategory.PURCHASE:
+      pass# apply_purchase(player, self._board, action_object)
+    elif category == SCategory.PURCHASE_RESERVE:
+      pass# apply_purchase_reserve(player, self._board, action_object)
+    elif category == SCategory.TAKE2:
+      apply_take(player, self._board, action_object)
+    elif category == SCategory.TAKE3:
+      apply_take(player, self.board, action_object)
+    
+
+
+
+    if player.get_points() == _WIN_POINTS:
       self._is_terminal = True
-      self._player0_score = 1.0 if self._cur_player == 0 else -1.0
-    elif all(self.board.ravel() != "."):
-      self._is_terminal = True
-    else:
-      self._cur_player = 1 - self._cur_player
+
 
   def _action_to_string(self, player, action):
     """Action -> string."""
@@ -216,17 +299,75 @@ def _line_exists(board):
           _line_value(board.diagonal()) or
           _line_value(np.fliplr(board).diagonal()))
 
-
-def _coord(move):
-  """Returns (row, col) from an action id."""
-  return (move // _NUM_COLS, move % _NUM_COLS)
-
-
 def _board_to_string(board):
   """Returns a string representation of the board."""
   return "\n".join("".join(row) for row in board)
 
 
-# Register the game with the OpenSpiel library
+def apply_take(player: Player, board, action_object):
+  player.update_gems(*action_object)
+  reduce = tuple(-gem for gem in action_object)
+  board.update_gems(*reduce)
 
+def apply_reserve(player, board, action_object):
+  board.update_gems(gold=-1)
+  player.update_gems(gold=1)
+  card = board.pop_card(action_object[0], action_object[1])
+  player.reserve_card(card)
+
+def register_splendor_actions(actions):
+    actions.register_action(SAction.RESERVE_00, SCategory.RESERVE, (0, 0))
+    actions.register_action(SAction.RESERVE_01, SCategory.RESERVE, (0, 1))
+    actions.register_action(SAction.RESERVE_02, SCategory.RESERVE, (0, 2))
+    actions.register_action(SAction.RESERVE_03, SCategory.RESERVE, (0, 3))
+    actions.register_action(SAction.RESERVE_04, SCategory.RESERVE, (0, 4))
+    actions.register_action(SAction.RESERVE_10, SCategory.RESERVE, (1, 0))
+    actions.register_action(SAction.RESERVE_11, SCategory.RESERVE, (1, 1))
+    actions.register_action(SAction.RESERVE_12, SCategory.RESERVE, (1, 2))
+    actions.register_action(SAction.RESERVE_13, SCategory.RESERVE, (1, 3))
+    actions.register_action(SAction.RESERVE_14, SCategory.RESERVE, (1, 4))
+    actions.register_action(SAction.RESERVE_20, SCategory.RESERVE, (2, 0))
+    actions.register_action(SAction.RESERVE_21, SCategory.RESERVE, (2, 1))
+    actions.register_action(SAction.RESERVE_22, SCategory.RESERVE, (2, 2))
+    actions.register_action(SAction.RESERVE_23, SCategory.RESERVE, (2, 3))
+    actions.register_action(SAction.RESERVE_24, SCategory.RESERVE, (2, 4))
+    
+    actions.register_action(SAction.PURCHASE_00, SCategory.PURCHASE, (0, 0))
+    actions.register_action(SAction.PURCHASE_01, SCategory.PURCHASE, (0, 1))
+    actions.register_action(SAction.PURCHASE_02, SCategory.PURCHASE, (0, 2))
+    actions.register_action(SAction.PURCHASE_03, SCategory.PURCHASE, (0, 3))
+    actions.register_action(SAction.PURCHASE_10, SCategory.PURCHASE, (1, 0))
+    actions.register_action(SAction.PURCHASE_11, SCategory.PURCHASE, (1, 1))
+    actions.register_action(SAction.PURCHASE_12, SCategory.PURCHASE, (1, 2))
+    actions.register_action(SAction.PURCHASE_13, SCategory.PURCHASE, (1, 3))
+    actions.register_action(SAction.PURCHASE_10, SCategory.PURCHASE, (2, 0))
+    actions.register_action(SAction.PURCHASE_21, SCategory.PURCHASE, (2, 1))
+    actions.register_action(SAction.PURCHASE_22, SCategory.PURCHASE, (2, 2))
+    actions.register_action(SAction.PURCHASE_23, SCategory.PURCHASE, (2, 3))
+    
+    actions.register_action(SAction.PURCHASE_RESERVE_0, SCategory.PURCHASE, 0)
+    actions.register_action(SAction.PURCHASE_RESERVE_1, SCategory.PURCHASE, 1)
+    actions.register_action(SAction.PURCHASE_RESERVE_2, SCategory.PURCHASE, 2)
+    
+    actions.register_action(SAction.TAKE3_11100, SCategory.TAKE3, (1, 1, 1, 0, 0))
+    actions.register_action(SAction.TAKE3_11010, SCategory.TAKE3, (1, 1, 0, 1, 0))
+    actions.register_action(SAction.TAKE3_11001, SCategory.TAKE3, (1, 1, 0, 0, 1))
+    actions.register_action(SAction.TAKE3_10110, SCategory.TAKE3, (1, 0, 1, 1, 0))
+    actions.register_action(SAction.TAKE3_10101, SCategory.TAKE3, (1, 0, 1, 0, 1))
+    actions.register_action(SAction.TAKE3_10011, SCategory.TAKE3, (1, 0, 0, 1, 1))
+    actions.register_action(SAction.TAKE3_01110, SCategory.TAKE3, (0, 1, 1, 1, 0))
+    actions.register_action(SAction.TAKE3_01101, SCategory.TAKE3, (0, 1, 1, 0, 1))
+    actions.register_action(SAction.TAKE3_01011, SCategory.TAKE3, (0, 1, 0, 1, 1))
+    actions.register_action(SAction.TAKE3_00111, SCategory.TAKE3, (0, 0, 1, 1, 1))
+
+    actions.register_action(SAction.TAKE2_0, SCategory.TAKE2, (2, 0, 0, 0, 0))
+    actions.register_action(SAction.TAKE2_1, SCategory.TAKE2, (0, 2, 0, 0, 0))
+    actions.register_action(SAction.TAKE2_2, SCategory.TAKE2, (0, 0, 2, 0, 0))
+    actions.register_action(SAction.TAKE2_3, SCategory.TAKE2, (0, 0, 0, 2, 0))
+    actions.register_action(SAction.TAKE2_4, SCategory.TAKE2, (0, 0, 0, 0, 2))
+
+    actions.register_action(SAction.CONSUME_GEM, SCategory.CONSUME, None)
+    actions.register_action(SAction.CONSUME_GOLD, SCategory.CONSUME, None)
+
+# Register the game with the OpenSpiel library
 pyspiel.register_game(_GAME_TYPE, SplendorGame)
