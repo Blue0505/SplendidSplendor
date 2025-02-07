@@ -19,26 +19,11 @@ def apply_reserve(player: Player, board : Board, action_object):
   card = board.pop_card(action_object[0], action_object[1])
   player.reserve_card(card)
 
-def apply_purchase(player: Player, board: Board, action_object):
-  #Unused function (probably remove)
+def apply_purchase(player: Player, board: Board, action_object) -> dict[Gem, int]:
   card = board.pop_card(action_object[0], action_object[1])
-  # TODO: gold gems?
-  card_costs = card_costs_dict(card, player)
-  player.update_gems(-card_costs[Gem.WHITE],-card_costs[Gem.BLUE],-card_costs[Gem.GREEN],-card_costs[Gem.RED],-card_costs[Gem.BLACK])
+  player.purchase_card(card)
+  return card.get_costs() - player.get_gems()
 
-  
-
-
-
-def card_costs_dict(card: Card, player: Player) -> dict[Gem, int]:
-  resources = player.get_gems()
-  return {
-    Gem.WHITE: card.white_cost - resources[Gem.WHITE],
-    Gem.BLUE: card.blue_cost - resources[Gem.BLUE],
-    Gem.GREEN: card.green_cost - resources[Gem.GREEN],
-    Gem.RED: card.red_cost - resources[Gem.RED],
-    Gem.BLACK: card.black_cost - resources[Gem.BLACK]
-  }
 
 def apply_spending_turn(spending_dict, player: Player, action_category, action_object):
     # Update spending dictionary.
@@ -48,7 +33,7 @@ def apply_spending_turn(spending_dict, player: Player, action_category, action_o
     if action_category == SCategory.CONSUME_GOLD:
         player.update_gems(gold=-1)
         return
-    
+
     # Decrease gem for player.
     if action_object == Gem.WHITE:
         player.update_gems(white=-1)

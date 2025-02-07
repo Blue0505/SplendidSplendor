@@ -1,9 +1,9 @@
 import enum
 
-class Gem(enum.Enum):
-    WHITE = enum.auto()
-    BLUE = enum.auto()
-    GREEN = enum.auto()
-    RED = enum.auto()
-    BLACK = enum.auto()
-    GOLD = enum.auto()
+class Gem(enum.IntEnum):
+    WHITE = 0
+    BLUE = 1
+    GREEN = 2
+    RED = 3
+    BLACK = 4
+    GOLD = 5

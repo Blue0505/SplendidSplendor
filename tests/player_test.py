@@ -1,6 +1,6 @@
 import unittest
 
-from splendor import player
+from splendor.player import Player
 
 
 class TestPlayer(unittest.TestCase):

@@ -1,5 +1,6 @@
 from typing import Any
 import enum
+import numpy as np
 
 class Actions:
     def __init__(self):
@@ -13,6 +14,14 @@ class Actions:
     
     def get_category(self, id: int) -> int:
         return self._action_map[id][0]
+    
+    def get_action_ids(self, action_category: int):
+        action_ids = []
+        for action_id, dict_action_category, _ in self._action_map.values():
+            if dict_action_category == action_category:
+                action_ids.append(action_id)
+        return action_ids
+
 
 class SCategory(enum.IntEnum):
   RESERVE = 0

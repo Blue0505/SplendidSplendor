@@ -21,10 +21,10 @@ from splendor.card import Card
 from splendor.board import Board, BOARD_GEM_START
 from splendor.player import Player
 from splendor.actions import Actions, SAction, SCategory
+from splendor.gem import Gem
 import splendor.helpers as helpers
 
 _NUM_PLAYERS = 2
-_TODO_VAL = 0 # TODO: Remove.
 _CARDS_FILENAME = 'data/cards.csv'
 _WIN_POINTS = 15
 
@@ -44,14 +44,13 @@ _GAME_TYPE = pyspiel.GameType(
     provides_observation_tensor=True,
     parameter_specification={})
 
-_GAME_INFO = pyspiel.GameInfo( # TODO: Neccesarily needs to have these parameters? Also set the parameters if neccesary. 
-    num_distinct_actions=_TODO_VAL,
+_GAME_INFO = pyspiel.GameInfo( # TODO: Fix.
     max_chance_outcomes=0,
     num_players=2,
     min_utility=-1.0,
     max_utility=1.0,
     utility_sum=0.0,
-    max_game_length=_TODO_VAL)
+    max_game_length=0)
 
 
 class SplendorGame(pyspiel.Game):
@@ -86,7 +85,7 @@ class SplendorState(pyspiel.State):
     self._player_1: Player = Player()
     self._actions: Actions = Actions()
     self._spending_turn: bool = False
-    self._spending_gems_left: dict = dict()
+    self._spending_gems = np.empty(5)
     helpers.register_splendor_actions(self._actions)
 
 
@@ -99,19 +98,24 @@ class SplendorState(pyspiel.State):
     player = self._player_0 if self._cur_player == 0 else self._player_1
     legal_actions: list[int] = []
 
-    # "Reserving" action. # TODO.
-    # if player.can_reserve() and self._board.has_gems()
+    # Non-spending/normal turn.
 
-    # "Purchasing" action
-    for card, action in zip(self._board.get_cards(), range(SAction.PURCHASE_00, SAction.PURCHASE_23 + 1)):
-      if player.can_purchase(card):
-        legal_actions.append(action)# # # 
-    
-    # "Purchase reversed" action
-    for card, action in zip(player._reserved_cards, range(SAction.PURCHASE_RESERVE_0, SAction.PURCHASE_RESERVE_2 + 1)):
+    # "Reserving" action.
+    if player.can_reserve():
+      reserve_ids = self._actions.get_action_ids(SCategory.RESERVE)
+      legal_actions.extend(reserve_ids)
+
+    # "Purchasing" action.
+    purchase_ids = self._actions.get_action_ids(SCategory.PURCHASE)
+    for card, action in zip(self._board.get_cards(), purchase_ids):
       if player.can_purchase(card):
         legal_actions.append(action)
-        
+    
+    # "Purchase reversed" action
+    purchase_reserve_ids = self._actions.get_action_ids(SCategory.PURCHASE_RESERVE)
+    for card, action in zip(player._reserved_cards, purchase_reserve_ids):
+      if player.can_purchase(card):
+        legal_actions.append(action)
     
     # "Take 2" 
     if self._board.has_gems(white=BOARD_GEM_START):
@@ -140,7 +144,7 @@ class SplendorState(pyspiel.State):
       legal_actions.append(SAction.TAKE3_10011)
     if (self._board.has_gems(blue=1, green=1, red=1)):
       legal_actions.append(SAction.TAKE3_01110)
-    if (self._board.has_gems(blue=1, green=1, gold=1)):
+    if (self._board.has_gems(blue=1, green=1, black=1)):
       legal_actions.append(SAction.TAKE3_01101)
     if (self._board.has_gems(blue=1, red=1, black=1)):
       legal_actions.append(SAction.TAKE3_01011)
@@ -161,8 +165,12 @@ class SplendorState(pyspiel.State):
       if action_category == SCategory.RESERVE: 
         helpers.apply_reserve(player, self._board, action_object)
       elif action_category == SCategory.PURCHASE or action_category == SCategory.PURCHASE_RESERVE:
-        card = self._board.pop_card(action_object[0], action_object[1])
-        self._spending_gems_left = helpers.card_costs_dict(card, player)
+        #card = self._board.pop_card(action_object[0], action_object[1])
+        #player.purchase_card(card)
+        if action_category == SCategory.PURCHASE_RESERVE:
+          pass # TODO: remove reserve card
+          
+        self._spending_gems_left = helpers.apply_purchase(player, self._board, action_object)
         self._spending_turn = True
       elif action_category == SCategory.TAKE2:
         helpers.apply_take_gems(player, self._board, action_object)

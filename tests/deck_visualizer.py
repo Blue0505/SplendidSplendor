@@ -1,6 +1,5 @@
-import splendor_objects as sds
-import ansi_escape_codes as ansi
-
+import splendor.ansi_escape_codes as ansi
+import splendor.board as sds
 
 def deck_display():
     board = sds.Board('data/cards.csv')
