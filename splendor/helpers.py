@@ -7,47 +7,48 @@ from .gem import Gem
 from .card import Card
 from .actions import SAction, SCategory
 
-def still_afford(player: Player, to_remove_gems: NDArray, gem_to_remove: Gem, use_gold=False):
-  "Check if a player can still afford a gem array after a color is updated."
+def still_afford(player: Player, card: Card, gem_to_remove: Gem):
+  "Check if a player can still afford a card after a gold is spent for a specific color."
+  player.update_gems(gold=-1)
+  can_afford = False
+
   if gem_to_remove == Gem.WHITE:
-     gem_tuple = (1, 0, 0, 0, 0)
+    card.update_gems(white=-1)
+    can_afford = player.can_purchase(card)
+    card.update_gems(white=1)
   elif gem_to_remove == Gem.BLUE:
-     gem_tuple = (0, 1, 0, 0, 0)
+    card.update_gems(blue=-1)
+    can_afford = player.can_purchase(card)
+    card.update_gems(blue=1)
   elif gem_to_remove == Gem.GREEN:
-     gem_tuple = (0, 0, 1, 0, 0)
+    card.update_gems(green=-1)
+    can_afford = player.can_purchase(card)
+    card.update_gems(green=1)
   elif gem_to_remove == Gem.RED:
-     gem_tuple = (0, 0, 0, 1, 0)
+    card.update_gems(red=-1)
+    can_afford = player.can_purchase(card)
+    card.update_gems(red=1)
   elif gem_to_remove == Gem.BLACK:
-     gem_tuple = (0, 0, 0, 0, 1)
-
-  if not use_gold:
-    player.update_gems(*gem_tuple)
-  else:
-     player.update_gems(gold=-1)
-
-  gem_sum = to_remove_gems + np.array(gem_tuple) - player.get_gems_array()
-  np.clip(gem_sum, amin=0)
-  can_afford = True if np.sum(gem_sum) - player.get_gold() <= 0 else False
+    card.update_gems(black=-1)
+    can_afford = player.can_purchase(card)
+    card.update_gems(black=1)
   
-  if not use_gold:
-     revert = tuple(-gem for gem in gem_tuple)
-     player.update_gems(*revert)
-  else:
-     player.update_gems(gold=1)
-     
+  player.update_gems(gold=1)
   return can_afford
 
-def apply_take_gems(player: Player, board : Board, gem_tuple):
+
+
+def apply_take_gems(player: Player, board: Board, gem_tuple):
   """Moves gems from the board to the player."""
   player.update_gems(*gem_tuple)
   reduce = tuple(-gem for gem in gem_tuple)
-  board.update_gems(*gem_tuple)
+  board.update_gems(*reduce)
 
 def apply_reserve_purchase(player: Player, pos: int):
     """Changes a card of a player to be purchased instead of reserved."""
-    card = player.pop_card(pos)
+    card = player.pop_reserved_card(pos)
     player.add_purchased_card(card)
-    return card.get_costs_array() - player.get_resources_array()
+    return card
 
 def apply_reserve(player: Player, board : Board, row, col):
   """Moves a card from the board to the reserve slot of a player."""
@@ -55,38 +56,42 @@ def apply_reserve(player: Player, board : Board, row, col):
     board.update_gems(gold=-1)
     player.update_gems(gold=1)
   card = board.pop_card(row, col)
-  player.reserve_card(card)
+  player.add_reserved_card(card)
 
-def apply_purchase(player: Player, board: Board, row, col) -> dict[Gem, int]:
+def apply_purchase(player: Player, board: Board, row, col) -> Card:
   """Moves a card from the board to the player and returns a gem array representing what must be paid."""
   card = board.pop_card(row, col)
-  player.purchase_card(card)
-  return card.get_costs_array() - player.get_resources_array()
+  player.add_purchased_card(card)
+  return card
 
-def apply_spending_turn(spending_dict, player: Player, board: Board, action_category, gem):
-    """Moves one specified gem from the player back to the board. """
-    spending_dict[gem] =- 1
+def apply_end_spending_turn(player: Player, board: Board, card: Card): # TODO: Fix for using private members.
+  player._gems -= card.get_costs_array()
+  board._gems += card.get_costs_array()
 
-    if action_category == SCategory.CONSUME_GOLD:
-        player.update_gems(gold=-1)
-        board.update_gems(gold=1)
-        return
 
-    if gem == Gem.WHITE:
-        player.update_gems(white=-1)
-        board.update_gems(white=1)
-    elif gem == Gem.BLUE:
-        player.update_gems(blue=-1)
-        board.update_gems(blue=1)
-    elif gem == Gem.GREEN:
-        player.update_gems(green=-1)
-        board.update_gems(green=1)
-    elif gem == Gem.RED:
-        player.update_gems(red=-1)
-        board.update_gems(red=1)
-    else: # Gem.BLACK.
-        player.update_gems(black=-1)
-        board.update_gems(black=1)
+def apply_spending_turn(player: Player, board: Board, card: Card, gem):
+  """Moves one specified gem from the player back to the board. """
+
+  if gem == Gem.WHITE:
+    player.update_gems(white=-1)
+    board.update_gems(white=1)
+    card.update_gems(white=-1)
+  elif gem == Gem.BLUE:
+    player.update_gems(blue=-1)
+    board.update_gems(blue=1)
+    card.update_gems(blue=-1)
+  elif gem == Gem.GREEN:
+    player.update_gems(green=-1)
+    board.update_gems(green=1)
+    card.update_gems(green=-1)
+  elif gem == Gem.RED:
+    player.update_gems(red=-1)
+    board.update_gems(red=1)
+    card.update_gems(red=-1)
+  else: # Gem.BLACK.
+    player.update_gems(black=-1)
+    board.update_gems(black=1)
+    card.update_gems(black=-1)
 
     
 def register_splendor_actions(actions):
@@ -140,13 +145,9 @@ def register_splendor_actions(actions):
     actions.register_action(SAction.TAKE2_3, SCategory.TAKE2, (0, 0, 0, 2, 0))
     actions.register_action(SAction.TAKE2_4, SCategory.TAKE2, (0, 0, 0, 0, 2))
 
-    actions.register_action(SAction.CONSUME_WHITE, SCategory.CONSUME_GEM, Gem.WHITE)
-    actions.register_action(SAction.CONSUME_BLUE, SCategory.CONSUME_GEM, Gem.BLUE)
-    actions.register_action(SAction.CONSUME_GREEN, SCategory.CONSUME_GEM, Gem.GREEN)
-    actions.register_action(SAction.CONSUME_RED, SCategory.CONSUME_GEM, Gem.RED)
-    actions.register_action(SAction.CONSUME_BLACK, SCategory.CONSUME_GEM, Gem.BLACK)
-    actions.register_action(SAction.CONSUME_WHITE_GOLD, SCategory.CONSUME_GOLD, Gem.WHITE)
-    actions.register_action(SAction.CONSUME_BLUE_GOLD, SCategory.CONSUME_GOLD, Gem.BLUE)
-    actions.register_action(SAction.CONSUME_GREEN_GOLD, SCategory.CONSUME_GOLD, Gem.GREEN)
-    actions.register_action(SAction.CONSUME_BLACK_GOLD, SCategory.CONSUME_GOLD, Gem.RED)
-    actions.register_action(SAction.CONSUME_RED_GOLD, SCategory.CONSUME_GOLD, Gem.BLACK)
+    actions.register_action(SAction.CONSUME_GOLD_WHITE, SCategory.SPENDING_TURN, Gem.WHITE)
+    actions.register_action(SAction.CONSUME_GOLD_BLUE, SCategory.SPENDING_TURN, Gem.BLUE)
+    actions.register_action(SAction.CONSUME_GOLD_GREEN, SCategory.SPENDING_TURN, Gem.GREEN)
+    actions.register_action(SAction.CONSUME_GOLD_RED, SCategory.SPENDING_TURN, Gem.RED)
+    actions.register_action(SAction.CONSUME_GOLD_BLACK, SCategory.SPENDING_TURN, Gem.BLACK)
+    actions.register_action(SAction.END_SPENDING_TURN, SCategory.SPENDING_TURN, None)

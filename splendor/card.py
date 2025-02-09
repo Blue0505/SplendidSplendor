@@ -14,6 +14,12 @@ class Card:
     def get_costs_array(self) -> NDArray:
         return self._gem_costs
     
+    def update_gems(self, white=0, blue=0, green=0, red=0, black=0):
+        self._gem_costs = self._gem_costs + np.array([white, blue, green, red, black])
+
+    def get_gems_array(self):
+        return self._gem_costs
+
     def __repr__(self) -> str:
         color = ''
         match self._gem_type:

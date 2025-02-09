@@ -30,8 +30,7 @@ class SCategory(enum.IntEnum):
   PURCHASE_RESERVE = enum.auto()
   TAKE3 = enum.auto()
   TAKE2 = enum.auto()
-  CONSUME_GEM = enum.auto()
-  CONSUME_GOLD = enum.auto()
+  SPENDING_TURN = enum.auto()
 
 class SAction(enum.IntEnum):
     "Action ids used in Splendor."
@@ -85,14 +84,9 @@ class SAction(enum.IntEnum):
     TAKE2_3 = enum.auto()
     TAKE2_4 = enum.auto()
     
-    CONSUME_WHITE = enum.auto()
-    CONSUME_BLUE = enum.auto()
-    CONSUME_GREEN = enum.auto()
-    CONSUME_RED = enum.auto()
-    CONSUME_BLACK = enum.auto()
-
-    CONSUME_WHITE_GOLD = enum.auto()
-    CONSUME_BLUE_GOLD = enum.auto()
-    CONSUME_GREEN_GOLD = enum.auto()
-    CONSUME_RED_GOLD = enum.auto()
-    CONSUME_BLACK_GOLD = enum.auto()
+    CONSUME_GOLD_WHITE = enum.auto()
+    CONSUME_GOLD_BLUE = enum.auto()
+    CONSUME_GOLD_GREEN = enum.auto()
+    CONSUME_GOLD_RED = enum.auto()
+    CONSUME_GOLD_BLACK = enum.auto()
+    END_SPENDING_TURN = enum.auto()

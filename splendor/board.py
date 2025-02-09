@@ -51,7 +51,7 @@ class Board:
     
     def get_visible_cards(self):
         """Return the cards that are face up on the board in row-major order."""
-        return self._decks[0][-4:] + self._decks[1][-4:] + self.decks[2][-4:] 
+        return self._decks[0][-4:] + self._decks[1][-4:] + self._decks[2][-4:] 
 
     def __array__(self):
         pass 

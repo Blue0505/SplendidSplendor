@@ -85,7 +85,6 @@ class SplendorState(pyspiel.State):
     self._actions: Actions = Actions()
     helpers.register_splendor_actions(self._actions)
     self._spending_turn: bool = False
-    self._spending_gems = np.empty(5)
 
 
   def current_player(self):
@@ -99,27 +98,23 @@ class SplendorState(pyspiel.State):
 
     # Spending turn.
     if self._spending_turn:
-      if helpers.still_afford(player, self._spending_gems_left, Gem.WHITE):
-        legal_actions.append(SAction.CONSUME_WHITE)
-      elif helpers.still_afford(player, self._spending_gems_left, Gem.BLUE):
-        legal_actions.append(SAction.CONSUME_BLUE)
-      elif helpers.still_afford(player, self._spending_gems_left, Gem.GREEN):
-        legal_actions.append(SAction.CONSUME_GREEN)
-      elif helpers.still_afford(player, self._spending_gems_left, Gem.RED):
-        legal_actions.append(SAction.CONSUME_RED)
-      elif helpers.still_afford(player, self._spending_gems_left, Gem.BLACK):
-        legal_actions.append(SAction.CONSUME_BLACK)
-      elif helpers.still_afford(player, self._spending_gems_left, Gem.WHITE, use_gold=True):
-        legal_actions.append(SAction.CONSUME_WHITE_GOLD)
-      elif helpers.still_afford(player, self._spending_gems_left, Gem.BLUE, use_gold=True):
-        legal_actions.append(SAction.CONSUME_BLUE_GOLD)
-      elif helpers.still_afford(player, self._spending_gems_left, Gem.GREEN, use_gold=True):
-        legal_actions.append(SAction.CONSUME_GREEN_GOLD)
-      elif helpers.still_afford(player, self._spending_gems_left, Gem.RED, use_gold=True):
-        legal_actions.append(SAction.CONSUME_RED_GOLD)
-      elif helpers.still_afford(player, self._spending_gems_left, Gem.BLACK, use_gold=True):
-        legal_actions.append(SAction.CONSUME_BLACK_GOLD)
-      return legal_actions
+      # "Spending gold" actions. 
+      if helpers.still_afford(player, self._spending_card, Gem.WHITE):
+        legal_actions.append(SAction.CONSUME_GOLD_WHITE)
+      if helpers.still_afford(player, self._spending_card, Gem.BLUE):
+        legal_actions.append(SAction.CONSUME_GOLD_BLUE)
+      if helpers.still_afford(player, self._spending_card, Gem.GREEN):
+        legal_actions.append(SAction.CONSUME_GOLD_GREEN)
+      if helpers.still_afford(player, self._spending_card, Gem.RED):
+        legal_actions.append(SAction.CONSUME_GOLD_RED)
+      if helpers.still_afford(player, self._spending_card, Gem.BLACK):
+        legal_actions.append(SAction.CONSUME_GOLD_BLACK)
+
+      # "End turn" action.
+      if player.can_purchase(self._spending_card, using_gold=False):
+        legal_actions.append(SAction.END_SPENDING_TURN)
+      
+        return legal_actions
 
     # Normal turn.
 
@@ -130,49 +125,51 @@ class SplendorState(pyspiel.State):
 
     # "Purchasing" action.
     purchase_ids = self._actions.get_action_ids(SCategory.PURCHASE)
-    for card, action in zip(self._board.get_cards(), purchase_ids):
+    for card, action in zip(self._board.get_visible_cards(), purchase_ids):
       if player.can_purchase(card):
         legal_actions.append(action)
     
-    # "Purchase reversed" action
+    # "Purchase reversed" action. 
     purchase_reserve_ids = self._actions.get_action_ids(SCategory.PURCHASE_RESERVE)
     for card, action in zip(player._reserved_cards, purchase_reserve_ids):
       if player.can_purchase(card):
         legal_actions.append(action)
     
     # "Take 2" 
-    if self._board.has_gems(white=BOARD_GEM_START):
-      legal_actions.append(SAction.TAKE2_0)
-    if self._board.has_gems(blue=BOARD_GEM_START):
-      legal_actions.append(SAction.TAKE2_1)
-    if self._board.has_gems(green=BOARD_GEM_START):
-      legal_actions.append(SAction.TAKE2_2)
-    if self._board.has_gems(red=BOARD_GEM_START):
-      legal_actions.append(SAction.TAKE2_3)
-    if self._board.has_gems(black=BOARD_GEM_START):
-      legal_actions.append(SAction.TAKE2_4)
+    if player.get_sum() <= 8: 
+      if self._board.has_gems(white=BOARD_GEM_START):
+        legal_actions.append(SAction.TAKE2_0)
+      if self._board.has_gems(blue=BOARD_GEM_START):
+        legal_actions.append(SAction.TAKE2_1)
+      if self._board.has_gems(green=BOARD_GEM_START):
+        legal_actions.append(SAction.TAKE2_2)
+      if self._board.has_gems(red=BOARD_GEM_START):
+        legal_actions.append(SAction.TAKE2_3)
+      if self._board.has_gems(black=BOARD_GEM_START):
+        legal_actions.append(SAction.TAKE2_4)
 
     # "Take 3" actions. 
-    if (self._board.has_gems(white=1, blue=1, green=1)):
-      legal_actions.append(SAction.TAKE3_11100)
-    if (self._board.has_gems(white=1, blue=1, red=1)):
-      legal_actions.append(SAction.TAKE3_11010)
-    if (self._board.has_gems(white=1, blue=1, black=1)):
-      legal_actions.append(SAction.TAKE3_11001)
-    if (self._board.has_gems(white=1, green=1, red=1)):
-      legal_actions.append(SAction.TAKE3_10110)
-    if (self._board.has_gems(white=1, green=1, red=1)):
-      legal_actions.append(SAction.TAKE3_10101)
-    if (self._board.has_gems(white=1, red=1, black=1)):
-      legal_actions.append(SAction.TAKE3_10011)
-    if (self._board.has_gems(blue=1, green=1, red=1)):
-      legal_actions.append(SAction.TAKE3_01110)
-    if (self._board.has_gems(blue=1, green=1, black=1)):
-      legal_actions.append(SAction.TAKE3_01101)
-    if (self._board.has_gems(blue=1, red=1, black=1)):
-      legal_actions.append(SAction.TAKE3_01011)
-    if (self._board.has_gems(green=1, red=1, black=1)):
-      legal_actions.append(SAction.TAKE3_00111)  
+    if player.get_sum() <= 7:
+      if (self._board.has_gems(white=1, blue=1, green=1)):
+        legal_actions.append(SAction.TAKE3_11100)
+      if (self._board.has_gems(white=1, blue=1, red=1)):
+        legal_actions.append(SAction.TAKE3_11010)
+      if (self._board.has_gems(white=1, blue=1, black=1)):
+        legal_actions.append(SAction.TAKE3_11001)
+      if (self._board.has_gems(white=1, green=1, red=1)):
+        legal_actions.append(SAction.TAKE3_10110)
+      if (self._board.has_gems(white=1, green=1, black=1)):
+        legal_actions.append(SAction.TAKE3_10101)
+      if (self._board.has_gems(white=1, red=1, black=1)):
+        legal_actions.append(SAction.TAKE3_10011)
+      if (self._board.has_gems(blue=1, green=1, red=1)):
+        legal_actions.append(SAction.TAKE3_01110)
+      if (self._board.has_gems(blue=1, green=1, black=1)):
+        legal_actions.append(SAction.TAKE3_01101)
+      if (self._board.has_gems(blue=1, red=1, black=1)):
+        legal_actions.append(SAction.TAKE3_01011)
+      if (self._board.has_gems(green=1, red=1, black=1)):
+        legal_actions.append(SAction.TAKE3_00111)
 
     return legal_actions.sort()
 
@@ -184,21 +181,24 @@ class SplendorState(pyspiel.State):
     
     # Spending turn.
     if self._spending_turn: 
-      helpers.apply_spending_turn(self._spending_gems_left, player, self._board, action_category, action_object)
-      if not self._spending_gems_left:
-        self._spending_turn = False
+      if action == SAction.END_SPENDING_TURN:
+        self.spending_turn = False
         self._cur_player = 1 if self._cur_player == 0 else 1
+        helpers.apply_end_spending_turn(player, self._board, self._spending_card)
+      else: # Player spent gold.
+        helpers.apply_spending_turn(player, self._board, self._spending_card, action_object)
+
       return 
 
     # Not a spending turn.
     if action_category == SCategory.RESERVE: 
-      helpers.apply_reserve(player, self._board, action_object)
+      helpers.apply_reserve(player, self._board, *action_object)
       self._cur_player = 1 if self._cur_player == 0 else 1
     elif action_category == SCategory.PURCHASE: 
-      self._spending_gems_left = helpers.apply_purchase(player, self._board, *action_object)
+      self._spending_card = helpers.apply_purchase(player, self._board, *action_object)
       self._spending_turn = True
     elif action_category == SCategory.PURCHASE_RESERVE:
-      self._spending_gems_left = helpers.apply_reserve_purchase(player, self._board, *action_object)
+      self._spending_card = helpers.apply_reserve_purchase(player, *action_object)
       self._spending_turn = True
     elif action_category == SCategory.TAKE2 or action_category == SCategory.TAKE3:
       helpers.apply_take_gems(player, self._board, action_object)
