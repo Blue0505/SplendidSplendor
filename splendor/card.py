@@ -20,7 +20,7 @@ class Card:
     def get_gems_array(self):
         return self._gem_costs
 
-    def __repr__(self) -> str:
+    def __str__(self) -> str:
         color = ''
         match self._gem_type:
             case Gem.WHITE:

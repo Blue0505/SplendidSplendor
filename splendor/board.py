@@ -5,6 +5,7 @@ from .card import Card
 from .gem import Gem
 
 from .card_importer import csv_import
+from .helpers import gem_array_str
 
 BOARD_GEM_START: int = 4
 BOARD_GOLD_START: int = 5
@@ -55,3 +56,13 @@ class Board:
 
     def __array__(self):
         pass 
+
+    def __str__(self) -> str:
+        output = ""
+        for i, row in enumerate(self._decks):
+            output += f"Row {i}:"
+            for card in row[-4:]:
+                output += str(card)
+            output += "\n"
+        output += "Gems:" + gem_array_str(self._gems, self._gold)
+        return output

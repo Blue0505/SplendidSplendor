@@ -6,9 +6,13 @@ from .player import Player
 from .gem import Gem
 from .card import Card
 from .actions import SAction, SCategory
+import ansi_escape_codes as ansi
 
 def still_afford(player: Player, card: Card, gem_to_remove: Gem):
   "Check if a player can still afford a card after a gold is spent for a specific color."
+  if player.get_gold() == 0:
+    return False
+  
   player.update_gems(gold=-1)
   can_afford = False
 
@@ -68,6 +72,11 @@ def apply_end_spending_turn(player: Player, board: Board, card: Card): # TODO: F
   player._gems -= card.get_costs_array()
   board._gems += card.get_costs_array()
 
+def gem_array_str(gem_array, gold) -> str:
+  """Returns a string reprsentation of a gem array and gold."""
+  return (f"{ansi.WHITE}{gem_array[0]} {ansi.BLUE}{gem_array[1]} "
+          f"{ansi.GREEN}{gem_array[2]} {ansi.RED}{gem_array[3]} "
+          f"{ansi.GRAY}{gem_array[4]} {ansi.YELLOW}{gold}{ansi.RESET}")
 
 def apply_spending_turn(player: Player, board: Board, card: Card, gem):
   """Moves one specified gem from the player back to the board. """

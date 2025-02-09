@@ -1,5 +1,7 @@
 from .card import Card
 import numpy as np
+from helpers import gem_array_str
+import ansi_escape_codes as ansi
 from numpy.typing import NDArray
 
 PLAYER_GEMS_START: int = 0
@@ -15,7 +17,17 @@ class Player:
         self._gems: NDArray = np.full((5), PLAYER_GEMS_START)
         self._gold_gems = PLAYER_GEMS_START
         self._purchased_cards: list[Card] = []
-        self._reserved_cards: list[Card] = [] 
+        self._reserved_cards: list[Card] = []
+
+    def __str__(self):
+        purchase_str = ""
+        reserved_str = ""
+        for p_card, r_card in zip(self._purchased_cards, self._reserved_cards):
+            purchase_str += str(p_card)
+            reserved_str += str(r_card)
+        return (f"{gem_array_str(self._gems, self._gold_gems)}\n"
+                f"{purchase_str}\n"
+                f"{reserved_str}")
 
     def add_purchased_card(self, card: Card) -> None:
         self._purchased_cards.append(card)

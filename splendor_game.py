@@ -22,6 +22,7 @@ from splendor.player import Player
 from splendor.actions import Actions, SAction, SCategory
 from splendor.gem import Gem
 import splendor.helpers as helpers
+import splendor.ansi_escape_codes as ansi
 
 _NUM_PLAYERS = 2
 _CARDS_FILENAME = 'data/cards.csv'
@@ -222,7 +223,21 @@ class SplendorState(pyspiel.State):
 
   def __str__(self): # TODO.
     """String for debug purposes. No particular semantics are required."""
-    return ""
+    output = ""
+    dashes = ("_" * 25) + "\n"
+
+    output += "BOARD:\n" + dashes + str(self._board)
+
+    player0_str = "PLAYER 0"
+    player1_str = "PLAYER 1"
+    if self._cur_player == 0:
+      player0_str = ansi.B_WHITE + player0_str + ansi.RESET + "(Current player):"
+    else:
+      player1_str = ansi.B_WHITE + player1_str + ansi.RESET + "(Current player):"
+    output += player0_str + dashes + str(self._player_0)
+    output += player1_str + dashes + str(self._player_1)
+
+    return output
 
 
 class BoardObserver:
