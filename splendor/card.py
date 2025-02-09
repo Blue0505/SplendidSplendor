@@ -1,5 +1,6 @@
 import splendor.ansi_escape_codes as ansi
 import numpy as np
+from numpy.typing import NDArray
 
 from splendor.gem import Gem
 
@@ -8,9 +9,9 @@ class Card:
     def __init__(self, points: int, gem_type: Gem, costs: tuple[int,int,int,int,int]):
         self._points: int = points
         self._gem_type: Gem = gem_type
-        self._gem_costs = np.array(costs)
+        self._gem_costs: NDArray = np.array(costs)
     
-    def get_costs(self):
+    def get_costs_array(self) -> NDArray:
         return self._gem_costs
     
     def __repr__(self) -> str:

@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import enum
 import numpy as np
 from open_spiel.python.observation import IIGObserverForPublicInfoGame
 import pyspiel
@@ -38,8 +37,8 @@ _GAME_TYPE = pyspiel.GameType(
     reward_model=pyspiel.GameType.RewardModel.TERMINAL,
     max_num_players=_NUM_PLAYERS,
     min_num_players=_NUM_PLAYERS,
-    provides_information_state_string=True, # TODO: Confused.  
-    provides_information_state_tensor=True, # TODO: Confused. 
+    provides_information_state_string=True,  
+    provides_information_state_tensor=True,
     provides_observation_string=True,
     provides_observation_tensor=True,
     parameter_specification={})
@@ -63,7 +62,7 @@ class SplendorGame(pyspiel.Game):
   def new_initial_state(self):
     return SplendorState(self, self.shuffle_cards)
 
-  def make_py_observer(self, iig_obs_type=None, params=None): # TODO: Fix/update. 
+  def make_py_observer(self, iig_obs_type=None, params=None):
     if ((iig_obs_type is None) or
         (iig_obs_type.public_info and not iig_obs_type.perfect_recall)):
       return BoardObserver(params)
@@ -84,9 +83,9 @@ class SplendorState(pyspiel.State):
     self._player_0: Player = Player()
     self._player_1: Player = Player()
     self._actions: Actions = Actions()
+    helpers.register_splendor_actions(self._actions)
     self._spending_turn: bool = False
     self._spending_gems = np.empty(5)
-    helpers.register_splendor_actions(self._actions)
 
 
   def current_player(self):
@@ -98,10 +97,34 @@ class SplendorState(pyspiel.State):
     player = self._player_0 if self._cur_player == 0 else self._player_1
     legal_actions: list[int] = []
 
-    # Non-spending/normal turn.
+    # Spending turn.
+    if self._spending_turn:
+      if helpers.still_afford(player, self._spending_gems_left, Gem.WHITE):
+        legal_actions.append(SAction.CONSUME_WHITE)
+      elif helpers.still_afford(player, self._spending_gems_left, Gem.BLUE):
+        legal_actions.append(SAction.CONSUME_BLUE)
+      elif helpers.still_afford(player, self._spending_gems_left, Gem.GREEN):
+        legal_actions.append(SAction.CONSUME_GREEN)
+      elif helpers.still_afford(player, self._spending_gems_left, Gem.RED):
+        legal_actions.append(SAction.CONSUME_RED)
+      elif helpers.still_afford(player, self._spending_gems_left, Gem.BLACK):
+        legal_actions.append(SAction.CONSUME_BLACK)
+      elif helpers.still_afford(player, self._spending_gems_left, Gem.WHITE, use_gold=True):
+        legal_actions.append(SAction.CONSUME_WHITE_GOLD)
+      elif helpers.still_afford(player, self._spending_gems_left, Gem.BLUE, use_gold=True):
+        legal_actions.append(SAction.CONSUME_BLUE_GOLD)
+      elif helpers.still_afford(player, self._spending_gems_left, Gem.GREEN, use_gold=True):
+        legal_actions.append(SAction.CONSUME_GREEN_GOLD)
+      elif helpers.still_afford(player, self._spending_gems_left, Gem.RED, use_gold=True):
+        legal_actions.append(SAction.CONSUME_RED_GOLD)
+      elif helpers.still_afford(player, self._spending_gems_left, Gem.BLACK, use_gold=True):
+        legal_actions.append(SAction.CONSUME_BLACK_GOLD)
+      return legal_actions
+
+    # Normal turn.
 
     # "Reserving" action.
-    if player.can_reserve():
+    if not player.reserve_limit():
       reserve_ids = self._actions.get_action_ids(SCategory.RESERVE)
       legal_actions.extend(reserve_ids)
 
@@ -155,38 +178,32 @@ class SplendorState(pyspiel.State):
 
   def _apply_action(self, action):
     """Applies the specified action to the state."""
-    # TODO: Update reward score.
-
     player = self._player_0 if self._cur_player == 0 else self._player_1
     action_category = self._actions.get_category(action)
     action_object = self._actions.get_action_object(action)
     
-    if not self._spending_turn: 
-      if action_category == SCategory.RESERVE: 
-        helpers.apply_reserve(player, self._board, action_object)
-      elif action_category == SCategory.PURCHASE or action_category == SCategory.PURCHASE_RESERVE:
-        #card = self._board.pop_card(action_object[0], action_object[1])
-        #player.purchase_card(card)
-        if action_category == SCategory.PURCHASE_RESERVE:
-          pass # TODO: remove reserve card
-          
-        self._spending_gems_left = helpers.apply_purchase(player, self._board, action_object)
-        self._spending_turn = True
-      elif action_category == SCategory.TAKE2:
-        helpers.apply_take_gems(player, self._board, action_object)
-      elif action_category == SCategory.TAKE3:
-        helpers.apply_take_gems(player, self._board, action_object)
-
-    else: # self._spending turn is True. 
-      helpers.apply_spending_turn(self._spending_gems_left, player, action_category, action_object)
+    # Spending turn.
+    if self._spending_turn: 
+      helpers.apply_spending_turn(self._spending_gems_left, player, self._board, action_category, action_object)
       if not self._spending_gems_left:
         self._spending_turn = False
-        self._cur_player = 1 if self._cur_player == 1 else 0
+        self._cur_player = 1 if self._cur_player == 0 else 1
+      return 
 
+    # Not a spending turn.
+    if action_category == SCategory.RESERVE: 
+      helpers.apply_reserve(player, self._board, action_object)
+      self._cur_player = 1 if self._cur_player == 0 else 1
+    elif action_category == SCategory.PURCHASE: 
+      self._spending_gems_left = helpers.apply_purchase(player, self._board, *action_object)
+      self._spending_turn = True
+    elif action_category == SCategory.PURCHASE_RESERVE:
+      self._spending_gems_left = helpers.apply_reserve_purchase(player, self._board, *action_object)
+      self._spending_turn = True
+    elif action_category == SCategory.TAKE2 or action_category == SCategory.TAKE3:
+      helpers.apply_take_gems(player, self._board, action_object)
+      self._cur_player = 1 if self._cur_player == 0 else 1
 
-    
-      
-    
     if player.get_points() == _WIN_POINTS:
       self._is_terminal = True
 
@@ -212,35 +229,10 @@ class BoardObserver:
   """Observer, conforming to the PyObserver interface (see observation.py)."""
 
   def __init__(self, params): pass 
-    # """Initializes an empty observation tensor."""
-    # if params:
-    #   raise ValueError(f"Observation parameters not supported; passed {params}")
-    # # The observation should contain a 1-D tensor in `self.tensor` and a
-    # # dictionary of views onto the tensor, which may be of any shape.
-    # # Here the observation is indexed `(cell state, row, column)`.
-    # shape = (1 + _NUM_PLAYERS, _NUM_ROWS, _NUM_COLS)
-    # self.tensor = np.zeros(np.prod(shape), np.float32)
-    # self.dict = {"observation": np.reshape(self.tensor, shape)}
 
   def set_from(self, state, player): pass
-    # """Updates `tensor` and `dict` to reflect `state` from PoV of `player`."""
-    # del player
-    # # We update the observation via the shaped tensor since indexing is more
-    # # convenient than with the 1-D tensor. Both are views onto the same memory.
-    # obs = self.dict["observation"]
-    # obs.fill(0)
-    # for row in range(_NUM_ROWS):
-    #   for col in range(_NUM_COLS):
-    #     cell_state = ".ox".index(state.board[row, col])
-    #     obs[cell_state, row, col] = 1
 
   def string_from(self, state, player): pass 
-    # """Observation of `state` from the PoV of `player`, as a string."""
-    # del player
-    # return _board_to_string(state.board)
-
-
-# Helper functions for game details.
 
 # Register the game with the OpenSpiel library
 pyspiel.register_game(_GAME_TYPE, SplendorGame)

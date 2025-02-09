@@ -1,8 +1,8 @@
 from typing import Any
 import enum
-import numpy as np
 
 class Actions:
+    """A class representing actions with an arbitrary object and category that can be accessed with an id."""
     def __init__(self):
         self._action_map = {}
     
@@ -24,6 +24,7 @@ class Actions:
 
 
 class SCategory(enum.IntEnum):
+  """Action categories used in Splendor."""
   RESERVE = 0
   PURCHASE = enum.auto()
   PURCHASE_RESERVE = enum.auto()
@@ -33,6 +34,7 @@ class SCategory(enum.IntEnum):
   CONSUME_GOLD = enum.auto()
 
 class SAction(enum.IntEnum):
+    "Action ids used in Splendor."
     RESERVE_00 = 0
     RESERVE_01 = enum.auto()
     RESERVE_02 = enum.auto()

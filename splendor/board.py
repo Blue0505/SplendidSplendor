@@ -1,6 +1,5 @@
 from random import shuffle
 import numpy as np
-import csv
 
 from .card import Card
 from .gem import Gem
@@ -35,22 +34,24 @@ class Board:
                 shuffle(deck)
     
     def has_gems(self, white=np.nan, blue=np.nan, green=np.nan, red=np.nan, black=np.nan) -> bool:
-        gem_request = np.array([white,blue,green,red,black])
+        """Check for each gem specified that the board has at least that amount."""
         return not np.all(self._gems < np.array([white,blue,green,red,black]))
     
     def has_gold(self):
         return self._gold > 0
 
     def pop_card(self, row: int, column: int) -> Card:
+        """Remove and return the card associated with the specified columns and row."""
         return self._decks[row].pop(-column - 1)
-
-
+        
     def update_gems(self, white=0, blue=0, green=0, red=0, black=0, gold=0) -> None:
+        """Augmented assign the specified colors. """
         self._gems = self._gems + np.array([white, blue, green, red, black])
         self._gold += gold
     
-    def get_cards(self):
-        return [ card for row in self._decks for card in row ] 
+    def get_visible_cards(self):
+        """Return the cards that are face up on the board in row-major order."""
+        return self._decks[0][-4:] + self._decks[1][-4:] + self.decks[2][-4:] 
 
-    def __array__(self): # TODO!
+    def __array__(self):
         pass 

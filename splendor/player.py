@@ -1,6 +1,4 @@
-from .gem import Gem
 from .card import Card
-from numpy.typing import NDArray
 import numpy as np
 
 PLAYER_GEMS_START: int = 0
@@ -17,32 +15,27 @@ class Player:
         self._gold_gems = PLAYER_GEMS_START
         self._purchased_cards: list[Card] = []
         self._reserved_cards: list[Card] = [] 
- 
-    def __array__(self): # TODO. 
-        pass
 
-
-    def add_card(self, card: Card) -> None:
+    def add_purchased_card(self, card: Card) -> None:
         self._purchased_cards.append(card)
+        return None
 
-    def reserve_card(self, card: Card) -> None:
+    def add_reserved_card(self, card: Card) -> None:
         self._reserved_cards.append(card)
 
-    def can_reserve(self) -> bool:
+    def pop_reserved_card(self, pos: int) -> Card:
+        return self._reserved_cards.pop(pos)
+
+    def reserve_limit(self) -> bool:
         return len(self._reserved_cards) < MAX_RESERVE
-    
-    def purchase_card(self, card: Card):
-        self._purchased_cards.append(card)
+
 
     def can_purchase(self, card: Card) -> bool:
-        moving_sum: int = 0
-        zeros = np.zeros(5)
         gem_sum = card.get_costs() - self.get_gems() - self.get_resources()
         np.clip(gem_sum, amin=0)
         return np.sum(gem_sum) - self._gold_gems <= 0
     
-
-    def get_resources(self):
+    def get_resources_array(self):
         """Returns counts of all permanent gems from resource cards."""
         resources = np.empty(5)
         for card in self._purchased_cards:
@@ -56,8 +49,7 @@ class Player:
         self._gems = self._gems + np.array([white, blue, green, red, black])
         self._gold_gems += gold
 
-    def get_gems(self):
-        """Returns the number of gems this player has of each type."""
+    def get_gems_array(self):
         return self._gems
     
     def get_gold(self) -> int:
@@ -65,3 +57,6 @@ class Player:
 
     def get_points(self):
         return sum(card._points for card in self._purchased_cards)
+    
+    def __array__(self): # TODO. 
+        pass
