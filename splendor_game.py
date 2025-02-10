@@ -12,16 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import numpy as np
 from open_spiel.python.observation import IIGObserverForPublicInfoGame
 import pyspiel
 
-from splendor.card import Card
 from splendor.board import Board, BOARD_GEM_START
 from splendor.player import Player
 from splendor.actions import Actions, SAction, SCategory
 from splendor.gem import Gem
-import splendor.helpers as helpers
+import splendor.engine as engine
 import splendor.ansi_escape_codes as ansi
 
 _NUM_PLAYERS = 2
@@ -29,28 +27,31 @@ _CARDS_FILENAME = 'data/cards.csv'
 _WIN_POINTS = 15
 
 _GAME_TYPE = pyspiel.GameType(
-    short_name="python_splendor",
-    long_name="Python Splendor",
-    dynamics=pyspiel.GameType.Dynamics.SEQUENTIAL,
-    chance_mode=pyspiel.GameType.ChanceMode.DETERMINISTIC,
-    information=pyspiel.GameType.Information.IMPERFECT_INFORMATION,
-    utility=pyspiel.GameType.Utility.ZERO_SUM,
-    reward_model=pyspiel.GameType.RewardModel.TERMINAL,
-    max_num_players=_NUM_PLAYERS,
-    min_num_players=_NUM_PLAYERS,
-    provides_information_state_string=True,  
-    provides_information_state_tensor=True,
-    provides_observation_string=True,
-    provides_observation_tensor=True,
-    parameter_specification={})
+  short_name="python_splendor",
+  long_name="Python Splendor",
+  dynamics=pyspiel.GameType.Dynamics.SEQUENTIAL,
+  chance_mode=pyspiel.GameType.ChanceMode.DETERMINISTIC,
+  information=pyspiel.GameType.Information.IMPERFECT_INFORMATION,
+  utility=pyspiel.GameType.Utility.ZERO_SUM,
+  reward_model=pyspiel.GameType.RewardModel.TERMINAL,
+  max_num_players=_NUM_PLAYERS,
+  min_num_players=_NUM_PLAYERS,
+  provides_information_state_string=True,  
+  provides_information_state_tensor=True,
+  provides_observation_string=True,
+  provides_observation_tensor=True,
+  parameter_specification={
+    "shuffle_cards": True
+  })
 
 _GAME_INFO = pyspiel.GameInfo( # TODO: Fix.
-    max_chance_outcomes=0,
-    num_players=2,
-    min_utility=-1.0,
-    max_utility=1.0,
-    utility_sum=0.0,
-    max_game_length=0)
+  num_distinct_actions=51,
+  max_chance_outcomes=0,
+  num_players=2,
+  min_utility=-1.0,
+  max_utility=1.0,
+  utility_sum=0.0,
+  max_game_length=1000)
 
 
 class SplendorGame(pyspiel.Game):
@@ -58,7 +59,8 @@ class SplendorGame(pyspiel.Game):
 
   def __init__(self, params=None):
     super().__init__(_GAME_TYPE, _GAME_INFO, params or dict())
-    self.shuffle_cards = params.get('shuffle_cards', True) if params != None else True
+    game_parameters = self.get_parameters()
+    self.shuffle_cards = game_parameters.get("shuffle_cards")
 
   def new_initial_state(self):
     return SplendorState(self, self.shuffle_cards)
@@ -84,7 +86,7 @@ class SplendorState(pyspiel.State):
     self._player_0: Player = Player()
     self._player_1: Player = Player()
     self._actions: Actions = Actions()
-    helpers.register_splendor_actions(self._actions)
+    engine.register_splendor_actions(self._actions)
     self._spending_turn: bool = False
 
 
@@ -100,15 +102,15 @@ class SplendorState(pyspiel.State):
     # Spending turn.
     if self._spending_turn:
       # "Spending gold" actions. 
-      if helpers.still_afford(player, self._spending_card, Gem.WHITE):
+      if engine.still_afford(player, self._spending_card, Gem.WHITE):
         legal_actions.append(SAction.CONSUME_GOLD_WHITE)
-      if helpers.still_afford(player, self._spending_card, Gem.BLUE):
+      if engine.still_afford(player, self._spending_card, Gem.BLUE):
         legal_actions.append(SAction.CONSUME_GOLD_BLUE)
-      if helpers.still_afford(player, self._spending_card, Gem.GREEN):
+      if engine.still_afford(player, self._spending_card, Gem.GREEN):
         legal_actions.append(SAction.CONSUME_GOLD_GREEN)
-      if helpers.still_afford(player, self._spending_card, Gem.RED):
+      if engine.still_afford(player, self._spending_card, Gem.RED):
         legal_actions.append(SAction.CONSUME_GOLD_RED)
-      if helpers.still_afford(player, self._spending_card, Gem.BLACK):
+      if engine.still_afford(player, self._spending_card, Gem.BLACK):
         legal_actions.append(SAction.CONSUME_GOLD_BLACK)
 
       # "End turn" action.
@@ -172,7 +174,7 @@ class SplendorState(pyspiel.State):
       if (self._board.has_gems(green=1, red=1, black=1)):
         legal_actions.append(SAction.TAKE3_00111)
 
-    return legal_actions.sort()
+    return sorted(legal_actions)
 
   def _apply_action(self, action):
     """Applies the specified action to the state."""
@@ -185,24 +187,24 @@ class SplendorState(pyspiel.State):
       if action == SAction.END_SPENDING_TURN:
         self.spending_turn = False
         self._cur_player = 1 if self._cur_player == 0 else 1
-        helpers.apply_end_spending_turn(player, self._board, self._spending_card)
+        engine.apply_end_spending_turn(player, self._board, self._spending_card)
       else: # Player spent gold.
-        helpers.apply_spending_turn(player, self._board, self._spending_card, action_object)
+        engine.apply_spending_turn(player, self._board, self._spending_card, action_object)
 
       return 
 
     # Not a spending turn.
     if action_category == SCategory.RESERVE: 
-      helpers.apply_reserve(player, self._board, *action_object)
+      engine.apply_reserve(player, self._board, *action_object)
       self._cur_player = 1 if self._cur_player == 0 else 1
     elif action_category == SCategory.PURCHASE: 
-      self._spending_card = helpers.apply_purchase(player, self._board, *action_object)
+      self._spending_card = engine.apply_purchase(player, self._board, *action_object)
       self._spending_turn = True
     elif action_category == SCategory.PURCHASE_RESERVE:
-      self._spending_card = helpers.apply_reserve_purchase(player, *action_object)
+      self._spending_card = engine.apply_reserve_purchase(player, *action_object)
       self._spending_turn = True
     elif action_category == SCategory.TAKE2 or action_category == SCategory.TAKE3:
-      helpers.apply_take_gems(player, self._board, action_object)
+      engine.apply_take_gems(player, self._board, action_object)
       self._cur_player = 1 if self._cur_player == 0 else 1
 
     if player.get_points() == _WIN_POINTS:
@@ -224,16 +226,19 @@ class SplendorState(pyspiel.State):
   def __str__(self): # TODO.
     """String for debug purposes. No particular semantics are required."""
     output = ""
-    dashes = ("_" * 25) + "\n"
+    dashes = ("-" * 59) + "\n"
 
-    output += "BOARD:\n" + dashes + str(self._board)
+    output += f"{ansi.B_WHITE}\nBOARD:\n{ansi.RESET}" + dashes + str(self._board)
 
-    player0_str = "PLAYER 0"
-    player1_str = "PLAYER 1"
+    player0_str = f"{ansi.B_WHITE}\nPLAYER 0:{ansi.RESET}"
+    player1_str = f"{ansi.B_WHITE}\nPLAYER 1:{ansi.RESET}"
     if self._cur_player == 0:
-      player0_str = ansi.B_WHITE + player0_str + ansi.RESET + "(Current player):"
+      player0_str += " <-- \n"
+      player1_str += "\n"
     else:
-      player1_str = ansi.B_WHITE + player1_str + ansi.RESET + "(Current player):"
+      player0_str += "\n"
+      player1_str +=  " <-- \n"
+      
     output += player0_str + dashes + str(self._player_0)
     output += player1_str + dashes + str(self._player_1)
 

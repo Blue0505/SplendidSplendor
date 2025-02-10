@@ -1,11 +1,9 @@
 from random import shuffle
 import numpy as np
 
-from .card import Card
-from .gem import Gem
-
-from .card_importer import csv_import
-from .helpers import gem_array_str
+from splendor.card import Card
+from splendor.card_importer import csv_import
+from splendor.helpers import gem_array_str
 
 BOARD_GEM_START: int = 4
 BOARD_GOLD_START: int = 5
@@ -60,9 +58,9 @@ class Board:
     def __str__(self) -> str:
         output = ""
         for i, row in enumerate(self._decks):
-            output += f"Row {i}:"
-            for card in row[-4:]:
-                output += str(card)
+            output += f"   Deck {i}: ({i}4) | "
+            for j, card in enumerate(row[-1:-5:-1]):
+                output += f'({i}{j}) {str(card)} | '
             output += "\n"
-        output += "Gems:" + gem_array_str(self._gems, self._gold)
+        output += f"   Gems: {gem_array_str(self._gems, self._gold)}\n"
         return output

@@ -1,8 +1,8 @@
-from .card import Card
 import numpy as np
-from helpers import gem_array_str
-import ansi_escape_codes as ansi
 from numpy.typing import NDArray
+
+from splendor.card import Card
+from splendor.helpers import gem_array_str
 
 PLAYER_GEMS_START: int = 0
 MAX_RESERVE: int = 3
@@ -20,14 +20,18 @@ class Player:
         self._reserved_cards: list[Card] = []
 
     def __str__(self):
-        purchase_str = ""
-        reserved_str = ""
-        for p_card, r_card in zip(self._purchased_cards, self._reserved_cards):
-            purchase_str += str(p_card)
-            reserved_str += str(r_card)
-        return (f"{gem_array_str(self._gems, self._gold_gems)}\n"
-                f"{purchase_str}\n"
-                f"{reserved_str}")
+        reserved_str = "Reserved cards: "
+        if not self._reserved_cards:
+            reserved_str += "None"
+        else:
+            reserved_str += "| "
+        for r_card in self._reserved_cards: 
+            reserved_str += f"{r_card} | "
+      
+        return (f"   Gems: {gem_array_str(self._gems, self._gold_gems)}\n"
+                f"   {reserved_str}\n"
+                f"   Resources: {gem_array_str(self.get_resources_array())}\n"
+                f"   Points: {self.get_points()}\n")
 
     def add_purchased_card(self, card: Card) -> None:
         self._purchased_cards.append(card)
@@ -40,7 +44,7 @@ class Player:
         return self._reserved_cards.pop(pos)
 
     def reserve_limit(self) -> bool:
-        return len(self._reserved_cards) < MAX_RESERVE
+        return not len(self._reserved_cards) < MAX_RESERVE
 
 
     def can_purchase(self, card: Card, using_gold: bool = True) -> bool:
@@ -53,7 +57,7 @@ class Player:
     
     def get_resources_array(self) -> NDArray:
         """Returns counts of all permanent gems from resource cards."""
-        resources = np.empty(5)
+        resources = np.zeros(5).astype(int)
         for card in self._purchased_cards:
             resources[card._gem_type] += 1
 

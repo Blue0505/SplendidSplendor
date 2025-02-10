@@ -1,5 +1,6 @@
-from typing import Any
 import enum
+
+from typing import Any
 
 class Actions:
     """A class representing actions with an arbitrary object and category that can be accessed with an id."""
@@ -17,7 +18,7 @@ class Actions:
     
     def get_action_ids(self, action_category: int):
         action_ids = []
-        for action_id, dict_action_category, _ in self._action_map.values():
+        for action_id, (dict_action_category, _) in self._action_map.items():
             if dict_action_category == action_category:
                 action_ids.append(action_id)
         return action_ids

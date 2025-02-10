@@ -1,8 +1,8 @@
-import splendor.ansi_escape_codes as ansi
 import numpy as np
 from numpy.typing import NDArray
 
 from splendor.gem import Gem
+import splendor.ansi_escape_codes as ansi
 
 class Card:
     """A card including points, gem type, and costs."""
