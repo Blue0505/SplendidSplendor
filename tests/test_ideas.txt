@@ -1,4 +1,6 @@
 
+actions
+* test get action ids
 
 * Correct actions appear on the first turn 
 * Player can swap back gems correctly when they take more than 10 gems
