@@ -3,6 +3,7 @@ from splendor.player import Player
 from splendor.gem import Gem
 from splendor.card import Card
 from splendor.actions import SAction, SCategory
+from splendor.helpers import gem_to_tuple
 import splendor.ansi_escape_codes as ansi
 
 def still_afford(player: Player, card: Card, gem_to_remove: Gem):
@@ -13,31 +14,12 @@ def still_afford(player: Player, card: Card, gem_to_remove: Gem):
   player.update_gems(gold=-1)
   can_afford = False
 
-  if gem_to_remove == Gem.WHITE:
-    card.update_gems(white=-1)
-    can_afford = player.can_purchase(card)
-    card.update_gems(white=1)
-  elif gem_to_remove == Gem.BLUE:
-    card.update_gems(blue=-1)
-    can_afford = player.can_purchase(card)
-    card.update_gems(blue=1)
-  elif gem_to_remove == Gem.GREEN:
-    card.update_gems(green=-1)
-    can_afford = player.can_purchase(card)
-    card.update_gems(green=1)
-  elif gem_to_remove == Gem.RED:
-    card.update_gems(red=-1)
-    can_afford = player.can_purchase(card)
-    card.update_gems(red=1)
-  elif gem_to_remove == Gem.BLACK:
-    card.update_gems(black=-1)
-    can_afford = player.can_purchase(card)
-    card.update_gems(black=1)
-  
+  gem_tuple = gem_to_tuple(gem_to_remove)
+  card.update_gems(*gem_tuple)
+  can_afford = player.can_purchase(card)
+  card.update_gems(*tuple(-gem for gem in gem_tuple))
   player.update_gems(gold=1)
   return can_afford
-
-
 
 def apply_take_gems(player: Player, board: Board, gem_tuple):
   """Moves gems from the board to the player."""
@@ -71,27 +53,10 @@ def apply_end_spending_turn(player: Player, board: Board, card: Card): # TODO: F
 
 def apply_spending_turn(player: Player, board: Board, card: Card, gem):
   """Moves one specified gem from the player back to the board. """
-
-  if gem == Gem.WHITE:
-    player.update_gems(white=-1)
-    board.update_gems(white=1)
-    card.update_gems(white=-1)
-  elif gem == Gem.BLUE:
-    player.update_gems(blue=-1)
-    board.update_gems(blue=1)
-    card.update_gems(blue=-1)
-  elif gem == Gem.GREEN:
-    player.update_gems(green=-1)
-    board.update_gems(green=1)
-    card.update_gems(green=-1)
-  elif gem == Gem.RED:
-    player.update_gems(red=-1)
-    board.update_gems(red=1)
-    card.update_gems(red=-1)
-  else: # Gem.BLACK.
-    player.update_gems(black=-1)
-    board.update_gems(black=1)
-    card.update_gems(black=-1)
+  gem_tuple = gem_to_tuple(gem)
+  player.update_gems(*tuple(-gem for gem in gem_tuple))
+  board.update_gems(*gem_tuple)
+  card.update_gems(*tuple(-gem for gem in gem_tuple))
 
     
 def register_splendor_actions(actions):
@@ -144,6 +109,13 @@ def register_splendor_actions(actions):
     actions.register_action(SAction.TAKE2_2, SCategory.TAKE2, (0, 0, 2, 0, 0))
     actions.register_action(SAction.TAKE2_3, SCategory.TAKE2, (0, 0, 0, 2, 0))
     actions.register_action(SAction.TAKE2_4, SCategory.TAKE2, (0, 0, 0, 0, 2))
+
+    actions.register_action(SAction.RETURN_0, SCategory.RETURN, Gem.WHITE)
+    actions.register_action(SAction.RETURN_1, SCategory.RETURN, Gem.BLUE)
+    actions.register_action(SAction.RETURN_2, SCategory.RETURN, Gem.GREEN)
+    actions.register_action(SAction.RETURN_3, SCategory.RETURN, Gem.RED)
+    actions.register_action(SAction.RETURN_4, SCategory.RETURN, Gem.BLACK)
+    actions.register_action(SAction.RETURN_GOLD, SCategory.RETURN, Gem.GOLD)
 
     actions.register_action(SAction.CONSUME_GOLD_WHITE, SCategory.SPENDING_TURN, Gem.WHITE)
     actions.register_action(SAction.CONSUME_GOLD_BLUE, SCategory.SPENDING_TURN, Gem.BLUE)

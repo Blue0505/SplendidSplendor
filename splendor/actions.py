@@ -31,6 +31,7 @@ class SCategory(enum.IntEnum):
   PURCHASE_RESERVE = enum.auto()
   TAKE3 = enum.auto()
   TAKE2 = enum.auto()
+  RETURN = enum.auto()
   SPENDING_TURN = enum.auto()
 
 class SAction(enum.IntEnum):
@@ -84,6 +85,13 @@ class SAction(enum.IntEnum):
     TAKE2_2 = enum.auto()
     TAKE2_3 = enum.auto()
     TAKE2_4 = enum.auto()
+
+    RETURN_0 = enum.auto()
+    RETURN_1 = enum.auto()
+    RETURN_2 = enum.auto()
+    RETURN_3 = enum.auto()
+    RETURN_4 = enum.auto()
+    RETURN_GOLD = enum.auto()
     
     CONSUME_GOLD_WHITE = enum.auto()
     CONSUME_GOLD_BLUE = enum.auto()
