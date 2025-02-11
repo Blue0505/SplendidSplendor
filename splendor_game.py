@@ -226,17 +226,22 @@ class SplendorState(pyspiel.State):
       if action_category == SCategory.RESERVE: 
         engine.apply_reserve(player, self._board, *action_object)
         self.__swap_player()
+
       elif action_category == SCategory.PURCHASE: 
         self._spending_card = engine.apply_purchase(player, self._board, *action_object)
-        if player.has_gold(): self._spending_turn = True
+        if player.has_gold(): self._turn_type = TurnType.SPENDING
         else: 
           engine.apply_end_spending_turn(player, self._board, self._spending_card)
           self.__swap_player()
+
       elif action_category == SCategory.PURCHASE_RESERVE:
-        if player.has_gold(): self._spending_turn = True
-        else: 
+        self._spending_card = player.pop_reserved_card(action_object)
+        if player.has_gold(): self._turn_type = TurnType.SPENDING
+     
+        else:
           engine.apply_end_spending_turn(player, self._board, self._spending_card)
           self.__swap_player()
+
       elif action_category == SCategory.TAKE2 or action_category == SCategory.TAKE3:
         engine.apply_take_gems(player, self._board, action_object)
         if player.get_sum() > _MAX_PLAYER_GEMS:

@@ -15,6 +15,7 @@ def still_afford(player: Player, card: Card, gem_to_remove: Gem):
   can_afford = False
 
   gem_tuple = gem_to_tuple(gem_to_remove)
+  gem_tuple = gem_tuple[:-1] # Remove gold.
   card.update_gems(*gem_tuple)
   can_afford = player.can_purchase(card)
   card.update_gems(*tuple(-gem for gem in gem_tuple))
@@ -91,9 +92,9 @@ def register_splendor_actions(actions):
     actions.register_action(SAction.PURCHASE_23, SCategory.PURCHASE, (2, 3))
     actions.register_action(SAction.PURCHASE_24, SCategory.PURCHASE, (2, 4))
     
-    actions.register_action(SAction.PURCHASE_RESERVE_0, SCategory.PURCHASE, 0)
-    actions.register_action(SAction.PURCHASE_RESERVE_1, SCategory.PURCHASE, 1)
-    actions.register_action(SAction.PURCHASE_RESERVE_2, SCategory.PURCHASE, 2)
+    actions.register_action(SAction.PURCHASE_RESERVE_0, SCategory.PURCHASE_RESERVE, 0)
+    actions.register_action(SAction.PURCHASE_RESERVE_1, SCategory.PURCHASE_RESERVE, 1)
+    actions.register_action(SAction.PURCHASE_RESERVE_2, SCategory.PURCHASE_RESERVE, 2)
     
     actions.register_action(SAction.TAKE3_11100, SCategory.TAKE3, (1, 1, 1, 0, 0))
     actions.register_action(SAction.TAKE3_11010, SCategory.TAKE3, (1, 1, 0, 1, 0))

@@ -72,6 +72,39 @@ class TestSplendorGame(unittest.TestCase):
         self.state._player_0.add_purchased_card(fake_card)
         self.assertIn(SAction.PURCHASE_02, self.state.legal_actions())
         self.assertFalse((set(purchase_actions) - set([SAction.PURCHASE_02])) & set(self.state.legal_actions()))
+    
+    def test_player_return_actions(self):
+        """Tests the return gems functionality for when a player has more than 10 gems."""
+        self.state._player_0._gems = np.array([5, 0, 3, 1, 0])
+        self.state._player_0._gold_gems = 1
+        self.state.apply_action(SAction.TAKE3_01101)
+        return_actions = self.actions.get_action_ids(SCategory.RETURN)
+        self.assertTrue( (set(return_actions)) == (set(return_actions)) & set(self.state.legal_actions()) ) # Ensure all return actions are present.
+        self.state.apply_action(SAction.RETURN_0)
+        self.state.apply_action(SAction.RETURN_0)
+        self.state.apply_action(SAction.RETURN_0)
+        self.assertTrue(self.state._cur_player == 1)
+        VALID_GEMS = np.array([2, 1, 4, 1, 1])
+        VALID_GOLD = 1
+        self.assertTrue(np.array_equal(self.state._player_0._gems, VALID_GEMS))
+        self.assertTrue(self.state._player_0._gold_gems == VALID_GOLD)
+    
+    def test_purchase_reserve(self): 
+        """Tests that the player can purchase a card that they reserved and that it decrements their gems correctly."""
+        self.state._player_0._gems = np.array([3, 0, 0, 0, 0])
+        self.state.apply_action(SAction.RESERVE_03)
+        self.state.apply_action(SAction.RESERVE_01) # "Random" action.
+        self.assertIn(SAction.PURCHASE_RESERVE_0, self.state.legal_actions())
+        self.assertFalse(set([SAction.PURCHASE_RESERVE_1, SAction.PURCHASE_RESERVE_2]) & set(self.state.legal_actions()))
+        self.state._player_0._gold_gems = 0 # Forces test to not need to deal with spending turn.
+        self.state.apply_action(SAction.PURCHASE_RESERVE_0)
+        VALID_GEMS = np.zeros(5)
+        VALID_GOLD = 0
+        print(self.state._player_0._gems)
+        self.assertTrue(np.array_equal(self.state._player_0._gems, VALID_GEMS))
+        self.assertTrue(self.state._player_0._gold_gems == VALID_GOLD)
+
+
         
 
         

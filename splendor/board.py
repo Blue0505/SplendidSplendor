@@ -39,9 +39,9 @@ class Board:
     def has_gold(self):
         return self._gold > 0
 
-    def pop_card(self, row: int, column: int) -> Card:
+    def pop_card(self, row: int, col: int) -> Card:
         """Remove and return the card associated with the specified columns and row."""
-        return self._decks[row].pop(-column - 1)
+        return self._decks[row].pop(-4 + (col - 1))
         
     def update_gems(self, white=0, blue=0, green=0, red=0, black=0, gold=0) -> None:
         """Augmented assign the specified colors. """
