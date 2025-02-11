@@ -8,9 +8,8 @@ DONE * Player purchases card from board
     -> player has correct amount
 * Player purchases card from reserved
 * Player purchases card using gold
-* Resources contribute to card purchase
+DONE * Resources contribute to card purchase
 * Rerun an entire played game
-* Gem counts are consistent between players/deck
 
 * Reserved card is the same as purchase-able card when looking at the deck_display
 * Gems go back to deck

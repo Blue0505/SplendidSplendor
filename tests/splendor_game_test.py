@@ -5,6 +5,8 @@ import numpy as np
 import splendor_game
 from splendor.actions import SCategory, Actions, SAction
 from splendor.engine import register_splendor_actions
+from splendor.gem import Gem
+from splendor.card import Card
 
 def apply_actions(state, player0_actions, player1_actions):
     """Helper function that applies action to the state."""
@@ -59,6 +61,17 @@ class TestSplendorGame(unittest.TestCase):
 
         VALID_RESOURCES = np.array([0, 0, 0, 1, 0])
         self.assertTrue(np.array_equal(VALID_RESOURCES, self.state._player_1.get_resources_array()))
+    
+    def test_player_resources(self):
+        """Tests that a resources enables a player to purchase a card."""
+        self.state._player_0._gems = np.array([2, 0, 0, 1, 0])
+        purchase_actions = self.actions.get_action_ids(SCategory.PURCHASE)
+        self.assertFalse(set(purchase_actions) & set(self.state.legal_actions()))
+
+        fake_card = Card(0, Gem.RED, (0, 0, 0, 0, 0))
+        self.state._player_0.add_purchased_card(fake_card)
+        self.assertIn(SAction.PURCHASE_02, self.state.legal_actions())
+        self.assertFalse((set(purchase_actions) - set([SAction.PURCHASE_02])) & set(self.state.legal_actions()))
         
 
         
