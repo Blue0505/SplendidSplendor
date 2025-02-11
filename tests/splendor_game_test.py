@@ -4,7 +4,6 @@ import numpy as np
 
 import splendor_game
 from splendor.actions import SCategory, Actions, SAction
-from splendor.engine import register_splendor_actions
 from splendor.gem import Gem
 from splendor.card import Card
 
@@ -23,8 +22,7 @@ class TestSplendorGame(unittest.TestCase):
     def setUp(self):
         game = pyspiel.load_game("python_splendor", {"shuffle_cards": False})
         self.state = game.new_initial_state()
-        self.actions = Actions()
-        register_splendor_actions(self.actions)
+        self.actions = self.state._actions # For getting actions by category in the tests.
     
     def tearDown(self):
         del self.state
@@ -106,6 +104,8 @@ class TestSplendorGame(unittest.TestCase):
         VALID_GOLD = 0
         self.assertTrue(np.array_equal(self.state._player_0._gems, VALID_GEMS))
         self.assertTrue(self.state._player_0._gold_gems == VALID_GOLD)
+        VALID_RESOURCES = [0, 0, 0, 1, 0]
+        self.assertTrue(np.array_equal(VALID_RESOURCES, self.state._player_0.get_resources_array()))
     
     def test_spending_turn(self):
         """Tests the spending turn mechanic."""
@@ -126,12 +126,6 @@ class TestSplendorGame(unittest.TestCase):
         self.assertTrue(np.array_equal(VALID_GEMS_PLAYER, self.state._player_0._gems))
         self.assertTrue(self.state._player_0._gold_gems == VALID_GOLD_PLAYER)
         self.assertTrue(self.state._cur_player == 1)
-
-        
-
-        
-
-
 
 
 
