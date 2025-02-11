@@ -3,7 +3,7 @@ import pyspiel
 import numpy as np
 
 import splendor_game
-from splendor.actions import SCategory, Actions, SAction
+from splendor.actions import SCategory, SAction
 from splendor.gem import Gem
 from splendor.card import Card
 

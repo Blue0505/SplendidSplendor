@@ -1,5 +1,6 @@
 import enum
 
+
 class Gem(enum.IntEnum):
     WHITE = 0
     BLUE = 1
