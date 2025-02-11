@@ -125,7 +125,7 @@ class SplendorState(pyspiel.State):
       if player.can_purchase(self._spending_card, using_gold=False):
         legal_actions.append(SAction.END_SPENDING_TURN)
       
-        return legal_actions
+      return legal_actions
     
     # "RETURN" turn.
     elif self._turn_type == TurnType.RETURN:

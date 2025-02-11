@@ -107,12 +107,15 @@ class TestSplendorGame(unittest.TestCase):
         self.assertTrue(np.array_equal(self.state._player_0._gems, VALID_GEMS))
         self.assertTrue(self.state._player_0._gold_gems == VALID_GOLD)
     
-    # def test_spending_turn(self):
-    #     """Tests the spending turn mechanic."""
-    #     self.state._player_0._gems = np.array([3, 4, 2, 0, 4]) # one gold for blue and one for green
-    #     self.state._player_0._gold_gems = 2
-    #     # print_actions(self.state.legal_actions())
-    #     self.assertIn(SAction.PURCHASE_21, self.state.legal_actions())
+    def test_spending_turn(self):
+        """Tests the spending turn mechanic."""
+        self.state._player_0._gems = np.array([3, 4, 2, 0, 4]) # one gold for blue and one for green
+        self.state._player_0._gold_gems = 2
+        # print_actions(self.state.legal_actions())
+        self.assertIn(SAction.PURCHASE_21, self.state.legal_actions())
+        self.state.apply_action(SAction.PURCHASE_21)
+        LEGAL_ACTIONS = [SAction.CONSUME_GOLD_BLUE, SAction.CONSUME_GOLD_GREEN]
+        self.assertTrue(np.array_equal(LEGAL_ACTIONS, self.state.legal_actions()))
 
 
         

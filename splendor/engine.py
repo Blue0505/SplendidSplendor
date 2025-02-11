@@ -16,9 +16,9 @@ def still_afford(player: Player, card: Card, gem_to_remove: Gem):
 
   gem_tuple = gem_to_tuple(gem_to_remove)
   gem_tuple = gem_tuple[:-1] # Remove gold.
-  card.update_gems(*gem_tuple)
-  can_afford = player.can_purchase(card)
   card.update_gems(*tuple(-gem for gem in gem_tuple))
+  can_afford = player.can_purchase(card)
+  card.update_gems(*gem_tuple)
   player.update_gems(gold=1)
   return can_afford
 
