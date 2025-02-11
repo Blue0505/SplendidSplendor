@@ -2,8 +2,15 @@ import unittest
 import pyspiel
 
 import splendor_game
-from splendor.actions import SCategory, Actions
+from splendor.actions import SCategory, Actions, SAction
 from splendor.engine import register_splendor_actions
+
+def apply_actions(state, player0_actions, player1_actions):
+    """Helper function that applies action to the state."""
+    for action0, action1 in zip(player0_actions, player1_actions):
+        state.apply_action(action0)
+        state.apply_action(action1)
+
 
 class TestSplendorGame(unittest.TestCase):
     def setUp(self):
@@ -23,6 +30,17 @@ class TestSplendorGame(unittest.TestCase):
                  self.actions.get_action_ids(SCategory.RESERVE) ) 
         valid.sort()
         self.assertListEqual(valid, self.state.legal_actions())
+    
+    def test_max_reserve(self):
+        """Test that a player cannot reserve more than three cards."""
+        player0_actions = [SAction.RESERVE_00, SAction.RESERVE_00, SAction.RESERVE_00]
+        player1_actions = [SAction.TAKE3_00111, SAction.TAKE3_00111, SAction.TAKE3_00111] # "Random" actions.
+        apply_actions(self.state, player0_actions, player1_actions)
+        reserve_actions = self.actions.get_action_ids(SCategory.RESERVE)
+        legal_actions = self.state.legal_actions()
+        self.assertFalse(set(reserve_actions) & set(legal_actions))
+
+
         
 
 

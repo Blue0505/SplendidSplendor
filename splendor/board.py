@@ -32,9 +32,9 @@ class Board:
             for deck in self._decks:
                 shuffle(deck)
     
-    def has_gems(self, white=np.nan, blue=np.nan, green=np.nan, red=np.nan, black=np.nan) -> bool:
+    def has_gems(self, white=np.nan, blue=np.nan, green=np.nan, red=np.nan, black=np.nan, gold=np.nan) -> bool:
         """Check for each gem specified that the board has at least that amount."""
-        return not np.all(self._gems < np.array([white,blue,green,red,black]))
+        return (not np.any(self._gems < np.array([white, blue, green, red, black]))) and (not self._gold < gold)
     
     def has_gold(self):
         return self._gold > 0

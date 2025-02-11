@@ -68,6 +68,10 @@ class Player:
         """Add or remove gems from this player."""
         self._gems = self._gems + np.array([white, blue, green, red, black])
         self._gold_gems += gold
+    
+    def has_gems(self, white=np.nan, blue=np.nan, green=np.nan, red=np.nan, black=np.nan, gold=np.nan) -> bool:
+        """Check for each gem specified that the board has at least that amount."""
+        return (not np.any(self._gems < np.array([white, blue, green, red, black]))) and (not self._gold_gems < gold)
 
     def get_gems_array(self):
         return self._gems
