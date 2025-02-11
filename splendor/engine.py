@@ -50,8 +50,6 @@ def apply_purchase(player: Player, board: Board, row, col) -> Card:
 def apply_end_spending_turn(player: Player, board: Board, card: Card): # TODO: Fix for using private members.
   player.update_gems(*tuple(-card.get_costs_array()))
   board.update_gems(*tuple(card.get_costs_array()))
-  # player._gems -= card.get_costs_array()
-  # board._gems += card.get_costs_array()
 
 def apply_spending_turn(player: Player, board: Board, card: Card, gem):
   """Moves a player's gold back to the board and reduces the gem of the card it was used for."""

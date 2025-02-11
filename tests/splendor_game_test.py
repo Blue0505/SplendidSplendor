@@ -118,8 +118,14 @@ class TestSplendorGame(unittest.TestCase):
         self.assertTrue(np.array_equal(LEGAL_ACTIONS, self.state.legal_actions()))
         self.state.apply_action(SAction.CONSUME_GOLD_GREEN)
         LEGAL_ACTIONS = [SAction.CONSUME_GOLD_BLUE]
-        print_actions(self.state.legal_actions())
         self.assertTrue(np.array_equal(LEGAL_ACTIONS, self.state.legal_actions()))
+        self.state.apply_action(SAction.CONSUME_GOLD_BLUE)
+        self.state.apply_action(SAction.END_SPENDING_TURN)
+        VALID_GEMS_PLAYER = [0, 0, 0, 0, 1]
+        VALID_GOLD_PLAYER = 0
+        self.assertTrue(np.array_equal(VALID_GEMS_PLAYER, self.state._player_0._gems))
+        self.assertTrue(self.state._player_0._gold_gems == VALID_GOLD_PLAYER)
+        self.assertTrue(self.state._cur_player == 1)
 
         
 
