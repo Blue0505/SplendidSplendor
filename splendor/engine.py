@@ -48,8 +48,10 @@ def apply_purchase(player: Player, board: Board, row, col) -> Card:
   return card
 
 def apply_end_spending_turn(player: Player, board: Board, card: Card): # TODO: Fix for using private members.
-  player._gems -= card.get_costs_array()
-  board._gems += card.get_costs_array()
+  player.update_gems(*tuple(-card.get_costs_array()))
+  board.update_gems(*tuple(card.get_costs_array()))
+  # player._gems -= card.get_costs_array()
+  # board._gems += card.get_costs_array()
 
 def apply_spending_turn(player: Player, board: Board, card: Card, gem):
   """Moves one specified gem from the player back to the board. """
@@ -76,18 +78,18 @@ def register_splendor_actions(actions):
     actions.register_action(SAction.RESERVE_23, SCategory.RESERVE, (2, 3))
     actions.register_action(SAction.RESERVE_24, SCategory.RESERVE, (2, 4))
     
-    actions.register_action(SAction.PURCHASE_00, SCategory.PURCHASE, (0, 0))
     actions.register_action(SAction.PURCHASE_01, SCategory.PURCHASE, (0, 1))
     actions.register_action(SAction.PURCHASE_02, SCategory.PURCHASE, (0, 2))
     actions.register_action(SAction.PURCHASE_03, SCategory.PURCHASE, (0, 3))
-    actions.register_action(SAction.PURCHASE_10, SCategory.PURCHASE, (1, 0))
+    actions.register_action(SAction.PURCHASE_04, SCategory.PURCHASE, (0, 4))
     actions.register_action(SAction.PURCHASE_11, SCategory.PURCHASE, (1, 1))
     actions.register_action(SAction.PURCHASE_12, SCategory.PURCHASE, (1, 2))
     actions.register_action(SAction.PURCHASE_13, SCategory.PURCHASE, (1, 3))
-    actions.register_action(SAction.PURCHASE_10, SCategory.PURCHASE, (2, 0))
-    actions.register_action(SAction.PURCHASE_21, SCategory.PURCHASE, (2, 1))
+    actions.register_action(SAction.PURCHASE_14, SCategory.PURCHASE, (1, 4))
+    actions.register_action(SAction.PURCHASE_11, SCategory.PURCHASE, (2, 1))
     actions.register_action(SAction.PURCHASE_22, SCategory.PURCHASE, (2, 2))
     actions.register_action(SAction.PURCHASE_23, SCategory.PURCHASE, (2, 3))
+    actions.register_action(SAction.PURCHASE_24, SCategory.PURCHASE, (2, 4))
     
     actions.register_action(SAction.PURCHASE_RESERVE_0, SCategory.PURCHASE, 0)
     actions.register_action(SAction.PURCHASE_RESERVE_1, SCategory.PURCHASE, 1)

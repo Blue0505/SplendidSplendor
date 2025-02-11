@@ -1,5 +1,6 @@
 import unittest
 import pyspiel
+import numpy as np
 
 import splendor_game
 from splendor.actions import SCategory, Actions, SAction
@@ -25,11 +26,11 @@ class TestSplendorGame(unittest.TestCase):
     
     def test_correct_first_turn(self):
         """Test that the correct actions appear on the first turn."""
-        valid = ( self.actions.get_action_ids(SCategory.TAKE2) +
+        VALID_ACTIONS = ( self.actions.get_action_ids(SCategory.TAKE2) +
                  self.actions.get_action_ids(SCategory.TAKE3) + 
                  self.actions.get_action_ids(SCategory.RESERVE) ) 
-        valid.sort()
-        self.assertListEqual(valid, self.state.legal_actions())
+        VALID_ACTIONS.sort()
+        self.assertListEqual(VALID_ACTIONS, self.state.legal_actions())
     
     def test_max_reserve(self):
         """Test that a player cannot reserve more than three cards."""
@@ -40,6 +41,25 @@ class TestSplendorGame(unittest.TestCase):
         legal_actions = self.state.legal_actions()
         self.assertFalse(set(reserve_actions) & set(legal_actions))
 
+    def test_purchase(self):
+        """Test that the player and the board have the correct amount of resources/gems after a purchase."""
+        player0_actions = [SAction.RESERVE_11, SAction.RESERVE_11, SAction.RESERVE_11] # "Random" actions.
+        player1_actions = [SAction.TAKE3_10110, SAction.TAKE3_11010, SAction.PURCHASE_02]
+        apply_actions(self.state, player0_actions, player1_actions)
+
+        VALID_GEMS_BOARD = np.array([4, 3, 3, 4, 4])
+        VALID_GOLD_BOARD = 5 - 3 # Start - from reserved.
+        self.assertTrue(np.array_equal(VALID_GEMS_BOARD, self.state._board._gems))
+        self.assertTrue(self.state._board._gold == VALID_GOLD_BOARD)
+
+        VALID_GEMS_PLAYER = np.array([0, 1, 1, 0, 0])
+        VALID_GOLD_PLAYER = 0
+        self.assertTrue(np.array_equal(VALID_GEMS_PLAYER, self.state._player_1.get_gems_array()))
+        self.assertTrue(VALID_GOLD_PLAYER == self.state._player_1.get_gold())
+
+        VALID_RESOURCES = np.array([0, 0, 0, 1, 0])
+        self.assertTrue(np.array_equal(VALID_RESOURCES, self.state._player_1.get_resources_array()))
+        
 
         
 

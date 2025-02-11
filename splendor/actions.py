@@ -36,34 +36,34 @@ class SCategory(enum.IntEnum):
 
 class SAction(enum.IntEnum):
     "Action ids used in Splendor."
-    RESERVE_00 = 0
+    RESERVE_00 = 0 # Hidden card.
     RESERVE_01 = enum.auto()
     RESERVE_02 = enum.auto()
     RESERVE_03 = enum.auto()
     RESERVE_04 = enum.auto()
-    RESERVE_10 = enum.auto()
+    RESERVE_10 = enum.auto() # Hidden card.
     RESERVE_11 = enum.auto()
     RESERVE_12 = enum.auto()
     RESERVE_13 = enum.auto()
     RESERVE_14 = enum.auto()
-    RESERVE_20 = enum.auto()
+    RESERVE_20 = enum.auto() # Hidden card.
     RESERVE_21 = enum.auto()
     RESERVE_22 = enum.auto()
     RESERVE_23 = enum.auto()
     RESERVE_24 = enum.auto()
     
-    PURCHASE_00 = enum.auto()
     PURCHASE_01 = enum.auto()
     PURCHASE_02 = enum.auto()
     PURCHASE_03 = enum.auto()
-    PURCHASE_10 = enum.auto()
+    PURCHASE_04 = enum.auto()
     PURCHASE_11 = enum.auto()
     PURCHASE_12 = enum.auto()
     PURCHASE_13 = enum.auto()
-    PURCHASE_20 = enum.auto()
+    PURCHASE_14 = enum.auto()
     PURCHASE_21 = enum.auto()
     PURCHASE_22 = enum.auto()
     PURCHASE_23 = enum.auto()
+    PURCHASE_24 = enum.auto()
 
     PURCHASE_RESERVE_0 = enum.auto()
     PURCHASE_RESERVE_1 = enum.auto()

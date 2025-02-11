@@ -220,24 +220,29 @@ class SplendorState(pyspiel.State):
       self._board.update_gems(*gem_tuple)
       if player.get_sum() <= 10:
         self._turn_type = TurnType.NORMAL
-        self._cur_player = 1 if self._cur_player == 0 else 1
+        self.__swap_player()
     
-    elif self._turn_type == TurnType.NORMAL:
+    else: # "NORMAL" turn.
       if action_category == SCategory.RESERVE: 
         engine.apply_reserve(player, self._board, *action_object)
-        self._cur_player = 1 if self._cur_player == 0 else 1
+        self.__swap_player()
       elif action_category == SCategory.PURCHASE: 
         self._spending_card = engine.apply_purchase(player, self._board, *action_object)
-        self._spending_turn = True
+        if player.has_gold(): self._spending_turn = True
+        else: 
+          engine.apply_end_spending_turn(player, self._board, self._spending_card)
+          self.__swap_player()
       elif action_category == SCategory.PURCHASE_RESERVE:
-        self._spending_card = engine.apply_reserve_purchase(player, *action_object)
-        self._spending_turn = True
+        if player.has_gold(): self._spending_turn = True
+        else: 
+          engine.apply_end_spending_turn(player, self._board, self._spending_card)
+          self.__swap_player()
       elif action_category == SCategory.TAKE2 or action_category == SCategory.TAKE3:
         engine.apply_take_gems(player, self._board, action_object)
         if player.get_sum() > _MAX_PLAYER_GEMS:
           self._turn_type = TurnType.RETURN
         else:
-          self._cur_player = 1 if self._cur_player == 0 else 1
+          self.__swap_player()
 
     if player.get_points() == _WIN_POINTS:
       self._is_terminal = True
@@ -275,6 +280,9 @@ class SplendorState(pyspiel.State):
     output += player1_str + dashes + str(self._player_1)
 
     return output
+
+  def __swap_player(self):
+    self._cur_player = 0 if self._cur_player == 1 else 1
 
 
 class BoardObserver:

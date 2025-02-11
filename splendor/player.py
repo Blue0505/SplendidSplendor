@@ -53,7 +53,7 @@ class Player:
         purchase_gems = np.clip(purchase_gems, a_min=0, a_max=None)
         if using_gold:
             return np.sum(purchase_gems) - self._gold_gems <= 0
-        return np.sum(purchase_gems)
+        return np.sum(purchase_gems) <= 0
     
     def get_resources_array(self) -> NDArray:
         """Returns counts of all permanent gems from resource cards."""
@@ -62,6 +62,9 @@ class Player:
             resources[card._gem_type] += 1
 
         return resources
+
+    def has_gold(self):
+        return self._gold_gems > 0
     
 
     def update_gems(self, white=0, blue=0, green=0, red=0, black=0, gold=0):

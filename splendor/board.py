@@ -58,9 +58,9 @@ class Board:
     def __str__(self) -> str:
         output = ""
         for i, row in enumerate(self._decks):
-            output += f"   Deck {i}: ({i}4) | "
-            for j, card in enumerate(row[-1:-5:-1]):
-                output += f'({i}{j}) {str(card)} | '
+            output += f"   Deck {i}: ({i}0) | "
+            for j, card in enumerate(row[-4:]):
+                output += f'({i}{j + 1}) {str(card)} | '
             output += "\n"
         output += f"   Gems: {gem_array_str(self._gems, self._gold)}\n"
         return output
