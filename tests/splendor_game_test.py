@@ -14,6 +14,10 @@ def apply_actions(state, player0_actions, player1_actions):
         state.apply_action(action0)
         state.apply_action(action1)
 
+def print_actions(actions):
+    for action in actions:
+        print(SAction(action).name, sep=", ")
+
 
 class TestSplendorGame(unittest.TestCase):
     def setUp(self):
@@ -100,9 +104,15 @@ class TestSplendorGame(unittest.TestCase):
         self.state.apply_action(SAction.PURCHASE_RESERVE_0)
         VALID_GEMS = np.zeros(5)
         VALID_GOLD = 0
-        print(self.state._player_0._gems)
         self.assertTrue(np.array_equal(self.state._player_0._gems, VALID_GEMS))
         self.assertTrue(self.state._player_0._gold_gems == VALID_GOLD)
+    
+    # def test_spending_turn(self):
+    #     """Tests the spending turn mechanic."""
+    #     self.state._player_0._gems = np.array([3, 4, 2, 0, 4]) # one gold for blue and one for green
+    #     self.state._player_0._gold_gems = 2
+    #     # print_actions(self.state.legal_actions())
+    #     self.assertIn(SAction.PURCHASE_21, self.state.legal_actions())
 
 
         

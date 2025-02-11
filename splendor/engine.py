@@ -87,7 +87,7 @@ def register_splendor_actions(actions):
     actions.register_action(SAction.PURCHASE_12, SCategory.PURCHASE, (1, 2))
     actions.register_action(SAction.PURCHASE_13, SCategory.PURCHASE, (1, 3))
     actions.register_action(SAction.PURCHASE_14, SCategory.PURCHASE, (1, 4))
-    actions.register_action(SAction.PURCHASE_11, SCategory.PURCHASE, (2, 1))
+    actions.register_action(SAction.PURCHASE_21, SCategory.PURCHASE, (2, 1))
     actions.register_action(SAction.PURCHASE_22, SCategory.PURCHASE, (2, 2))
     actions.register_action(SAction.PURCHASE_23, SCategory.PURCHASE, (2, 3))
     actions.register_action(SAction.PURCHASE_24, SCategory.PURCHASE, (2, 4))
