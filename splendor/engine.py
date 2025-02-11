@@ -14,8 +14,7 @@ def still_afford(player: Player, card: Card, gem_to_remove: Gem):
   player.update_gems(gold=-1)
   can_afford = False
 
-  gem_tuple = gem_to_tuple(gem_to_remove)
-  gem_tuple = gem_tuple[:-1] # Remove gold.
+  gem_tuple = gem_to_tuple(gem_to_remove)[:-1]
   card.update_gems(*tuple(-gem for gem in gem_tuple))
   can_afford = player.can_purchase(card)
   card.update_gems(*gem_tuple)
@@ -55,10 +54,10 @@ def apply_end_spending_turn(player: Player, board: Board, card: Card): # TODO: F
   # board._gems += card.get_costs_array()
 
 def apply_spending_turn(player: Player, board: Board, card: Card, gem):
-  """Moves one specified gem from the player back to the board. """
-  gem_tuple = gem_to_tuple(gem)
-  player.update_gems(*tuple(-gem for gem in gem_tuple))
-  board.update_gems(*gem_tuple)
+  """Moves a player's gold back to the board and reduces the gem of the card it was used for."""
+  gem_tuple = gem_to_tuple(gem)[:-1]
+  player.update_gems(gold=-1)
+  board.update_gems(gold=1)
   card.update_gems(*tuple(-gem for gem in gem_tuple))
 
     

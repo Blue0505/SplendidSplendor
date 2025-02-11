@@ -116,7 +116,10 @@ class TestSplendorGame(unittest.TestCase):
         self.state.apply_action(SAction.PURCHASE_21)
         LEGAL_ACTIONS = [SAction.CONSUME_GOLD_BLUE, SAction.CONSUME_GOLD_GREEN]
         self.assertTrue(np.array_equal(LEGAL_ACTIONS, self.state.legal_actions()))
-
+        self.state.apply_action(SAction.CONSUME_GOLD_GREEN)
+        LEGAL_ACTIONS = [SAction.CONSUME_GOLD_BLUE]
+        print_actions(self.state.legal_actions())
+        self.assertTrue(np.array_equal(LEGAL_ACTIONS, self.state.legal_actions()))
 
         
 
