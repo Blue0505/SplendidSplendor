@@ -46,3 +46,20 @@ class Card:
             f"{ansi.GRAY}{self._gem_costs[Gem.BLACK]}"
             f"{ansi.RESET}"
         )
+
+    def __array__(self) -> NDArray:
+        return np.array(
+            [
+                self._points,
+                self._gem_type == Gem.WHITE,
+                self._gem_type == Gem.BLUE,
+                self._gem_type == Gem.GREEN,
+                self._gem_type == Gem.RED,
+                self._gem_type == Gem.BLACK,
+                self._gem_costs[0],
+                self._gem_costs[1],
+                self._gem_costs[2],
+                self._gem_costs[3],
+                self._gem_costs[4],
+            ]
+        ).flatten()
