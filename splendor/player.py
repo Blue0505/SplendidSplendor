@@ -103,5 +103,18 @@ class Player:
         """Return the sum of all the users gems and gold."""
         return np.sum(self._gems) + self._gold_gems
 
-    def __array__(self):  # TODO.
-        pass
+    def __array__(self):
+        reserved_0 = np.array(self._reserved_cards[0]) if 0 < len(self._reserved_cards) else np.zeros(11)
+        reserved_1 = np.array(self._reserved_cards[0]) if 1 < len(self._reserved_cards) else np.zeros(11)  
+        reserved_2 = np.array(self._reserved_cards[0]) if 2 < len(self._reserved_cards) else np.zeros(11)  
+
+        return np.array([
+            self.get_points(),
+            *self._gems,
+            self._gold_gems,
+            *self.get_resources_array(),
+            *reserved_0,
+            *reserved_1,
+            *reserved_2
+        ])
+        

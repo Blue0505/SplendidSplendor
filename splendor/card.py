@@ -56,10 +56,6 @@ class Card:
                 self._gem_type == Gem.GREEN,
                 self._gem_type == Gem.RED,
                 self._gem_type == Gem.BLACK,
-                self._gem_costs[0],
-                self._gem_costs[1],
-                self._gem_costs[2],
-                self._gem_costs[3],
-                self._gem_costs[4],
+                *self._gem_costs
             ]
-        ).flatten()
+        )

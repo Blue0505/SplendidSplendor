@@ -14,6 +14,7 @@
 
 from open_spiel.python.observation import IIGObserverForPublicInfoGame
 import pyspiel
+import numpy as np
 import enum
 
 from splendor.board import Board, BOARD_GEM_START
@@ -24,10 +25,20 @@ from splendor.gem import Gem
 import splendor.ansi_escape_codes as ansi
 from splendor.helpers import gem_to_tuple
 
+_REWARD_POINTS_MULTIPLIER = 1
+_REWARDS_CARDS_MULTIPLIER = 2
+_REWARDS_WIN_MULTIPLIER = 300
+
 _NUM_PLAYERS = 2
 _CARDS_FILENAME = "data/cards.csv"
 _WIN_POINTS = 15
 _MAX_PLAYER_GEMS = 10
+_CARD_SHAPE = 11
+_GEM_SHAPE = 6
+_BOARD_SHAPE = ( _CARD_SHAPE * 12 ) + _GEM_SHAPE
+_PLAYER_SHAPE = _GEM_SHAPE + ( 3 * _CARD_SHAPE ) + 1 + 5 
+_TENSOR_SHAPE = ( _NUM_PLAYERS * _PLAYER_SHAPE ) + _BOARD_SHAPE + _CARD_SHAPE
+_MIN_BOARD_CARDS = 12
 
 _GAME_TYPE = pyspiel.GameType(
     short_name="python_splendor",
@@ -92,6 +103,7 @@ class SplendorState(pyspiel.State):
         self._cur_player: int = 0
         self._is_terminal: bool = False
         self._board: Board = Board(_CARDS_FILENAME, shuffle_cards)
+        self._player_0_reward: int = 0
         self._player_0: Player = Player()
         self._player_1: Player = Player()
         self.__register_actions()
@@ -225,7 +237,7 @@ class SplendorState(pyspiel.State):
                 else:
                     self.__swap_player()
 
-        if player.get_points() == _WIN_POINTS:
+        if player.get_points() == _WIN_POINTS or len(self._board.get_visible_cards()) < _MIN_BOARD_CARDS:
             self._is_terminal = True
 
     def _action_to_string(self, player, action):  # TODO.
@@ -311,7 +323,7 @@ class SplendorState(pyspiel.State):
         player.update_gems(*tuple(-self._spending_card.get_costs_array()))
         self._board.update_gems(*tuple(self._spending_card.get_costs_array()))
 
-    def __apply_spending_turn(self, player: Player, gem):
+    def __apply_spending_turn(self, player: Player, gem: Gem):
         """Moves a player's gold back to the board and reduces the gem of the card it was used for."""
         gem_tuple = gem_to_tuple(gem)[:-1]
         player.update_gems(gold=-1)
@@ -425,16 +437,56 @@ class SplendorState(pyspiel.State):
 
 
 class BoardObserver:
-    """Observer, conforming to the PyObserver interface (see observation.py)."""
+    """Observer, conforming to the PyObserver interface (see observation.py).
+
+    Observation objects:
+        * Card: 
+            - points
+            - is_white, is_blue, is_green, is_red, is_black, 
+            - white_cost, blue_cost, green_cost, red_cost, black_cost 
+        
+        * Player:
+            - points
+            - white_gems, blue_gems, green_gems, red_gems, black_gems, gold_gems
+            - white_resources, blue_resources, green_resources, red_resources, black_resources
+            - Card_reserved_{0..2}
+        
+        * Board:
+            - white_gems, blue_gems, green_gems, red_gems, black_gems, gold_gems
+            - Card_{0..3}{0..4}
+
+        * Purchase_Card:
+            - Card
+    
+        Observation objects can be generated in the __array__ methods of the correspoding class type. 
+    
+    Observation tensor: [ Player0, Player1, Board, Purchase_Card ]
+    """
 
     def __init__(self, params):
-        pass
+        """Initializes an empty observation tensor."""
+        if params:
+            raise ValueError(f"Observation parameters not supported; passed {params}")
+    
+        self.tensor = np.zeros(_TENSOR_SHAPE)
+        self.dict = {"observation": self.tensor }
 
     def set_from(self, state, player):
-        pass
+         """Updates `tensor` and `dict` to reflect `state` from PoV of `player`."""
+
+         del player
+
+         obs = self.dict["observation"]
+         obs = np.array([
+             state._player_0,
+             state._player_1,
+             state._board,
+             state._spending_card
+         ])
 
     def string_from(self, state, player):
-        pass
+        del player
+        return " ".join(str(x) for x in self.dict["observation"])
 
 
 # Register the game with the OpenSpiel library

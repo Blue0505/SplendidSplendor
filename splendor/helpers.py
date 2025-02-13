@@ -15,7 +15,7 @@ def gem_array_str(gem_array, gold=None) -> str:
     return output
 
 
-def gem_to_tuple(gem):
+def gem_to_tuple(gem: Gem) -> tuple[int, int, int, int, int, int]:
     if gem == Gem.WHITE:
         return (1, 0, 0, 0, 0, 0)
     elif gem == Gem.BLUE:

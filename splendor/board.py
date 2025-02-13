@@ -65,7 +65,13 @@ class Board:
         return self._decks[0][-4:] + self._decks[1][-4:] + self._decks[2][-4:]
 
     def __array__(self):
-        pass
+        return np.array([
+            *self._gems,
+            self._gold,
+            *self._decks[0][-4:],
+            *self._decks[1][-4:],
+            *self._decks[2][-4:]
+        ])
 
     def __str__(self) -> str:
         output = ""

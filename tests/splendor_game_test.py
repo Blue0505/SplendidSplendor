@@ -7,7 +7,6 @@ from splendor.actions import SCategory, SAction
 from splendor.gem import Gem
 from splendor.card import Card
 
-
 def apply_actions(state, player0_actions, player1_actions):
     """Helper function that applies action to the state."""
     for action0, action1 in zip(player0_actions, player1_actions):
@@ -27,6 +26,7 @@ class TestSplendorGame(unittest.TestCase):
         self.actions = (
             self.state._actions
         )  # For getting actions by category in the tests.
+        self.observation = self.state.observation_tensor
 
     def tearDown(self):
         del self.state
@@ -164,6 +164,8 @@ class TestSplendorGame(unittest.TestCase):
         self.assertTrue(self.state._player_0._gold_gems == VALID_GOLD_PLAYER)
         self.assertTrue(self.state._cur_player == 1)
 
+    def test_observation_tensor_size(self):
+        self.assertEqual(len(self.observation), 239)
 
 if __name__ == "__main__":
     unittest.main()
