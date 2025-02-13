@@ -25,9 +25,9 @@ from splendor.gem import Gem
 import splendor.ansi_escape_codes as ansi
 from splendor.helpers import gem_to_tuple
 
-_REWARD_POINTS_MULTIPLIER = 1
-_REWARDS_CARDS_MULTIPLIER = 2
-_REWARDS_WIN_MULTIPLIER = 300
+_REWARD_POINTS_SCALE = 1
+_REWARD_RESOURCES_SCALE = 1
+_REWARD_WIN_SCALE = 300
 
 _NUM_PLAYERS = 2
 _CARDS_FILENAME = "data/cards.csv"
@@ -58,11 +58,11 @@ _GAME_TYPE = pyspiel.GameType(
 )
 
 _GAME_INFO = pyspiel.GameInfo(  # TODO: Fix.
-    num_distinct_actions=51,
+    num_distinct_actions=len(SAction),
     max_chance_outcomes=0,
     num_players=2,
-    min_utility=-1.0,
-    max_utility=1.0,
+    min_utility=-float('inf'), # TODO: Estimate.
+    max_utility=float('inf'),
     utility_sum=0.0,
     max_game_length=1000,
 )
@@ -103,7 +103,7 @@ class SplendorState(pyspiel.State):
         self._cur_player: int = 0
         self._is_terminal: bool = False
         self._board: Board = Board(_CARDS_FILENAME, shuffle_cards)
-        self._player_0_reward: int = 0
+        self._player_winner = -1
         self._player_0: Player = Player()
         self._player_1: Player = Player()
         self.__register_actions()
@@ -250,7 +250,14 @@ class SplendorState(pyspiel.State):
 
     def returns(self):
         """Total reward for each player over the course of the game so far."""
-        return [self._player0_score, -self._player0_score]
+        reward_points = _REWARD_POINTS_SCALE * ( self._player_0.get_points() - self._player_1.get_points() )
+        reward_resources = _REWARD_RESOURCES_SCALE * self._player_0.get_resources_sum()
+        reward_win = 0
+        if self._player_winner == 0: reward_win = _REWARD_WIN_SCALE
+        elif self._player_winner == -1: reward_win = -_REWARD_WIN_SCALE
+      
+        player0_reward = reward_points + reward_resources + reward_win
+        return [player0_reward, -player0_reward]
 
     def __str__(self):  # TODO.
         """String for debug purposes. No particular semantics are required."""
@@ -348,7 +355,6 @@ class SplendorState(pyspiel.State):
         self._actions.register_action(SAction.RESERVE_22, SCategory.RESERVE, (2, 2))
         self._actions.register_action(SAction.RESERVE_23, SCategory.RESERVE, (2, 3))
         self._actions.register_action(SAction.RESERVE_24, SCategory.RESERVE, (2, 4))
-
         self._actions.register_action(SAction.PURCHASE_01, SCategory.PURCHASE, (0, 1))
         self._actions.register_action(SAction.PURCHASE_02, SCategory.PURCHASE, (0, 2))
         self._actions.register_action(SAction.PURCHASE_03, SCategory.PURCHASE, (0, 3))
@@ -361,79 +367,36 @@ class SplendorState(pyspiel.State):
         self._actions.register_action(SAction.PURCHASE_22, SCategory.PURCHASE, (2, 2))
         self._actions.register_action(SAction.PURCHASE_23, SCategory.PURCHASE, (2, 3))
         self._actions.register_action(SAction.PURCHASE_24, SCategory.PURCHASE, (2, 4))
-
-        self._actions.register_action(
-            SAction.PURCHASE_RESERVE_0, SCategory.PURCHASE_RESERVE, 0
-        )
-        self._actions.register_action(
-            SAction.PURCHASE_RESERVE_1, SCategory.PURCHASE_RESERVE, 1
-        )
-        self._actions.register_action(
-            SAction.PURCHASE_RESERVE_2, SCategory.PURCHASE_RESERVE, 2
-        )
-
-        self._actions.register_action(
-            SAction.TAKE3_11100, SCategory.TAKE3, (1, 1, 1, 0, 0)
-        )
-        self._actions.register_action(
-            SAction.TAKE3_11010, SCategory.TAKE3, (1, 1, 0, 1, 0)
-        )
-        self._actions.register_action(
-            SAction.TAKE3_11001, SCategory.TAKE3, (1, 1, 0, 0, 1)
-        )
-        self._actions.register_action(
-            SAction.TAKE3_10110, SCategory.TAKE3, (1, 0, 1, 1, 0)
-        )
-        self._actions.register_action(
-            SAction.TAKE3_10101, SCategory.TAKE3, (1, 0, 1, 0, 1)
-        )
-        self._actions.register_action(
-            SAction.TAKE3_10011, SCategory.TAKE3, (1, 0, 0, 1, 1)
-        )
-        self._actions.register_action(
-            SAction.TAKE3_01110, SCategory.TAKE3, (0, 1, 1, 1, 0)
-        )
-        self._actions.register_action(
-            SAction.TAKE3_01101, SCategory.TAKE3, (0, 1, 1, 0, 1)
-        )
-        self._actions.register_action(
-            SAction.TAKE3_01011, SCategory.TAKE3, (0, 1, 0, 1, 1)
-        )
-        self._actions.register_action(
-            SAction.TAKE3_00111, SCategory.TAKE3, (0, 0, 1, 1, 1)
-        )
-
+        self._actions.register_action(SAction.PURCHASE_RESERVE_0, SCategory.PURCHASE_RESERVE, 0)
+        self._actions.register_action(SAction.PURCHASE_RESERVE_1, SCategory.PURCHASE_RESERVE, 1)
+        self._actions.register_action(SAction.PURCHASE_RESERVE_2, SCategory.PURCHASE_RESERVE, 2)
+        self._actions.register_action(SAction.TAKE3_11100, SCategory.TAKE3, (1, 1, 1, 0, 0))
+        self._actions.register_action(SAction.TAKE3_11010, SCategory.TAKE3, (1, 1, 0, 1, 0))
+        self._actions.register_action(SAction.TAKE3_11001, SCategory.TAKE3, (1, 1, 0, 0, 1))
+        self._actions.register_action(SAction.TAKE3_10110, SCategory.TAKE3, (1, 0, 1, 1, 0))
+        self._actions.register_action(SAction.TAKE3_10101, SCategory.TAKE3, (1, 0, 1, 0, 1))
+        self._actions.register_action(SAction.TAKE3_10011, SCategory.TAKE3, (1, 0, 0, 1, 1))
+        self._actions.register_action(SAction.TAKE3_01110, SCategory.TAKE3, (0, 1, 1, 1, 0))
+        self._actions.register_action(SAction.TAKE3_01101, SCategory.TAKE3, (0, 1, 1, 0, 1))
+        self._actions.register_action(SAction.TAKE3_01011, SCategory.TAKE3, (0, 1, 0, 1, 1))
+        self._actions.register_action(SAction.TAKE3_00111, SCategory.TAKE3, (0, 0, 1, 1, 1))
         self._actions.register_action(SAction.TAKE2_0, SCategory.TAKE2, (2, 0, 0, 0, 0))
         self._actions.register_action(SAction.TAKE2_1, SCategory.TAKE2, (0, 2, 0, 0, 0))
         self._actions.register_action(SAction.TAKE2_2, SCategory.TAKE2, (0, 0, 2, 0, 0))
         self._actions.register_action(SAction.TAKE2_3, SCategory.TAKE2, (0, 0, 0, 2, 0))
         self._actions.register_action(SAction.TAKE2_4, SCategory.TAKE2, (0, 0, 0, 0, 2))
-
         self._actions.register_action(SAction.RETURN_0, SCategory.RETURN, Gem.WHITE)
         self._actions.register_action(SAction.RETURN_1, SCategory.RETURN, Gem.BLUE)
         self._actions.register_action(SAction.RETURN_2, SCategory.RETURN, Gem.GREEN)
         self._actions.register_action(SAction.RETURN_3, SCategory.RETURN, Gem.RED)
         self._actions.register_action(SAction.RETURN_4, SCategory.RETURN, Gem.BLACK)
         self._actions.register_action(SAction.RETURN_GOLD, SCategory.RETURN, Gem.GOLD)
-
-        self._actions.register_action(
-            SAction.CONSUME_GOLD_WHITE, SCategory.SPENDING_TURN, Gem.WHITE
-        )
-        self._actions.register_action(
-            SAction.CONSUME_GOLD_BLUE, SCategory.SPENDING_TURN, Gem.BLUE
-        )
-        self._actions.register_action(
-            SAction.CONSUME_GOLD_GREEN, SCategory.SPENDING_TURN, Gem.GREEN
-        )
-        self._actions.register_action(
-            SAction.CONSUME_GOLD_RED, SCategory.SPENDING_TURN, Gem.RED
-        )
-        self._actions.register_action(
-            SAction.CONSUME_GOLD_BLACK, SCategory.SPENDING_TURN, Gem.BLACK
-        )
-        self._actions.register_action(
-            SAction.END_SPENDING_TURN, SCategory.SPENDING_TURN, None
-        )
+        self._actions.register_action(SAction.CONSUME_GOLD_WHITE, SCategory.SPENDING_TURN, Gem.WHITE)
+        self._actions.register_action(SAction.CONSUME_GOLD_BLUE, SCategory.SPENDING_TURN, Gem.BLUE)
+        self._actions.register_action(SAction.CONSUME_GOLD_GREEN, SCategory.SPENDING_TURN, Gem.GREEN)
+        self._actions.register_action(SAction.CONSUME_GOLD_RED, SCategory.SPENDING_TURN, Gem.RED)
+        self._actions.register_action(SAction.CONSUME_GOLD_BLACK, SCategory.SPENDING_TURN, Gem.BLACK)
+        self._actions.register_action(SAction.END_SPENDING_TURN, SCategory.SPENDING_TURN, None)
 
 
 class BoardObserver:
@@ -476,8 +439,7 @@ class BoardObserver:
 
          del player
 
-         obs = self.dict["observation"]
-         obs = np.array([
+         self.tensor = np.concatenate([
              state._player_0,
              state._player_1,
              state._board,

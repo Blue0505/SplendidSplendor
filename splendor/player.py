@@ -68,6 +68,9 @@ class Player:
 
         return resources
 
+    def get_resources_sum(self) -> NDArray:
+        return np.sum(self.get_resources_array())
+
     def has_gold(self):
         return self._gold_gems > 0
 

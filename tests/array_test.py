@@ -1,11 +1,14 @@
 import unittest
 
 import numpy as np
+import pyspiel
+import splendor_game
 
 from splendor.gem import Gem
 from splendor.card import Card
 from splendor.board import Board
 from splendor.player import Player
+
 
 
 class TestArrayMethods(unittest.TestCase):
@@ -31,5 +34,11 @@ class TestArrayMethods(unittest.TestCase):
         arr = np.array(Board("data/cards.csv"))
         self.assertEqual(len(arr), 138)
 
+    def test_observation_tensor(self):
+        game = pyspiel.load_game("python_splendor", {"shuffle_cards": False})
+        state = game.new_initial_state()
+        observation = state.observation_tensor
+        self.assertEqual(len(observation), 239)
+        
 if __name__ == "__main__":
     unittest.main()
