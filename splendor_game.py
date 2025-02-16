@@ -17,7 +17,7 @@ import pyspiel
 import numpy as np
 import enum
 
-from splendor.board import Board, BOARD_GEM_START
+from splendor.board import Board
 from splendor.player import Player
 from splendor.card import Card
 from splendor.actions import Actions, SAction, SCategory
@@ -25,9 +25,9 @@ from splendor.gem import Gem
 import splendor.ansi_escape_codes as ansi
 from splendor.helpers import gem_to_tuple
 
-_REWARD_POINTS_SCALE = 1
-_REWARD_RESOURCES_SCALE = 1
-_REWARD_WIN_SCALE = 300
+_REWARD_POINTS_SCALE = 3
+_REWARD_RESOURCES_SCALE = 1.5
+_REWARD_WIN_SCALE = 1000
 
 _NUM_PLAYERS = 2
 _CARDS_FILENAME = "data/cards.csv"
@@ -103,11 +103,12 @@ class SplendorState(pyspiel.State):
         self._cur_player: int = 0
         self._is_terminal: bool = False
         self._board: Board = Board(_CARDS_FILENAME, shuffle_cards)
-        self._player_winner = -1
         self._player_0: Player = Player()
         self._player_1: Player = Player()
         self.__register_actions()
         self._turn_type = TurnType.NORMAL
+        self._spending_card: Card
+        self._spending_card_exists: bool = False
 
     def current_player(self):
         """Returns id of the next player to move, or TERMINAL if game is over."""
@@ -133,7 +134,7 @@ class SplendorState(pyspiel.State):
                 legal_actions.append(SAction.CONSUME_GOLD_BLACK)
 
             # "End turn" actions.
-            if player.can_purchase(self._spending_card, using_gold=False):
+            if self._spending_card_exists and player.can_purchase(self._spending_card, using_gold=False):
                 legal_actions.append(SAction.END_SPENDING_TURN)
 
             return legal_actions
@@ -212,6 +213,7 @@ class SplendorState(pyspiel.State):
 
             elif action_category == SCategory.PURCHASE:
                 self._spending_card = self.__apply_purchase(player, *action_object)
+                self._spending_card_exists = True
                 if player.has_gold():
                     self._turn_type = TurnType.SPENDING
                 else:
@@ -219,9 +221,8 @@ class SplendorState(pyspiel.State):
                     self.__swap_player()
 
             elif action_category == SCategory.PURCHASE_RESERVE:
-                self._spending_card = self.__apply_reserve_purchase(
-                    player, action_object
-                )
+                self._spending_card = self.__apply_reserve_purchase(player, action_object)
+                self._spending_card_exists = True
                 if player.has_gold():
                     self._turn_type = TurnType.SPENDING
                 else:
@@ -251,10 +252,11 @@ class SplendorState(pyspiel.State):
     def returns(self):
         """Total reward for each player over the course of the game so far."""
         reward_points = _REWARD_POINTS_SCALE * ( self._player_0.get_points() - self._player_1.get_points() )
-        reward_resources = _REWARD_RESOURCES_SCALE * self._player_0.get_resources_sum()
+        reward_resources = _REWARD_RESOURCES_SCALE * ( self._player_0.get_resources_sum() - self._player_1.get_resources_sum() ) 
         reward_win = 0
-        if self._player_winner == 0: reward_win = _REWARD_WIN_SCALE
-        elif self._player_winner == -1: reward_win = -_REWARD_WIN_SCALE
+        if self._player_0.get_points() >= _WIN_POINTS: reward_win = _REWARD_WIN_SCALE
+        elif self._player_1.get_points() >= _WIN_POINTS: reward_win = -_REWARD_WIN_SCALE
+        else: reward_win = 0
       
         player0_reward = reward_points + reward_resources + reward_win
         return [player0_reward, -player0_reward]
@@ -324,9 +326,8 @@ class SplendorState(pyspiel.State):
         player.add_purchased_card(card)
         return card
 
-    def __apply_end_spending_turn(
-        self, player: Player
-    ):  # TODO: Fix for using private members.
+    def __apply_end_spending_turn(self, player: Player ):  
+        self._spending_card_exists = False
         player.update_gems(*tuple(-self._spending_card.get_costs_array()))
         self._board.update_gems(*tuple(self._spending_card.get_costs_array()))
 
@@ -435,16 +436,16 @@ class BoardObserver:
         self.dict = {"observation": self.tensor }
 
     def set_from(self, state, player):
-         """Updates `tensor` and `dict` to reflect `state` from PoV of `player`."""
+        """Updates `tensor` and `dict` to reflect `state` from PoV of `player`."""
 
-         del player
+        del player
 
-         self.tensor = np.concatenate([
-             state._player_0,
-             state._player_1,
-             state._board,
-             state._spending_card
-         ])
+        self.tensor = np.concatenate([
+            state._player_0,
+            state._player_1,
+            state._board,
+            state._spending_card if state._spending_card_exists else np.zeros(_CARD_SHAPE)
+        ])
 
     def string_from(self, state, player):
         del player

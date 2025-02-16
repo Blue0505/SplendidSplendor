@@ -4,12 +4,17 @@ import numpy as np
 import pyspiel
 import splendor_game
 
+import splendor.board as board
+
+from splendor.card_importer import csv_import
 from splendor.gem import Gem
 from splendor.card import Card
 from splendor.board import Board
 from splendor.player import Player
 
+from open_spiel.python.observation import make_observation
 
+decks: list[list[Card]] = csv_import("data/cards.csv")
 
 class TestArrayMethods(unittest.TestCase):
     def test_card_array(self):
@@ -34,11 +39,43 @@ class TestArrayMethods(unittest.TestCase):
         arr = np.array(Board("data/cards.csv"))
         self.assertEqual(len(arr), 138)
 
-    def test_observation_tensor(self):
+    def test_observation_tensor_init(self):
         game = pyspiel.load_game("python_splendor", {"shuffle_cards": False})
         state = game.new_initial_state()
-        observation = state.observation_tensor
+        obs = make_observation(game)
+        obs.set_from(state, 0) # type: ignore
+        np.testing.assert_array_equal(
+            obs.tensor, # type: ignore
+            np.concatenate([
+                np.zeros(splendor_game._PLAYER_SHAPE),
+                np.zeros(splendor_game._PLAYER_SHAPE),
+                np.array([board.BOARD_GEM_START]*5),
+                [board.BOARD_GOLD_START],
+                *decks[0][-4:],
+                *decks[1][-4:],
+                *decks[2][-4:],
+                np.zeros(splendor_game._CARD_SHAPE)
+            ])
+        )
+
+    def test_observation_tensor_size(self):
+        game = pyspiel.load_game("python_splendor", {"shuffle_cards": False})
+        state = game.new_initial_state()
+        observation = state.observation_tensor()
         self.assertEqual(len(observation), 239)
+
+    def test_observation_tensor_update(self):
+        game = pyspiel.load_game("python_splendor", {"shuffle_cards": False})
+        state = game.new_initial_state()
+        init_obs = make_observation(game)
+        init_obs.set_from(state,0) #type: ignore
+        obs = make_observation(game)
+        state.apply_action(40)
+        obs.set_from(state,0) # type: ignore
+        #self.assertEqual(obs.tensor[1], 2) # type: ignore
+        self.assertEqual(np.sum(obs.tensor),np.sum(init_obs.tensor)) # type: ignore
+
+
         
 if __name__ == "__main__":
     unittest.main()
