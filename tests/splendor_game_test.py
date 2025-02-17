@@ -1,11 +1,13 @@
 import unittest
 import pyspiel
 import numpy as np
+import pickle
 
 import splendor_game
 from splendor.actions import SCategory, SAction
 from splendor.gem import Gem
 from splendor.card import Card
+
 
 def apply_actions(state, player0_actions, player1_actions):
     """Helper function that applies action to the state."""
@@ -196,6 +198,27 @@ class TestSplendorGame(unittest.TestCase):
         VALID_RETURNS = [ VALID_RETURNS_P0, VALID_RETURNS_P1 ]
         self.assertTrue(np.array_equal(self.state.returns(), VALID_RETURNS))
 
+    def try_full_game(self, filename):
+        """Helper function that tests that game state matches given actions loaded from a particular file."""
+        with open(filename, "rb") as info:
+            while True:
+                try:
+                    action = pickle.load(info)
+                    legal_actions = pickle.load(info)
+                    tensor = pickle.load(info)
+
+                    self.assertTrue(self.state.legal_actions() == legal_actions)
+                    self.assertTrue(self.state.observation_tensor() == tensor)
+
+                    self.state.apply_action(action)
+
+                except EOFError:
+                    break 
+
+    # def test_full_game_example(self):
+    #     self.test_full_game("tests/playouts/example.pkl")
+
+        
 
 
 if __name__ == "__main__":

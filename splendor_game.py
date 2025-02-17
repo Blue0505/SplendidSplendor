@@ -190,7 +190,7 @@ class SplendorState(pyspiel.State):
 
         if self._turn_type == TurnType.SPENDING:
             if action == SAction.END_SPENDING_TURN:
-                self.spending_turn = False
+                self._turn_type = TurnType.NORMAL
                 self.__swap_player()
                 self.__apply_end_spending_turn(player)
             else:  # Player spent gold.
