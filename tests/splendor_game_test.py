@@ -8,6 +8,7 @@ from splendor.actions import SCategory, SAction
 from splendor.gem import Gem
 from splendor.card import Card
 
+from open_spiel.python.observation import make_observation
 
 def apply_actions(state, player0_actions, player1_actions):
     """Helper function that applies action to the state."""
@@ -28,10 +29,12 @@ class TestSplendorGame(unittest.TestCase):
         self.actions = (
             self.state._actions
         )  # For getting actions by category in the tests.
+        self.obs = make_observation(game)
 
     def tearDown(self):
         del self.state
         del self.actions
+        del self.obs
 
     def test_correct_first_turn(self):
         """Test that the correct actions appear on the first turn."""
@@ -198,7 +201,7 @@ class TestSplendorGame(unittest.TestCase):
         VALID_RETURNS = [ VALID_RETURNS_P0, VALID_RETURNS_P1 ]
         self.assertTrue(np.array_equal(self.state.returns(), VALID_RETURNS))
 
-    def try_full_game(self, filename):
+    def run_moves(self, filename):
         """Helper function that tests that game state matches given actions loaded from a particular file."""
         with open(filename, "rb") as info:
             while True:
@@ -207,16 +210,20 @@ class TestSplendorGame(unittest.TestCase):
                     legal_actions = pickle.load(info)
                     tensor = pickle.load(info)
 
-                    self.assertTrue(self.state.legal_actions() == legal_actions)
-                    self.assertTrue(self.state.observation_tensor() == tensor)
+                    self.obs.set_from(self.state,0) # type: ignore
+                    cur_tensor: NDArray = self.obs.tensor # type: ignore
 
+
+                    self.assertTrue(self.state.legal_actions() == legal_actions)
+                    self.assertTrue(np.array_equal(cur_tensor, tensor))
+            
                     self.state.apply_action(action)
 
                 except EOFError:
                     break 
 
-    # def test_full_game_example(self):
-    #     self.test_full_game("tests/playouts/example.pkl")
+    def test_full_game_example(self):
+        self.run_moves("tests/playouts/1739831088.7093313_info.pkl")
 
         
 

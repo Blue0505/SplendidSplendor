@@ -21,6 +21,20 @@ class Card:
     def update_gems(self, white=0, blue=0, green=0, red=0, black=0):
         self._gem_costs = self._gem_costs + np.array([white, blue, green, red, black])
 
+    def has_gems(
+        self,
+        white=np.nan,
+        blue=np.nan,
+        green=np.nan,
+        red=np.nan,
+        black=np.nan
+    ) -> bool:
+        """Check for each gem specified that the board has at least that amount."""
+        return (
+            not np.any(self._gem_costs < np.array([white, blue, green, red, black]))
+        ) 
+        
+
     def get_gems_array(self):
         return self._gem_costs
 

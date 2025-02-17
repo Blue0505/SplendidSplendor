@@ -191,7 +191,6 @@ class SplendorState(pyspiel.State):
         if self._turn_type == TurnType.SPENDING:
             if action == SAction.END_SPENDING_TURN:
                 self._turn_type = TurnType.NORMAL
-                self.__swap_player()
                 self.__apply_end_spending_turn(player)
             else:  # Player spent gold.
                 self.__apply_spending_turn(player, action_object)
@@ -209,25 +208,23 @@ class SplendorState(pyspiel.State):
         else:  # "NORMAL" turn.
             if action_category == SCategory.RESERVE:
                 self.__apply_reserve(player, *action_object)
-                self.__swap_player()
 
             elif action_category == SCategory.PURCHASE:
-                self._spending_card = self.__apply_purchase(player, *action_object)
+                self._spending_card = self._board.pop_card(*action_object)
                 self._spending_card_exists = True
                 if player.has_gold():
                     self._turn_type = TurnType.SPENDING
                 else:
                     self.__apply_end_spending_turn(player)
-                    self.__swap_player()
+
 
             elif action_category == SCategory.PURCHASE_RESERVE:
-                self._spending_card = self.__apply_reserve_purchase(player, action_object)
+                self._spending_card = player.pop_reserved_card(action_object)
                 self._spending_card_exists = True
                 if player.has_gold():
                     self._turn_type = TurnType.SPENDING
                 else:
                     self.__apply_end_spending_turn(player)
-                    self.__swap_player()
 
             elif (
                 action_category == SCategory.TAKE2 or action_category == SCategory.TAKE3
@@ -280,6 +277,12 @@ class SplendorState(pyspiel.State):
         output += player0_str + dashes + str(self._player_0)
         output += player1_str + dashes + str(self._player_1)
 
+        if self._turn_type == TurnType.SPENDING:
+            output += f"{ansi.B_WHITE}\nSPENDING CARD:{ansi.RESET}\n"
+            output += dashes
+            output += "   " + str(self._spending_card) + "\n"
+
+
         return output
 
     def __swap_player(self):
@@ -289,11 +292,15 @@ class SplendorState(pyspiel.State):
         "Check if a player can still afford a card after a gold is spent for a specific color."
         if player.get_gold() == 0:
             return False
+        
+        gem_tuple = gem_to_tuple(gem_to_remove)[:-1]
+        if not self._spending_card.has_gems(*gem_tuple):
+            return False
 
         player.update_gems(gold=-1)
         can_afford = False
 
-        gem_tuple = gem_to_tuple(gem_to_remove)[:-1]
+        
         self._spending_card.update_gems(*tuple(-gem for gem in gem_tuple))
         can_afford = player.can_purchase(self._spending_card)
         self._spending_card.update_gems(*gem_tuple)
@@ -306,12 +313,6 @@ class SplendorState(pyspiel.State):
         reduce = tuple(-gem for gem in gem_tuple)
         self._board.update_gems(*reduce)
 
-    def __apply_reserve_purchase(self, player: Player, pos: int):
-        """Changes a card of a player to be purchased instead of reserved."""
-        card = player.pop_reserved_card(pos)
-        player.add_purchased_card(card)
-        return card
-
     def __apply_reserve(self, player: Player, row, col):
         """Moves a card from the board to the reserve slot of a player."""
         if self._board.has_gold():
@@ -319,14 +320,11 @@ class SplendorState(pyspiel.State):
             player.update_gems(gold=1)
         card = self._board.pop_card(row, col)
         player.add_reserved_card(card)
+        self.__swap_player()
 
-    def __apply_purchase(self, player: Player, row, col) -> Card:
-        """Moves a card from the board to the player and returns a gem array representing what must be paid."""
-        card = self._board.pop_card(row, col)
-        player.add_purchased_card(card)
-        return card
-
-    def __apply_end_spending_turn(self, player: Player ):  
+    def __apply_end_spending_turn(self, player: Player ):
+        player.add_purchased_card(self._spending_card)
+        self.__swap_player()
         self._spending_card_exists = False
         player.update_gems(*tuple(-self._spending_card.get_costs_array()))
         self._board.update_gems(*tuple(self._spending_card.get_costs_array()))
