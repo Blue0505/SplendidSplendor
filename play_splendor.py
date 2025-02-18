@@ -47,17 +47,17 @@ def get_action_name(action) -> str:
         action_type = "Return"
         match action_name[7:]:
             case "0":
-                action_details = f"as {ansi.WHITE}white"
+                action_details = f"{ansi.WHITE}white"
             case "1":
-                action_details = f"as {ansi.BLUE}blue"
+                action_details = f"{ansi.BLUE}blue"
             case "2":
-                action_details = f"as {ansi.GREEN}green"
+                action_details = f"{ansi.GREEN}green"
             case "3":
-                action_details = f"as {ansi.RED}red"
+                action_details = f"{ansi.RED}red"
             case "4":
-                action_details = f"as {ansi.GRAY}black"
+                action_details = f"{ansi.GRAY}black"
             case "GOLD":
-                action_details = f"as {ansi.YELLOW}gold"
+                action_details = f"{ansi.YELLOW}gold"
             
     elif action_name.startswith("CONSUME_GOLD"):
         action_type = f"Consume {ansi.YELLOW}gold{ansi.RESET}"
@@ -94,9 +94,16 @@ while not state.is_terminal():
     for action in state.legal_actions():
         print(get_action_name(action))
 
-    action = int(input("Select action."))
-    if action not in legal_actions:
-        raise SystemExit(f"Illegal action: {action}")
+    action = -1
+    while action not in legal_actions:
+        try: 
+            action = int(input("Select action."))
+        except Exception as e:
+            print(f"Retry: input was not an action.")
+            continue
+
+        if action not in legal_actions:
+            print(f"Retry: {action} is not a legal action.")
 
     with open(info_fn, "ab") as info:
         pickle.dump(action, info)

@@ -195,8 +195,6 @@ class SplendorState(pyspiel.State):
             else:  # Player spent gold.
                 self.__apply_spending_turn(player, action_object)
 
-            return
-
         elif self._turn_type == TurnType.RETURN:
             gem_tuple = gem_to_tuple(action_object)
             player.update_gems(*(-gem for gem in gem_tuple))
@@ -226,16 +224,14 @@ class SplendorState(pyspiel.State):
                 else:
                     self.__apply_end_spending_turn(player)
 
-            elif (
-                action_category == SCategory.TAKE2 or action_category == SCategory.TAKE3
-            ):
+            elif (action_category == SCategory.TAKE2 or action_category == SCategory.TAKE3):
                 self.__apply_take_gems(player, action_object)
                 if player.get_sum() > _MAX_PLAYER_GEMS:
                     self._turn_type = TurnType.RETURN
                 else:
                     self.__swap_player()
 
-        if player.get_points() == _WIN_POINTS or len(self._board.get_visible_cards()) < _MIN_BOARD_CARDS:
+        if player.get_points() >= _WIN_POINTS or len(self._board.get_visible_cards()) < _MIN_BOARD_CARDS:
             self._is_terminal = True
 
     def _action_to_string(self, player, action):  # TODO.
@@ -323,11 +319,13 @@ class SplendorState(pyspiel.State):
         self.__swap_player()
 
     def __apply_end_spending_turn(self, player: Player ):
-        player.add_purchased_card(self._spending_card)
         self.__swap_player()
         self._spending_card_exists = False
-        player.update_gems(*tuple(-self._spending_card.get_costs_array()))
-        self._board.update_gems(*tuple(self._spending_card.get_costs_array()))
+        to_update = self._spending_card.get_costs_array() - player.get_resources_array()
+        to_update = np.clip(to_update, a_min=0, a_max=None)
+        player.update_gems(*tuple(-to_update))
+        self._board.update_gems(*tuple(to_update))
+        player.add_purchased_card(self._spending_card)
 
     def __apply_spending_turn(self, player: Player, gem: Gem):
         """Moves a player's gold back to the board and reduces the gem of the card it was used for."""

@@ -223,7 +223,7 @@ class TestSplendorGame(unittest.TestCase):
                     break 
 
     def test_full_game_example(self):
-        self.run_moves("tests/playouts/1739831088.7093313_info.pkl")
+        self.run_moves("tests/playouts/1739840638.3540835_info.pkl")
 
         
 
