@@ -233,7 +233,13 @@ class SplendorState(pyspiel.State):
 
         if player.get_points() >= _WIN_POINTS or len(self._board.get_visible_cards()) < _MIN_BOARD_CARDS:
             self._is_terminal = True
-
+        
+        if len(self._legal_actions(self._cur_player)) == 0: # Next player has no action.
+            self.__swap_player()
+            if len(self._legal_actions(self._cur_player)) == 0: # Both players have no action.
+                self._is_terminal = True
+        
+    
     def _action_to_string(self, player, action):  # TODO.
         """Action -> string."""
         return ""
