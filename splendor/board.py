@@ -8,6 +8,7 @@ from splendor.helpers import gem_array_str
 BOARD_GEM_START: int = 4
 BOARD_GOLD_START: int = 5
 MAX_RESERVE: int = 3
+MIN_DECK_CARDS: int = 5
 
 
 class Board:
@@ -50,6 +51,20 @@ class Board:
 
     def has_gold(self):
         return self._gold > 0
+    
+    def enough_cards(self):
+        """This is a helper function that prevents indexing errors when the board
+        has less than 5 cards. It is a temporary fix because this situation is so rare.
+        To fix this issue, AT LEAST:
+            * get_visible_cards must be fixed
+            * the portion of legal_actions() which gives reserves must be fixed =
+            * pop_cards needs to be checked if it will still work
+            * the indexing in the observation tensor needs to be fixed"""
+        
+        return (len(self._decks[0]) >= MIN_DECK_CARDS and
+                len(self._decks[1]) >= MIN_DECK_CARDS and
+                len(self._decks[2]) >= MIN_DECK_CARDS)
+    
 
     def pop_card(self, row: int, col: int) -> Card:
         """Remove and return the card associated with the specified columns and row."""

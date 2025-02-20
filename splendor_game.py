@@ -38,7 +38,7 @@ _GEM_SHAPE = 6
 _BOARD_SHAPE = ( _CARD_SHAPE * 12 ) + _GEM_SHAPE
 _PLAYER_SHAPE = _GEM_SHAPE + ( 3 * _CARD_SHAPE ) + 1 + 5 
 _TENSOR_SHAPE = ( _NUM_PLAYERS * _PLAYER_SHAPE ) + _BOARD_SHAPE + _CARD_SHAPE
-_MIN_BOARD_CARDS = 12
+_DECK_CARDS = 5
 
 _GAME_TYPE = pyspiel.GameType(
     short_name="python_splendor",
@@ -231,7 +231,7 @@ class SplendorState(pyspiel.State):
                 else:
                     self.__swap_player()
 
-        if player.get_points() >= _WIN_POINTS or len(self._board.get_visible_cards()) < _MIN_BOARD_CARDS:
+        if player.get_points() >= _WIN_POINTS or not self._board.enough_cards():
             self._is_terminal = True
         
         if len(self._legal_actions(self._cur_player)) == 0: # Next player has no action.

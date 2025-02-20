@@ -71,7 +71,7 @@ def turn_based_example(unused_arg):
 
   # Print final state of end game.
   for pid in range(env.num_players):
-    print_iteration(time_step, actions, pid)
+    print_iteration(time_step, actions, pid) # type: ignore
 
 
 if __name__ == "__main__":
