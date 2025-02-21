@@ -67,7 +67,7 @@ $$\text{player 0 returns} = \alpha(w_0 - w_1) + \beta(s_0 - s_1) + \gamma(r_0 - 
 functions of the number of time steps in the game. Specifically, we want to try increasing $\beta$ and lowering $\gamma$ as the time steps increases. Our hope is that this matches
 to the strategy in Splendor of focusing on resource acquisition in the early game, then trying to get points with the resources you've aquired in the later stages of the game. 
 
-## Algorithm
+### Algorithm
 While we plan to use other algorithms, we have currently experimented with OpenSpiel's implementation of the Q-Learning algorithm. Q-Learning is a model-free algorithm which uses a structure known as the Q-Table that gets updated for every action and the reward of that action it its given state. After the Q-Table gets filled from steps in separate states, decisions are then made based on the maximum expected reward of an action in a given state.
 ![Q-Learning Formula](q-learning.svg)
 ([Source](https://en.wikipedia.org/wiki/Q-learning))
@@ -106,7 +106,7 @@ did provide insight in other statistics that we can measure going forward, namel
 * the average number of times that both players have no moves (results in immediate game termination with no clear winner),
 * and the average number of time the first priority deck runs out of cards (results in immediate game termination with no clear winner).
 
-## Qualitative Analysis
+### Qualitative Analysis
 * experiment with humans playing against trained agent (qualitative result)
 TODO
 
