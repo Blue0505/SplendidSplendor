@@ -70,11 +70,11 @@ to the strategy in Splendor of focusing on resource acquisition in the early gam
 ## Algorithm
 While we plan to use other algorithms, we have currently experimented with OpenSpiel's implementation of the Q-Learning algorithm. Q-Learning is a model-free algorithm which uses a structure known as the Q-Table that gets updated for every action and the reward of that action it its given state. After the Q-Table gets filled from steps in separate states, decisions are then made based on the maximum expected reward of an action in a given state.
 ![Q-Learning Formula](q-learning.svg)
-*(Source)[https://en.wikipedia.org/wiki/Q-learning]*
-By creating the Splendor game in accordance with OpenSpiel's framework, we easily tapped into the Q-Learning algorithm. (Q-Learning)[https://github.com/google-deepmind/open_spiel/blob/master/open_spiel/python/algorithms/tabular_qlearner.py]. We utilized a discount factor of 1.0 and a learning rate/step size of 0.1 for our preliminary testing. Every episode trained agents for player 0 and 1 play against random agents and every 1000 episodes the they then evaluated against random agents to obtain their win rates.
+([Source](https://en.wikipedia.org/wiki/Q-learning))
+By creating the Splendor game in accordance with OpenSpiel's framework, we easily tapped into the Q-Learning algorithm. We utilized a discount factor of 1.0 and a learning rate/step size of 0.1 for our preliminary testing ([Source]((Q-Learning)[https://github.com/google-deepmind/open_spiel/blob/master/open_spiel/python/algorithms/tabular_qlearner.py].)). Every episode trained agents for player 0 and 1 play against random agents and every 1000 episodes the they then evaluated against random agents to obtain their win rates.
 
 ## Evaluation
-## Game Testing
+### Game Testing
 Thus far, most of our testing efforts have been directed towards the Splendor game itself. We utilized Python's `unittest` framework 
 to build tests for the game, which are summarized below:
 * `array_test.py` - tests the observation tensor
@@ -86,7 +86,7 @@ We also tested the game manually by playing against each other. We overloaded th
 to generate a human readable ASCII illustration of the game state. As we played, we verified
 visually using this string output that the game state was correct. 
 
-## Q-Learning Results
+### Q-Learning Results
 The results from our Q-Learning test were unsatisfactory. We trained two agents engaging in self-play over 500,000 episodes; every 5000 episodes
 we captured the loss of each agent, the average game length of the agents against a random player over 1000 games, and the average win percentage
 of each agent against a random player over 1000 games. 
