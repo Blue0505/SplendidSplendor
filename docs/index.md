@@ -3,7 +3,7 @@ layout: default
 title:  Home
 ---
 
-<img src="./splendor.jpg" alt="Playing the group's Splendor implementation in VSCode on a MacBook." width="1280" height=960>
+<img src="./splendor.jpg" alt="Playing the group's Splendor implementation in VSCode on a MacBook." width="1280" height="960">
 
 We implemented the Splendor board game within the OpenSpiel framework. We plan to apply the OpenSpiel implementations of deep Q-learning and PPO to create a Splendor playing agent. We will experiment with these algorithms and reward shaping to curate an agent with the best possible win rate. 
 
