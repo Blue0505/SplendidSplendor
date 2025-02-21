@@ -15,7 +15,7 @@ represents an observation of the game state that is fed as input to the RL algor
 since there are three "upside-down" decks that both the board and the player draw from. Note also that both players observe identical information at all times, 
 simplifying the creation of the observation tensor.
 
-First, we define a card vector, $\vec{C} = (p, \vec{t}, \vec{g})$. $p$ is the number of points associated with a card. $\vec{t}$ is a five element 
+First, we define a card vector, \(vec{C} = (p, \vec{t}, \vec{g})\). $p$ is the number of points associated with a card. $\vec{t}$ is a five element 
 vector representing the one-hot encoding of the card type (e.g. $(1, 0, 0, 0, 0)$ corresponds to a white card). $\vec{g}$ is a five
 element vector corresponding to the costs of each gem type for the card.
 
