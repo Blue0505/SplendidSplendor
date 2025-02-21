@@ -15,7 +15,7 @@ represents an observation of the game state that is fed as input to the RL algor
 since there are three "upside-down" decks that both the board and the player draw from. Note also that both players observe identical information at all times, 
 simplifying the creation of the observation tensor.
 
-First, we define a card vector, $vec{C} = (p, \vec{t}, \vec{g})$. $p$ is the number of points associated with a card. $\vec{t}$ is a five element 
+First, we define a card vector, $\vec{C} = (p, \vec{t}, \vec{g})$. $p$ is the number of points associated with a card. $\vec{t}$ is a five element 
 vector representing the one-hot encoding of the card type (e.g. $(1, 0, 0, 0, 0)$ corresponds to a white card). $\vec{g}$ is a five
 element vector corresponding to the costs of each gem type for the card.
 
@@ -24,7 +24,7 @@ $g_i$ is the gem array of the $i\text{'th}$ player, containing six entries corre
 $j\text{'th}$ reserved card of the $i\text{'th}$ player; this vector is filled with zeroes if the player has no reserved card at that slot. 
 
 Third, we define a board vector $\vec{B} = (\vec{g}, \vec{C_{00}}, \vec{C_{01}}, \vec{C_{02}}, \vec{C_{03}}, \vec{C_{10}}, \vec{C_{11}}, \vec{C_{12}}, \vec{C_{13}}, \vec{C_{20}}, \vec{C_{21}}, \vec{C_{22}}, \vec{C_{23}} )$. $\vec{g}$ is a six element vector representing the gems (including gold) on the board. Card vectors 
-$\vec{C}_{00} \dots \vec{C}_{23}$ represent the cards on the board that the players can purchase or reserve. 
+$\vec{C_{00}} \dots \vec{C_{23}}$ represent the cards on the board that the players can purchase or reserve. 
 
 These vectors are generated on the fly using information in the data structures of the game. Specifically, these vectors are used to form the entire observation vector of the game state,
 
