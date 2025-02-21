@@ -35,15 +35,14 @@ player can choose to redeem gold for a specific colored gem of the card. For exa
 gold gem in place of a blue gem, this is reflected in the blue cost of $\vec{C_s}$. 
 
 ### Algorithm
-While we plan to use other algorithms, we are experimentating with OpenSpiel's Q-Learning due to it working with our finite action space. Q-Learning is a model-free algorithm which uses a structure known as the Q-Table that gets updated for every action and the reward of that action it its given state. After enough steps where the Q-Table gets filled for enough possible states,decisions are then made based on the maximum expected reward of an action in a given state.
-[Q-Learning Formula](q-learning.svg)
-https://en.wikipedia.org/wiki/Q-learning
-* how q-learning applies to the splendor game
+While we plan to use other algorithms, we are experimentating with OpenSpiel's Q-Learning which works with the limited action space of Splendor. Q-Learning is a model-free algorithm which uses a structure known as the Q-Table that gets updated for every action and the reward of that action it its given state. After enough steps where the Q-Table gets filled for enough possible states,decisions are then made based on the maximum expected reward of an action in a given state.
+![Q-Learning Formula](q-learning.svg)
+*[https://en.wikipedia.org/wiki/Q-learning]*
+By creating the Splendor game in accordance to OpenSpiel's framework, we have made sure there is a distinct action space and observation state after each step in a game. This allows us to utilize OpenSpiel's algorithm that are compatible with this format such as Q-Learning. For Q-Learning, the hyperparamters we used are a discount factor of 1.0, learning rate/step size of 0.1, and an episode count of 10,000. During our tests, the trained agent plays against a random agent and Every 1000 episodes the trained agent is then evaluated against the random agent to provide a win rate when the trained agent is either player 0 or 1.
 
 
 * focus on how we created the game (file structure, etc.)
 * put equations for q-learning
-
 * hyperparameters for q-learning from the docs
 * reward system
 * observation system
