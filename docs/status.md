@@ -19,7 +19,7 @@ First, we define a card vector, $\vec{C} = (p, \vec{t}, \vec{g})$. $p$ is the nu
 vector representing the one-hot encoding of the card type (e.g. $(1, 0, 0, 0, 0)$ corresponds to a white card). $\vec{g}$ is a five
 element vector corresponding to the costs of each gem type for the card.
 
-Second, we define a player vector for the $i\text{'th}$ player, $p_i =  (s_i, \vec{g_i}, \vec{C}_{i0}, \vec{C}_{i1}, \vec{C}_{i2})$. $s_i$ is the score/points for the $i\text{'th}$ player.
+Second, we define a player vector for the $i\text{'th}$ player, $p_i =  (s_i, \vec{g_i}, \vec{C_{i_0}}, \vec{C_{i_1}}, \vec{C_{i_2}})$. $s_i$ is the score/points for the $i\text{'th}$ player.
 $g_i$ is the gem array of the $i\text{'th}$ player, containing six entries corresponding to the gem count (including gold) of each player. $\vec{C}_{i_{j}}$ is the 
 $j\text{'th}$ reserved card of the $i\text{'th}$ player; this vector is filled with zeroes if the player has no reserved card at that slot. 
 
