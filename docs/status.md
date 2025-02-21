@@ -16,7 +16,9 @@ After implementing the game and these systems, we tested them against OpenSpiel'
 Defining an action system for Splendor was our first major hurdle. Although the action space is discrete we had to partition the action space into different "turn types"
 to limit an exponential growth of discrete actions. 
 
-![Flow chart depicting different turn types of the action space for Splendor.](./actions_diagram.png)
+<img src="./actions_diagram.png" alt="Flow chart depicting different turn types of the action space for Splendor." style="
+    width: 100%;
+">
 
 As denoted in the diagram with the dotted rectangular regions, the three turn types are `NORMAL`, `SPENDING`, and `RETURN`. The `SPENDING` turn type enables
 a player to use gold to purchase a card without needing an action for every variation. This reduces $5^5 \times 12$ actions to $12$ actions. Simiarly, the `RETURN` type 
