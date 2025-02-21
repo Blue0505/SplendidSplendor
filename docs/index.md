@@ -3,8 +3,8 @@ layout: default
 title:  Home
 ---
 
-![Playing the group's Splendor implementation in VSCode on a MacBook.](splendor.png)
-We implemented the Splendor board game within the OpenSpiel framework. We plan to apply the OpenSpiel implementations of deep Q-learning, Q-learning, and PPO to create a Splendor playing agent. We will experiment with these algorithms and reward shaping to curate an agent with the best possible win rate. 
+![Playing the group's Splendor implementation in VSCode on a MacBook.](./splendor.png)
+We implemented the Splendor board game within the OpenSpiel framework. We plan to apply the OpenSpiel implementations of deep Q-learning and PPO to create a Splendor playing agent. We will experiment with these algorithms and reward shaping to curate an agent with the best possible win rate. 
 
 Source code: https://github.com/Blue0505/Splendid
 

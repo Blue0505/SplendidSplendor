@@ -4,7 +4,7 @@ title: Status
 ---
 
 ## Project Summary
-Our primary goal is to create an reinforcement learning (RL) trained agent that can play the Splendor board game. Thus far, we have coded the Splendor board game within the OpenSpiel framework. In doing so, we have immediate access to reinforcement learning algorithms including DQN and PPO. As of week 7, we have written extensive tests for the Splendor game and to our knowledge the game is in a working state. We have also run OpenSpiel's Q-learning algorithm against the game with 10,000 episodes. Our goal for the rest of the quarter is to fine tune the reward shaping and try other algorithms.
+Our primary goal is to create an reinforcement learning (RL) trained agent that can play the Splendor board game. Thus far, we have coded the Splendor board game within the OpenSpiel framework. In doing so, we have immediate access to reinforcement learning algorithms including DQN and PPO. As of week 7, we have written extensive tests for the Splendor game and to our knowledge the game is in a working state. We have also run OpenSpiel's Q-learning algorithm against the game with 500,000 episodes, leading to poor results. Our goal for the rest of the quarter is to fine tune the reward shaping and try PPO and DQN. 
 
 ## Approach
 
@@ -20,14 +20,14 @@ to limit an exponential growth of discrete actions.
     width: 100%;
 ">
 
-As denoted in the diagram with the dotted rectangular regions, the three turn types are `NORMAL`, `SPENDING`, and `RETURN`. The `SPENDING` turn type enables
-a player to use gold to purchase a card without needing an action for every variation. This reduces $5^5 \times 12$ actions to $12$ actions. Simiarly, the `RETURN` type 
-allows a player to take two or three gems and return gems from their inventory if they exceed 10 gems without needing an action for every variation. This reduces $5^2 \times \binom{5}{2} + \binom{5}{3}$
+As illustrated in the diagram with the dotted rectangular regions, we partitioned the action space into three "turn types". The `SPENDING` turn type (top right) enables
+a player to use gold to purchase a card without needing an action for every variation. This reduces $5^5 \times 12$ actions to $12$ actions. Similarly, the `RETURN` turn type (bottom left)
+allows a player to take two or three gems and return gems from their inventory if they exceed 10 gems without needing an action for every variation. This reduces $5^2 \times \big( \binom{5}{2} + \binom{5}{3} \big)$
 actions to $\binom{5}{2} + \binom{5}{3}$ actions. 
 
 
 ### Observation System
-Building the observation system for Splendor was a key problem that we solved. 
+Building the observation system for Splendor was the next key problem that we solved. 
 OpenSpiel requires a one dimensional tensor to be returned from the `set_from` function of the `BoardObserver` class. This tensor
 represents an observation of the game state that is fed as input to the RL algorithms in OpenSpiel. Note that Splendor is an imperfect information game,
 since there are three "upside-down" decks that both the board and the player draw from. Note also that both players observe identical information at all times, 
@@ -86,9 +86,27 @@ We also tested the game manually by playing against each other. We overloaded th
 to generate a human readable ASCII illustration of the game state. As we played, we verified
 visually using this string output that the game state was correct. 
 
-* plot metrics that can be archived from the open spiel environment (-> tensorboard); 1 p
-* win statistics at the end of training 
+## Q-Learning Results
+The results from our Q-Learning test were unsatisfactory. We trained two agents engaging in self-play over 500,000 episodes; every 5000 episodes
+we captured the loss of each agent, the average game length of the agents against a random player over 1000 games, and the average win percentage
+of each agent against a random player over 1000 games. 
+
+<div style="display: flex; justify-content: space-between; align-items: center; max-width: 800px; margin: auto;">
+    <img src="./game_length.png" alt="Image 1" style="width: 30%; height: auto;">
+    <img src="./game_loss.png" alt="Image 2" style="width: 30%; height: auto;">
+    <img src="./win_rates.png" alt="Image 3" style="width: 30%; height: auto;">
+</div>
+
+As shown in the plots above, all statistics ossilate heavily, even after 500,000 episodes. Although it was a small success that Splendor could run
+for 500,000 episodes without a crash, the results are dissapointing nonetheless We will pivot immediately to DQN and PPO for the remainder of the quarter. However, this preliminary testing
+did provide insight in other statistics that we can measure going forward, namely: 
+* the average rewards,
+* the average number of times that both players have no moves (results in immediate game termination with no clear winner),
+* and the average number of time the first priority deck runs out of cards (results in immediate game termination with no clear winner).
+
+## Qualitative Analysis
 * experiment with humans playing against trained agent (qualitative result)
+TODO
 
 
 ## Remaining Goals and Challenges
@@ -101,8 +119,12 @@ visually using this string output that the game state was correct.
 * test changing rewards shaping and hyperparameters
 
 ## Resources
-- [OpenSpiel](https://github.com/google-deepmind/open_spiel)
-- [Splendor Rules](https://cdn.1j1ju.com/medias/7f/91/ba-splendor-rulebook.pdf)
-- [Splendor Card Info Spreadsheet](https://docs.google.com/spreadsheets/d/15ghp8rJ_vdVgxZIVJGawAYQXRMZSVHJYpZRfQUplAhE/edit?usp=sharing)
-- [ChatGPT](https://chatgpt.com/)
+- [OpenSpiel](https://github.com/google-deepmind/open_spiel): We prototyped the Splendor game by modifying the `open_spiel/python/games/kuhn_poker.py` file. We also used
+and modified the `open_spiel/python/examples/tic_tac_toe_qlearner.py` to run Q-learning against our game.
+
+- [Splendor Rules](https://cdn.1j1ju.com/medias/7f/91/ba-splendor-rulebook.pdf): We used the official rules to inform our action system for the Splendor game. 
+- [Splendor Card Info Spreadsheet](https://docs.google.com/spreadsheets/d/15ghp8rJ_vdVgxZIVJGawAYQXRMZSVHJYpZRfQUplAhE/edit?usp=sharing): We used this spreadsheet to
+initialize the metadata of the card decks when the Splendor game starts. 
+- [ChatGPT](https://chatgpt.com/): We used ChatGPT for minor debugging purposes and various one-liners relating to libraries
+we used such as Numpy and PyPlot. We did not use AI tools to generate a significant blocks of code for our project. 
 - [Python Documentation](https://docs.python.org/3/)

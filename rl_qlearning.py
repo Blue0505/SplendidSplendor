@@ -23,6 +23,7 @@ against random opponents is around 99% for player 0 and 92% for player 1.
 
 import logging
 import sys
+import pickle
 from absl import app
 from absl import flags
 import numpy as np
@@ -41,6 +42,8 @@ flags.DEFINE_boolean(
     True,
     "Whether to run an interactive play with the agent after training.",
 )
+flags.DEFINE_integer("verify_episodes", int(1e3), "Number of episodes to use in verification.")
+flags.DEFINE_integer("verify_frequency", int(1e3), "Episode frequency to apply verification.")
 
 
 # def command_line_action(time_step):
@@ -61,21 +64,25 @@ flags.DEFINE_boolean(
 
 def eval_against_random_bots(env, trained_agents, random_agents, num_episodes):
   """Evaluates `trained_agents` against `random_agents` for `num_episodes`."""
-  wins = np.zeros(2)
+  wins_and_length = np.zeros(4)
   for player_pos in range(2):
     if player_pos == 0:
       cur_agents = [trained_agents[0], random_agents[1]]
     else:
       cur_agents = [random_agents[0], trained_agents[1]]
+    
     for _ in range(num_episodes):
+      game_length = 0
       time_step = env.reset()
       while not time_step.last():
         player_id = time_step.observations["current_player"]
         agent_output = cur_agents[player_id].step(time_step, is_evaluation=True)
         time_step = env.step([agent_output.action])
+        game_length += 1
       if time_step.rewards[player_pos] > 0:
-        wins[player_pos] += 1
-  return wins / num_episodes
+        wins_and_length[player_pos] += 1
+      wins_and_length[player_pos + 2] += game_length
+  return wins_and_length / num_episodes
 
 
 def main(_):
@@ -97,13 +104,18 @@ def main(_):
   ]
 
   # Train the agents.
+  training_stats = [] 
   training_episodes = FLAGS.num_episodes
   for cur_episode in range(training_episodes):
     if cur_episode % 100 == 0:
       print(f"Episode {cur_episode}.")
-    if cur_episode % int(1e4) == 0 or cur_episode == training_episodes - 1:
-      win_rates = eval_against_random_bots(env, agents, random_agents, 50) # 100 was 1000 before.
-      logging.info("Starting episode %s, win_rates %s", cur_episode, win_rates)
+    if cur_episode % int(FLAGS.verify_frequency) == 0:
+      win_and_length = eval_against_random_bots(env, agents, random_agents, FLAGS.verify_episodes)
+      logging.info("Starting episode %s, win_rates %s", cur_episode, win_and_length)
+      stat = [cur_episode]
+      stat.extend(win_and_length.tolist())
+      stat.extend([agents[0].loss, agents[1].loss])
+      training_stats.append(stat)
     time_step = env.reset()
     while not time_step.last():
       player_id = time_step.observations["current_player"]
@@ -113,6 +125,9 @@ def main(_):
     # Episode is over, step all agents with final info state.
     for agent in agents:
       agent.step(time_step)
+  
+  with open("qlearning_stats.pkl", "wb") as bout:
+    pickle.dump(training_stats, bout)
 
 #   if not FLAGS.interactive_play:
 #     return

@@ -25,7 +25,7 @@ from splendor.gem import Gem
 import splendor.ansi_escape_codes as ansi
 from splendor.helpers import gem_to_tuple
 
-_REWARD_POINTS_SCALE = 3
+_REWARD_POINTS_SCALE = 10
 _REWARD_RESOURCES_SCALE = 1.5
 _REWARD_WIN_SCALE = 1000
 
@@ -50,18 +50,18 @@ _GAME_TYPE = pyspiel.GameType(
     reward_model=pyspiel.GameType.RewardModel.TERMINAL,
     max_num_players=_NUM_PLAYERS,
     min_num_players=_NUM_PLAYERS,
-    provides_information_state_string=True,
-    provides_information_state_tensor=True,
+    provides_information_state_string=False,
+    provides_information_state_tensor=False,
     provides_observation_string=True,
     provides_observation_tensor=True,
     parameter_specification={"shuffle_cards": True},
 )
 
-_GAME_INFO = pyspiel.GameInfo(  # TODO: Fix.
+_GAME_INFO = pyspiel.GameInfo(
     num_distinct_actions=len(SAction),
     max_chance_outcomes=0,
     num_players=2,
-    min_utility=-float('inf'), # TODO: Estimate.
+    min_utility=-float('inf'), 
     max_utility=float('inf'),
     utility_sum=0.0,
     max_game_length=1000,
@@ -231,12 +231,19 @@ class SplendorState(pyspiel.State):
                 else:
                     self.__swap_player()
 
-        if player.get_points() >= _WIN_POINTS or not self._board.enough_cards():
+        if player.get_points() >= _WIN_POINTS:
+            self._is_terminal = True 
+            # print("win")
+        
+        if not self._board.enough_cards():
+            # print("No cards")
             self._is_terminal = True
+
         
         if len(self._legal_actions(self._cur_player)) == 0: # Next player has no action.
             self.__swap_player()
             if len(self._legal_actions(self._cur_player)) == 0: # Both players have no action.
+                # print("No moves")
                 self._is_terminal = True
         
     
