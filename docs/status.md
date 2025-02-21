@@ -8,6 +8,22 @@ Our primary goal is to create an reinforcement learning (RL) trained agent that 
 
 ## Approach
 
+### Summary
+We built Splendor from scratch within the OpenSpiel environment. Crucially, we had to decide on an observation system, action system, and rewards system.
+After implementing the game and these systems, we tested them against OpenSpiel's Q-learning algorithm.
+
+### Action System
+Defining an action system for Splendor was our first major hurdle. Although the action space is discrete we had to partition the action space into different "turn types"
+to limit an exponential growth of discrete actions. 
+
+![Flow chart depicting different turn types of the action space for Splendor.](./actions_diagram.png)
+
+As denoted in the diagram with the dotted rectangular regions, the three turn types are `NORMAL`, `SPENDING`, and `RETURN`. The `SPENDING` turn type enables
+a player to use gold to purchase a card without needing an action for every variation. This reduces $5^5 \times 12$ actions to $12$ actions. Simiarly, the `RETURN` type 
+allows a player to take two or three gems and return gems from their inventory if they exceed 10 gems without needing an action for every variation. This reduces $5^2 \times \binom{5}{2} + \binom{5}{3}$
+actions to $\binom{5}{2} + \binom{5}{3}$ actions. 
+
+
 ### Observation System
 Building the observation system for Splendor was a key problem that we solved. 
 OpenSpiel requires a one dimensional tensor to be returned from the `set_from` function of the `BoardObserver` class. This tensor
@@ -33,6 +49,21 @@ $$\text{observation} = (\vec{p_0}, \vec{p_1}, \vec{B}, \vec{C_s})$$
 , where $\vec{C_s}$ is what we call the "spending card". This card appears during a `SPENDING` turn type when the
 player can choose to redeem gold for a specific colored gem of the card. For example, if a player spends a 
 gold gem in place of a blue gem, this is reflected in the blue cost of $\vec{C_s}$. 
+
+
+### Rewards System
+We also built a reward mechanism for the Splendor game. OpenSpiel requires a `returns` function which returns a two element vector representing the total accumulated rewards
+for player 0 and player 1. Note that the two person variation of Splendor is a zero sum game, so we can calculate the rewards of player 1 as 
+the opposite of player 0's rewards. 
+
+First, we define $w_i$ to be 0 if player $i$ has not won, otherwise 1. Second, we define $s_i$ to be the total points of player $i$. Third,
+we define $r_i$ to be the total amount of resources of player $i$. We use these values to calculate the accumulated reward of player 0 with the function, 
+
+$$\text{player 0 returns} = \alpha(w_0 - w_1) + \beta(s_0 - s_1) + \gamma(r_0 - r_1)$$
+
+, with $\alpha = 1000$, $\beta = 3$, and $\gamma = 1.5$. We plan to experiment with the values of $\alpha, \beta, \gamma$. Time permitted, we also want to make $\gamma$ and $\beta$
+functions of the number of time steps in the game. Specifically, we want to try increasing $\beta$ and lowering $\gamma$ as the time steps increases. Our hope is that this matches
+to the strategy in Splendor of focusing on resource acquisition in the early game, then trying to get points with the resources you've aquired in the later stages of the game. 
 
 
 
