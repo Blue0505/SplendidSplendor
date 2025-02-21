@@ -71,6 +71,8 @@ to the strategy in Splendor of focusing on resource acquisition in the early gam
 While we plan to use other algorithms, we have currently experimented with OpenSpiel's implementation of the Q-Learning algorithm. Q-Learning is a model-free algorithm which uses a structure known as the Q-Table that gets updated for every action and the reward of that action it its given state. After the Q-Table gets filled from steps in separate states, decisions are then made based on the maximum expected reward of an action in a given state.
 ![Q-Learning Formula](q-learning.svg)
 ([Source](https://en.wikipedia.org/wiki/Q-learning))
+
+
 By creating the Splendor game in accordance with OpenSpiel's framework, we easily tapped into the Q-Learning algorithm. We utilized a discount factor of 1.0 and a learning rate/step size of 0.1 for our preliminary testing ([Source]((Q-Learning)[https://github.com/google-deepmind/open_spiel/blob/master/open_spiel/python/algorithms/tabular_qlearner.py].)). Every episode trained agents for player 0 and 1 play against random agents and every 1000 episodes the they then evaluated against random agents to obtain their win rates.
 
 ## Evaluation
