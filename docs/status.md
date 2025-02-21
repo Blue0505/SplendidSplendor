@@ -34,12 +34,16 @@ $$\text{observation} = (\vec{p_0}, \vec{p_1}, \vec{B}, \vec{C_s})$$
 player can choose to redeem gold for a specific colored gem of the card. For example, if a player spends a 
 gold gem in place of a blue gem, this is reflected in the blue cost of $\vec{C_s}$. 
 
-
+### Algorithm
+While we plan to use other algorithms, we are experimentating with OpenSpiel's Q-Learning due to it working with our finite action space. Q-Learning is a model-free algorithm which uses a structure known as the Q-Table that gets updated for every action and the reward of that action it its given state. After enough steps where the Q-Table gets filled for enough possible states,decisions are then made based on the maximum expected reward of an action in a given state.
+[Q-Learning Formula](q-learning.svg)
+https://en.wikipedia.org/wiki/Q-learning
+* how q-learning applies to the splendor game
 
 
 * focus on how we created the game (file structure, etc.)
 * put equations for q-learning
-* how q-learning applies to the splendor game
+
 * hyperparameters for q-learning from the docs
 * reward system
 * observation system
