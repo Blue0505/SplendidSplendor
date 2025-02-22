@@ -68,12 +68,12 @@ functions of the number of time steps in the game. Specifically, we want to try 
 to the strategy in Splendor of focusing on resource acquisition in the early game, then trying to get points with the resources you've aquired in the later stages of the game. 
 
 ### Algorithm
-While we plan to use other algorithms, we have currently experimented with OpenSpiel's implementation of the Q-Learning algorithm. Q-Learning is a model-free algorithm which uses a structure known as the Q-Table that gets updated for every action and the reward of that action it its given state. After the Q-Table gets filled from steps in separate states, decisions are then made based on the maximum expected reward of an action in a given state.
+While we plan to use other algorithms, we have currently experimented with OpenSpiel's implementation of the Q-learning algorithm. Q-learning is a model-free algorithm which uses a structure known as the Q-Table that gets updated for every action and the reward of that action it its given state. After the Q-Table gets filled from steps in separate states, decisions are then made based on the maximum expected reward of an action in a given state.
 ![Q-Learning Formula](q-learning.svg)
 ([Source](https://en.wikipedia.org/wiki/Q-learning))
 
 
-By creating the Splendor game in accordance with OpenSpiel's framework, we easily tapped into the Q-Learning algorithm. We utilized a discount factor of 1.0 and a learning rate/step size of 0.1 for our preliminary testing ([Source]((Q-Learning)[https://github.com/google-deepmind/open_spiel/blob/master/open_spiel/python/algorithms/tabular_qlearner.py].)). Every episode trained agents for player 0 and 1 play against random agents and every 1000 episodes the they then evaluated against random agents to obtain their win rates.
+By creating the Splendor game in accordance with OpenSpiel's framework, we easily tapped into the Q-learning algorithm. We utilized a discount factor of 1.0 and a learning rate/step size of 0.1 for our preliminary testing ([Source]((Q-Learning)[https://github.com/google-deepmind/open_spiel/blob/master/open_spiel/python/algorithms/tabular_qlearner.py].)). Every episode trained agents for player 0 and 1 play against random agents and every 1000 episodes the they then evaluated against random agents to obtain their win rates.
 
 ## Evaluation
 ### Game Testing
@@ -99,9 +99,7 @@ of each agent against a random player over 1000 games.
     <img src="./win_rates.png" alt="Image 3" style="width: 30%; height: auto;">
 </div>
 
-As shown in the plots above, all statistics ossilate heavily, even after 500,000 episodes. Although it was a small success that Splendor could run
-for 500,000 episodes without a crash, the results are dissapointing nonetheless We will pivot immediately to DQN and PPO for the remainder of the quarter. However, this preliminary testing
-did provide insight in other statistics that we can measure going forward, namely: 
+As shown in the plots above, all statistics ossilate heavily, even after 500,000 episodes. Although it was a small success that Splendor could run for 500,000 episodes without a crash, the results are dissapointing nonetheless We will pivot immediately to DQN and PPO for the remainder of the quarter. However, this preliminary testing did provide insight in other statistics that we can measure going forward, namely:
 * the average rewards,
 * the average number of times that both players have no moves (results in immediate game termination with no clear winner),
 * and the average number of time the first priority deck runs out of cards (results in immediate game termination with no clear winner).
@@ -113,7 +111,7 @@ TODO
 
 ## Remaining Goals and Challenges
 ### Other Algorithms
-As our current training results have shown, Q-learning is likely not sufficient for creating a strong agent to play Splendor. In 500,000 episodes there has been no real improvement in the agent's performance against random players. While the agent could be trained for more time, it will most likely have no noticeable performance improvement. Moving forward, we intend to try other algorithms such as Deep Q-learning and PPO. Once we have trained multiple algorithms for long enough to see noticeable improvement, we can pick the most promising algorithm and train them for an extended period of time.
+As our current training results have shown, Q-learning is likely not sufficient for creating a strong agent to play Splendor. In 500,000 episodes there has been no real improvement in the agent's performance against random players. While the agent could be trained for more time, it will most likely have no noticeable performance improvement. This is likely due to how large all the possible combinations of state spaces are which would make it more difficult to fill out the q-table given our number of training episodes. Moving forward, we intend to try other algorithms such as Deep Q-learning and PPO. Deep Q-learning will be especially useful since it handles the large state combinations we have better than Q-learning. Once we have trained more of these algorithms for long enough to see noticeable improvement, we can pick the most promising algorithms and train them for an extended period of time.
 
 ### Tuning Hyperparameters
 Another improvement we can make is fine-tuning hyperparameters in a way that will encourage the agent to take actions that give them an advantage in the game. Currently, we reward the agent points on the following scale:
