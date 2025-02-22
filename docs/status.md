@@ -99,37 +99,30 @@ of each agent against a random player over 1000 games.
     <img src="./win_rates.png" alt="Image 3" style="width: 30%; height: auto;">
 </div>
 
-As shown in the plots above, all statistics ossilate heavily, even after 500,000 episodes. Although it was a small success that Splendor could run for 500,000 episodes without a crash, the results are dissapointing nonetheless We will pivot immediately to DQN and PPO for the remainder of the quarter. However, this preliminary testing did provide insight in other statistics that we can measure going forward, namely:
+As shown in the plots above, all statistics oscillate heavily, even after 500,000 episodes. Although it was a small success that Splendor could run for 500,000 episodes without a crash, the results are disappointing nonetheless We will pivot immediately to DQN and PPO for the remainder of the quarter. However, this preliminary testing did provide insight in other statistics that we can measure going forward, namely:
 * the average rewards,
 * the average number of times that both players have no moves (results in immediate game termination with no clear winner),
 * and the average number of time the first priority deck runs out of cards (results in immediate game termination with no clear winner).
 
 ### Qualitative Analysis
-* experiment with humans playing against trained agent (qualitative result)
-TODO
+Whilst so far we have evaluated our agent's performance only on its performance against random agents, we eventually want to gauge our agent's performance against human players. This will test our agent's performance against a player with real strategy and would allow us to evaluate its performance in a more practical setting.
 
+Since playing games with human players will take significantly longer, its performance against human players will be evaluated on a smaller number of plays. Playing human players also introduces more variance in strategies and skill levels of the opponent. It would be best to evaluate its performance against multiple human players. Each human player should play against the agent the same amount of time, and performance against individual players and against all players combined should both be considered.
 
 ## Remaining Goals and Challenges
 ### Other Algorithms
 As our current training results have shown, Q-learning is likely not sufficient for creating a strong agent to play Splendor. In 500,000 episodes there has been no real improvement in the agent's performance against random players. While the agent could be trained for more time, it will most likely have no noticeable performance improvement. This is likely due to how large all the possible combinations of state spaces are which would make it more difficult to fill out the q-table given our number of training episodes. Moving forward, we intend to try other algorithms such as Deep Q-learning and PPO. Deep Q-learning will be especially useful since it handles the large state combinations we have better than Q-learning. Once we have trained more of these algorithms for long enough to see noticeable improvement, we can pick the most promising algorithms and train them for an extended period of time.
 
-### Tuning Hyperparameters
-Another improvement we can make is fine-tuning hyperparameters in a way that will encourage the agent to take actions that give them an advantage in the game. Currently, we reward the agent points on the following scale:
+### Rewards Shaping
+Another improvement we can make is fine-tuning rewards in a way that will encourage the agent to take actions that give them an advantage in the game. Currently, we reward the agent points on the following scale:
 * 10 for every point acquired.
 * 1.5 for every permanent resource acquired.
 * 1000 for winning the game.
+
 One change we can make is changing the scale of these points and training agents on different scaling of these rewards to find a better scaling. We can also introduce other parameters, such as gems acquired and gold acquired. Furthermore, we can reward the agent for accumulating gems and resources of the same type and for collecting gems that are more useful for purchasing current reserved cards and cards on the board.
 
-### Training time
-
-
-
-* Limitation of current p
-* challenge: inconsistencies in win rates
-* Implement and test other algorithms
-* make comparisons to other algorithms
-* run for longer on hpc3
-* test changing rewards shaping and hyperparameters
+### Summary
+While our game's implementation within the OpenSpiel framework is solid, and our chosen representation of the game state and possible action spaces have been carefully considered to be as small as possible, the state space is still too large for Q-learning. This, combined with not having experimented much with different reward values, has resulted in an agent with poor and inconsistent performance, even with its fairly long training time. Our goal over the next few weeks is to experiment with other algorithms and reward shaping to create an agent that not only perform well against random agents, but can also frequently win against human players.
 
 ## Resources
 - [OpenSpiel](https://github.com/google-deepmind/open_spiel): We prototyped the Splendor game by modifying the `open_spiel/python/games/kuhn_poker.py` file. We also used
