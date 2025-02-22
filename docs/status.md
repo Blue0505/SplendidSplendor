@@ -95,11 +95,10 @@ of each agent against a random player over 1000 games.
 
 <div style="display: flex; justify-content: space-between; align-items: center; max-width: 800px; margin: auto;">
     <img src="./game_length.png" alt="Image 1" style="width: 30%; height: auto;">
-    <img src="./game_loss.png" alt="Image 2" style="width: 30%; height: auto;">
     <img src="./win_rates.png" alt="Image 3" style="width: 30%; height: auto;">
 </div>
 
-As shown in the plots above, all statistics oscillate heavily, even after 500,000 episodes. Although it was a small success that Splendor could run for 500,000 episodes without a crash, the results are disappointing nonetheless We will pivot immediately to DQN and PPO for the remainder of the quarter. However, this preliminary testing did provide insight in other statistics that we can measure going forward, namely:
+As shown in the plots above, the win rates and average game length ossilate heavily even after 500,000 episodes. Although it was a small success that Splendor could run for 500,000 episodes without a crash, the results are disappointing nonetheless We will pivot immediately to DQN and PPO for the remainder of the quarter. However, this preliminary testing did provide insight in other statistics that we can measure going forward, namely:
 * the average rewards,
 * the average number of times that both players have no moves (results in immediate game termination with no clear winner),
 * and the average number of time the first priority deck runs out of cards (results in immediate game termination with no clear winner).
