@@ -3,6 +3,8 @@ layout: default
 title: Status
 ---
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/5FMj6bjlm3k?si=xYu63bMIU3NBlY3M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 ## Project Summary
 Our primary goal is to create an reinforcement learning (RL) trained agent that can play the Splendor board game. Thus far, we have coded the Splendor board game within the OpenSpiel framework. In doing so, we have immediate access to reinforcement learning algorithms including DQN and PPO. As of week 7, we have written extensive tests for the Splendor game and to our knowledge the game is in a working state. We have also run OpenSpiel's Q-learning algorithm against the game with 500,000 episodes, leading to poor results. Our goal for the rest of the quarter is to fine tune the reward shaping and try PPO and DQN. 
 
