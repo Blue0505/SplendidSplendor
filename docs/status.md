@@ -112,6 +112,19 @@ TODO
 
 
 ## Remaining Goals and Challenges
+### Other Algorithms
+As our current training results have shown, Q-learning is likely not sufficient for creating a strong agent to play Splendor. In 500,000 episodes there has been no real improvement in the agent's performance against random players. While the agent could be trained for more time, it will most likely have no noticeable performance improvement. Moving forward, we intend to try other algorithms such as Deep Q-learning and PPO. Once we have trained multiple algorithms for long enough to see noticeable improvement, we can pick the most promising algorithm and train them for an extended period of time.
+
+### Tuning Hyperparameters
+Another improvement we can make is fine-tuning hyperparameters in a way that will encourage the agent to take actions that give them an advantage in the game. Currently, we reward the agent points on the following scale:
+* 10 for every point acquired.
+* 1.5 for every permanent resource acquired.
+* 1000 for winning the game.
+One change we can make is changing the scale of these points and training agents on different scaling of these rewards to find a better scaling. We can also introduce other parameters, such as gems acquired and gold acquired. Furthermore, we can reward the agent for accumulating gems and resources of the same type and for collecting gems that are more useful for purchasing current reserved cards and cards on the board.
+
+### Training time
+
+
 
 * Limitation of current p
 * challenge: inconsistencies in win rates
