@@ -233,17 +233,14 @@ class SplendorState(pyspiel.State):
 
         if player.get_points() >= _WIN_POINTS:
             self._is_terminal = True 
-            # print("win")
         
         if not self._board.enough_cards():
-            # print("No cards")
             self._is_terminal = True
 
         
         if len(self._legal_actions(self._cur_player)) == 0: # Next player has no action.
             self.__swap_player()
             if len(self._legal_actions(self._cur_player)) == 0: # Both players have no action.
-                # print("No moves")
                 self._is_terminal = True
         
     
@@ -460,6 +457,4 @@ class BoardObserver:
         del player
         return " ".join(str(x) for x in self.dict["observation"])
 
-
-# Register the game with the OpenSpiel library
 pyspiel.register_game(_GAME_TYPE, SplendorGame)

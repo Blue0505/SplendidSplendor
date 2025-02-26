@@ -11,4 +11,4 @@ B_GRAY: str = "\033[1;90m"
 B_RED: str = "\033[1;31m"
 B_YELLOW: str = "\033[1;33m"
 BOLD: str = "\033[1m"
-RESET: str = "\033[0m"  # Remove all formatting
+RESET: str = "\033[0m" # Remove all formatting.
