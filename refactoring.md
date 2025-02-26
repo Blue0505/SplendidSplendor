@@ -34,3 +34,4 @@ General (in order but do after all other fixes)
 [ ] Rewrite/fix tests
     [ ] Remove the action logging system
     [ ] Play through game and write tests for anything that goes wrong
+[ ] Remove other branches/squash commits/prep to merge
