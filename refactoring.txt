@@ -1,0 +1,38 @@
+# Splendor code refactoring
+
+actions.py
+    [ ] Hardcode register_actions (?)
+    [ ] Change everything to NumPy arrays (including RETURN type and SPENDING_TURN type)
+
+board.py
+    [ ] Fix/remove enough_cards function (?)
+    [ ] Consolidate gem functions
+
+card.py
+    [ ] Consolidate gem functions
+
+player.py
+    [ ] Consolidate gem functions
+    [ ] Remove get_resources_sum
+    [ ] Rename get_sum
+
+helpers.py
+    [ ] Remove gem_to_tuple (requires modifications to actions.py)
+    [ ] Remove gem_array_str or place elsewhere
+
+play_splendor.py
+    [ ] Rewrite lines 123 with a loop
+    [ ] Make turn counter function 
+
+General (in order but do after all other fixes)
+[ ] Move splendor_game.py into /splendor folder. 
+[ ] Add typehints everywhere
+[ ] Return None in functions with only side effects
+[ ] Update magic constants
+[ ] Clean up file structure of RL algorithms
+[ ] Move __str__ and __array__ to the bottom of functions. 
+     [ ] Fix __array__ warnings
+[ ] Rewrite/fix tests
+    [ ] Remove the action logging system
+    [ ] Play through game and write tests for anything that goes wrong
+[ ] Remove other branches/squash commits/prep to merge
