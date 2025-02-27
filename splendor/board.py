@@ -3,8 +3,7 @@ import numpy as np
 
 from splendor.card import Card
 from splendor.card_importer import csv_import
-from splendor.helpers import gem_array_str
-from splendor.gems import Gems
+from splendor.gems import Gems, gem_array_str
 
 BOARD_COLOR_START: int = 4
 BOARD_GOLD_START: int = 5

@@ -1,5 +1,5 @@
 import enum
-from numpy import np
+import numpy as np
 from typing import Any
 
 

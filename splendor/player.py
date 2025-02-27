@@ -2,8 +2,7 @@ import numpy as np
 from numpy.typing import NDArray
 
 from splendor.card import Card
-from splendor.helpers import gem_array_str
-from splendor.gems import Gems
+from splendor.gems import Gems, gem_array_str
 
 PLAYER_GEMS_START: int = 0
 MAX_RESERVE: int = 3
