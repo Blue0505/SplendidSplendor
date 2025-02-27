@@ -82,8 +82,6 @@ def get_action_name(action) -> str:
 
 game = pyspiel.load_game("python_splendor", {"shuffle_cards": False})
 state = game.new_initial_state()
-cur_time = time.time()
-info_fn = f"tests/playouts/{cur_time}_info.pkl"
 obs = make_observation(game)
 
 while not state.is_terminal():
@@ -104,11 +102,6 @@ while not state.is_terminal():
 
         if action not in legal_actions:
             print(f"Retry: {action} is not a legal action.")
-
-    with open(info_fn, "ab") as info:
-        pickle.dump(action, info)
-        pickle.dump(legal_actions, info)
-        pickle.dump(tensor, info)
 
     state.apply_action(action)
 

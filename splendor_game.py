@@ -15,15 +15,15 @@
 from open_spiel.python.observation import IIGObserverForPublicInfoGame
 import pyspiel
 import numpy as np
+from numpy.typing import NDArray
 import enum
 
 from splendor.board import Board
 from splendor.player import Player
 from splendor.card import Card
-from splendor.actions import Actions, SAction, SCategory
-from splendor.gem import Gem
+from splendor.gems import Gems
+from splendor.actions import SActions, SAction, SCategory
 import splendor.ansi_escape_codes as ansi
-from splendor.helpers import gem_to_tuple
 
 _REWARD_POINTS_SCALE = 10
 _REWARD_RESOURCES_SCALE = 1.5
@@ -33,6 +33,8 @@ _NUM_PLAYERS = 2
 _CARDS_FILENAME = "data/cards.csv"
 _WIN_POINTS = 15
 _MAX_PLAYER_GEMS = 10
+_MAX_TAKE2_GEMS = 4
+
 _CARD_SHAPE = 11
 _GEM_SHAPE = 6
 _BOARD_SHAPE = ( _CARD_SHAPE * 12 ) + _GEM_SHAPE
@@ -105,7 +107,7 @@ class SplendorState(pyspiel.State):
         self._board: Board = Board(_CARDS_FILENAME, shuffle_cards)
         self._player_0: Player = Player()
         self._player_1: Player = Player()
-        self.__register_actions()
+        self._actions = SActions()
         self._turn_type = TurnType.NORMAL
         self._spending_card: Card
         self._spending_card_exists: bool = False
@@ -121,17 +123,11 @@ class SplendorState(pyspiel.State):
 
         # "SPENDING" turn.
         if self._turn_type == TurnType.SPENDING:
-            # "Spending gold" actions.
-            if self.__spending_turn_afford(player, Gem.WHITE):
-                legal_actions.append(SAction.CONSUME_GOLD_WHITE)
-            if self.__spending_turn_afford(player, Gem.BLUE):
-                legal_actions.append(SAction.CONSUME_GOLD_BLUE)
-            if self.__spending_turn_afford(player, Gem.GREEN):
-                legal_actions.append(SAction.CONSUME_GOLD_GREEN)
-            if self.__spending_turn_afford(player, Gem.RED):
-                legal_actions.append(SAction.CONSUME_GOLD_RED)
-            if self.__spending_turn_afford(player, Gem.BLACK):
-                legal_actions.append(SAction.CONSUME_GOLD_BLACK)
+            consume_ids = self._actions.get_action_ids(SCategory.SPENDING_TURN)
+            consume_ids.pop() # Remove END_SPENDING_TURN. 
+            for action_id in consume_ids:
+                gems = self._actions.get_action_object(action_id)
+                self.__spending_turn_afford(player, gems)
 
             # "End turn" actions.
             if self._spending_card_exists and player.can_purchase(self._spending_card, using_gold=False):
@@ -143,14 +139,14 @@ class SplendorState(pyspiel.State):
         elif self._turn_type == TurnType.RETURN:
             return_ids = self._actions.get_action_ids(SCategory.RETURN)
             for action_id in return_ids:
-                gem_tuple = gem_to_tuple(self._actions.get_action_object(action_id))
-                if player.has_gems(*gem_tuple):
+                gems = self._actions.get_action_object(action_id)
+                if player.gems.has_at_least(gems):
                     legal_actions.append(action_id)
             return legal_actions
 
         # "NORMAL" turn.
 
-        # "Reserving" action.
+        # "Reserving" action. 
         if not player.reserve_limit():
             reserve_ids = self._actions.get_action_ids(SCategory.RESERVE)
             legal_actions.extend(reserve_ids)
@@ -170,14 +166,15 @@ class SplendorState(pyspiel.State):
         # "Take 2" actions.
         take2_ids = self._actions.get_action_ids(SCategory.TAKE2)
         for action_id in take2_ids:
-            action_object = self._actions.get_action_object(action_id)
-            if self._board.has_gems(*tuple(2 * amount for amount in action_object)):
+            gems_required = np.copy(self._actions.get_action_object(action_id))
+            gems_required[gems_required != 0] = _MAX_TAKE2_GEMS
+            if self._board.gems.has_at_least(gems_required):
                 legal_actions.append(action_id)
 
         # "Take 3" actions.
         take3_ids = self._actions.get_action_ids(SCategory.TAKE3)
         for action_id in take3_ids:
-            if self._board.has_gems(*self._actions.get_action_object(action_id)):
+            if self._board.gems.has_at_least(self._actions.get_action_object(action_id)):
                 legal_actions.append(action_id)
 
         return sorted(legal_actions)
@@ -196,21 +193,23 @@ class SplendorState(pyspiel.State):
                 self.__apply_spending_turn(player, action_object)
 
         elif self._turn_type == TurnType.RETURN:
-            gem_tuple = gem_to_tuple(action_object)
-            player.update_gems(*(-gem for gem in gem_tuple))
-            self._board.update_gems(*gem_tuple)
-            if player.get_sum() <= 10:
+            gems = np.copy(action_object)
+            player.gems.update(-gems)
+            self._board.gems.update(gems)
+            if player.gems.get_gem_sum() <= 10:
                 self._turn_type = TurnType.NORMAL
                 self.__swap_player()
 
         else:  # "NORMAL" turn.
             if action_category == SCategory.RESERVE:
-                self.__apply_reserve(player, *action_object)
+                row, col = action_object
+                self.__apply_reserve(player, row, col)
 
             elif action_category == SCategory.PURCHASE:
-                self._spending_card = self._board.pop_card(*action_object)
+                row, col = action_object
+                self._spending_card = self._board.pop_card(row, col)
                 self._spending_card_exists = True
-                if player.has_gold():
+                if player.gems.has_gold():
                     self._turn_type = TurnType.SPENDING
                 else:
                     self.__apply_end_spending_turn(player)
@@ -219,24 +218,20 @@ class SplendorState(pyspiel.State):
             elif action_category == SCategory.PURCHASE_RESERVE:
                 self._spending_card = player.pop_reserved_card(action_object)
                 self._spending_card_exists = True
-                if player.has_gold():
+                if player.gems.has_gold():
                     self._turn_type = TurnType.SPENDING
                 else:
                     self.__apply_end_spending_turn(player)
 
             elif (action_category == SCategory.TAKE2 or action_category == SCategory.TAKE3):
                 self.__apply_take_gems(player, action_object)
-                if player.get_sum() > _MAX_PLAYER_GEMS:
+                if player.gems.get_gem_sum() > _MAX_PLAYER_GEMS:
                     self._turn_type = TurnType.RETURN
                 else:
                     self.__swap_player()
 
-        if player.get_points() >= _WIN_POINTS:
-            self._is_terminal = True 
-        
-        if not self._board.enough_cards():
+        if player.get_points() >= _WIN_POINTS or not self._board.enough_cards():
             self._is_terminal = True
-
         
         if len(self._legal_actions(self._cur_player)) == 0: # Next player has no action.
             self.__swap_player()
@@ -264,7 +259,7 @@ class SplendorState(pyspiel.State):
         player0_reward = reward_points + reward_resources + reward_win
         return [player0_reward, -player0_reward]
 
-    def __str__(self):  # TODO.
+    def __str__(self):
         """String for debug purposes. No particular semantics are required."""
         output = ""
         dashes = ("-" * 59) + "\n"
@@ -294,116 +289,57 @@ class SplendorState(pyspiel.State):
     def __swap_player(self):
         self._cur_player = 0 if self._cur_player == 1 else 1
 
-    def __spending_turn_afford(self, player: Player, gem_to_remove: Gem):
+    def __spending_turn_afford(self, player: Player, gems_array: NDArray):
         "Check if a player can still afford a card after a gold is spent for a specific color."
-        if player.get_gold() == 0:
+        if player.gems.get_gold() == 0:
             return False
-        
-        gem_tuple = gem_to_tuple(gem_to_remove)[:-1]
-        if not self._spending_card.has_gems(*gem_tuple):
+            
+        if not self._spending_card.gems.has_at_least(gems_array):
             return False
 
-        player.update_gems(gold=-1)
+        player.gems.update(np.array([0, 0, 0, 0, 0, -1]))
         can_afford = False
 
-        
-        self._spending_card.update_gems(*tuple(-gem for gem in gem_tuple))
+        self._spending_card.gems.update(-gems_array)
         can_afford = player.can_purchase(self._spending_card)
-        self._spending_card.update_gems(*gem_tuple)
-        player.update_gems(gold=1)
+        self._spending_card.gems.update(gems_array)
+        player.gems.update(np.array([0, 0, 0, 0, 0, 1]))
         return can_afford
 
-    def __apply_take_gems(self, player: Player, gem_tuple):
+    def __apply_take_gems(self, player: Player, gems):
         """Moves gems from the board to the player."""
-        player.update_gems(*gem_tuple)
-        reduce = tuple(-gem for gem in gem_tuple)
-        self._board.update_gems(*reduce)
+        player.gems.update(gems)
+        self._board.gems.update(-gems)
 
     def __apply_reserve(self, player: Player, row, col):
         """Moves a card from the board to the reserve slot of a player."""
-        if self._board.has_gold():
-            self._board.update_gems(gold=-1)
-            player.update_gems(gold=1)
+        if self._board.gems.has_gold():
+            self._board.gems.update(np.array([0, 0, 0, 0, 0, -1]))
+            player.gems.update(np.array([0, 0, 0, 0, 0, 1]))
         card = self._board.pop_card(row, col)
         player.add_reserved_card(card)
         self.__swap_player()
 
-    def __apply_end_spending_turn(self, player: Player ):
+    def __apply_end_spending_turn(self, player: Player):
         self.__swap_player()
         self._spending_card_exists = False
-        to_update = self._spending_card.get_costs_array() - player.get_resources_array()
+        to_update = self._spending_card.gems.get_array() - player.get_resources_array()
         to_update = np.clip(to_update, a_min=0, a_max=None)
-        player.update_gems(*tuple(-to_update))
-        self._board.update_gems(*tuple(to_update))
+        player.gems.update(-to_update)
+        self._board.gems.update(to_update)
         player.add_purchased_card(self._spending_card)
 
-    def __apply_spending_turn(self, player: Player, gem: Gem):
+    def __apply_spending_turn(self, player: Player, gems: Gems):
         """Moves a player's gold back to the board and reduces the gem of the card it was used for."""
-        gem_tuple = gem_to_tuple(gem)[:-1]
-        player.update_gems(gold=-1)
-        self._board.update_gems(gold=1)
-        self._spending_card.update_gems(*tuple(-gem for gem in gem_tuple))
+        player.gems.update(np.array([0, 0, 0, 0, 0, -1]))
+        self._board.gems.update(np.array([0, 0, 0, 0, 0, 1]))
+        self._spending_card.gems.update(-gems)
+
 
     def __register_actions(self):
         self._actions: Actions = Actions()
 
-        self._actions.register_action(SAction.RESERVE_00, SCategory.RESERVE, (0, 0))
-        self._actions.register_action(SAction.RESERVE_01, SCategory.RESERVE, (0, 1))
-        self._actions.register_action(SAction.RESERVE_02, SCategory.RESERVE, (0, 2))
-        self._actions.register_action(SAction.RESERVE_03, SCategory.RESERVE, (0, 3))
-        self._actions.register_action(SAction.RESERVE_04, SCategory.RESERVE, (0, 4))
-        self._actions.register_action(SAction.RESERVE_10, SCategory.RESERVE, (1, 0))
-        self._actions.register_action(SAction.RESERVE_11, SCategory.RESERVE, (1, 1))
-        self._actions.register_action(SAction.RESERVE_12, SCategory.RESERVE, (1, 2))
-        self._actions.register_action(SAction.RESERVE_13, SCategory.RESERVE, (1, 3))
-        self._actions.register_action(SAction.RESERVE_14, SCategory.RESERVE, (1, 4))
-        self._actions.register_action(SAction.RESERVE_20, SCategory.RESERVE, (2, 0))
-        self._actions.register_action(SAction.RESERVE_21, SCategory.RESERVE, (2, 1))
-        self._actions.register_action(SAction.RESERVE_22, SCategory.RESERVE, (2, 2))
-        self._actions.register_action(SAction.RESERVE_23, SCategory.RESERVE, (2, 3))
-        self._actions.register_action(SAction.RESERVE_24, SCategory.RESERVE, (2, 4))
-        self._actions.register_action(SAction.PURCHASE_01, SCategory.PURCHASE, (0, 1))
-        self._actions.register_action(SAction.PURCHASE_02, SCategory.PURCHASE, (0, 2))
-        self._actions.register_action(SAction.PURCHASE_03, SCategory.PURCHASE, (0, 3))
-        self._actions.register_action(SAction.PURCHASE_04, SCategory.PURCHASE, (0, 4))
-        self._actions.register_action(SAction.PURCHASE_11, SCategory.PURCHASE, (1, 1))
-        self._actions.register_action(SAction.PURCHASE_12, SCategory.PURCHASE, (1, 2))
-        self._actions.register_action(SAction.PURCHASE_13, SCategory.PURCHASE, (1, 3))
-        self._actions.register_action(SAction.PURCHASE_14, SCategory.PURCHASE, (1, 4))
-        self._actions.register_action(SAction.PURCHASE_21, SCategory.PURCHASE, (2, 1))
-        self._actions.register_action(SAction.PURCHASE_22, SCategory.PURCHASE, (2, 2))
-        self._actions.register_action(SAction.PURCHASE_23, SCategory.PURCHASE, (2, 3))
-        self._actions.register_action(SAction.PURCHASE_24, SCategory.PURCHASE, (2, 4))
-        self._actions.register_action(SAction.PURCHASE_RESERVE_0, SCategory.PURCHASE_RESERVE, 0)
-        self._actions.register_action(SAction.PURCHASE_RESERVE_1, SCategory.PURCHASE_RESERVE, 1)
-        self._actions.register_action(SAction.PURCHASE_RESERVE_2, SCategory.PURCHASE_RESERVE, 2)
-        self._actions.register_action(SAction.TAKE3_11100, SCategory.TAKE3, (1, 1, 1, 0, 0))
-        self._actions.register_action(SAction.TAKE3_11010, SCategory.TAKE3, (1, 1, 0, 1, 0))
-        self._actions.register_action(SAction.TAKE3_11001, SCategory.TAKE3, (1, 1, 0, 0, 1))
-        self._actions.register_action(SAction.TAKE3_10110, SCategory.TAKE3, (1, 0, 1, 1, 0))
-        self._actions.register_action(SAction.TAKE3_10101, SCategory.TAKE3, (1, 0, 1, 0, 1))
-        self._actions.register_action(SAction.TAKE3_10011, SCategory.TAKE3, (1, 0, 0, 1, 1))
-        self._actions.register_action(SAction.TAKE3_01110, SCategory.TAKE3, (0, 1, 1, 1, 0))
-        self._actions.register_action(SAction.TAKE3_01101, SCategory.TAKE3, (0, 1, 1, 0, 1))
-        self._actions.register_action(SAction.TAKE3_01011, SCategory.TAKE3, (0, 1, 0, 1, 1))
-        self._actions.register_action(SAction.TAKE3_00111, SCategory.TAKE3, (0, 0, 1, 1, 1))
-        self._actions.register_action(SAction.TAKE2_0, SCategory.TAKE2, (2, 0, 0, 0, 0))
-        self._actions.register_action(SAction.TAKE2_1, SCategory.TAKE2, (0, 2, 0, 0, 0))
-        self._actions.register_action(SAction.TAKE2_2, SCategory.TAKE2, (0, 0, 2, 0, 0))
-        self._actions.register_action(SAction.TAKE2_3, SCategory.TAKE2, (0, 0, 0, 2, 0))
-        self._actions.register_action(SAction.TAKE2_4, SCategory.TAKE2, (0, 0, 0, 0, 2))
-        self._actions.register_action(SAction.RETURN_0, SCategory.RETURN, Gem.WHITE)
-        self._actions.register_action(SAction.RETURN_1, SCategory.RETURN, Gem.BLUE)
-        self._actions.register_action(SAction.RETURN_2, SCategory.RETURN, Gem.GREEN)
-        self._actions.register_action(SAction.RETURN_3, SCategory.RETURN, Gem.RED)
-        self._actions.register_action(SAction.RETURN_4, SCategory.RETURN, Gem.BLACK)
-        self._actions.register_action(SAction.RETURN_GOLD, SCategory.RETURN, Gem.GOLD)
-        self._actions.register_action(SAction.CONSUME_GOLD_WHITE, SCategory.SPENDING_TURN, Gem.WHITE)
-        self._actions.register_action(SAction.CONSUME_GOLD_BLUE, SCategory.SPENDING_TURN, Gem.BLUE)
-        self._actions.register_action(SAction.CONSUME_GOLD_GREEN, SCategory.SPENDING_TURN, Gem.GREEN)
-        self._actions.register_action(SAction.CONSUME_GOLD_RED, SCategory.SPENDING_TURN, Gem.RED)
-        self._actions.register_action(SAction.CONSUME_GOLD_BLACK, SCategory.SPENDING_TURN, Gem.BLACK)
-        self._actions.register_action(SAction.END_SPENDING_TURN, SCategory.SPENDING_TURN, None)
+      
 
 
 class BoardObserver:

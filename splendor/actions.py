@@ -1,29 +1,6 @@
 import enum
-
+from numpy import np
 from typing import Any
-
-
-class Actions:
-    """A class representing actions with an arbitrary object and category that can be accessed with an id."""
-
-    def __init__(self):
-        self._action_map = {}
-
-    def register_action(self, id: int, category: int, action_object: Any):
-        self._action_map[id] = (category, action_object)
-
-    def get_action_object(self, id: int):
-        return self._action_map[id][1]
-
-    def get_category(self, id: int) -> int:
-        return self._action_map[id][0]
-
-    def get_action_ids(self, action_category: int):
-        action_ids = []
-        for action_id, (dict_action_category, _) in self._action_map.items():
-            if dict_action_category == action_category:
-                action_ids.append(action_id)
-        return action_ids
 
 
 class SCategory(enum.IntEnum):
@@ -104,3 +81,82 @@ class SAction(enum.IntEnum):
     CONSUME_GOLD_RED = enum.auto()
     CONSUME_GOLD_BLACK = enum.auto()
     END_SPENDING_TURN = enum.auto()
+    
+SPLENDOR_ACTIONS = {
+    SAction.RESERVE_00: (SCategory.RESERVE, (0, 0)),
+    SAction.RESERVE_01: (SCategory.RESERVE, (0, 1)),
+    SAction.RESERVE_02: (SCategory.RESERVE, (0, 2)),
+    SAction.RESERVE_03: (SCategory.RESERVE, (0, 3)),
+    SAction.RESERVE_04: (SCategory.RESERVE, (0, 4)),
+    SAction.RESERVE_10: (SCategory.RESERVE, (1, 0)),
+    SAction.RESERVE_11: (SCategory.RESERVE, (1, 1)),
+    SAction.RESERVE_12: (SCategory.RESERVE, (1, 2)),
+    SAction.RESERVE_13: (SCategory.RESERVE, (1, 3)),
+    SAction.RESERVE_14: (SCategory.RESERVE, (1, 4)),
+    SAction.RESERVE_20: (SCategory.RESERVE, (2, 0)),
+    SAction.RESERVE_21: (SCategory.RESERVE, (2, 1)),
+    SAction.RESERVE_22: (SCategory.RESERVE, (2, 2)),
+    SAction.RESERVE_23: (SCategory.RESERVE, (2, 3)),
+    SAction.RESERVE_24: (SCategory.RESERVE, (2, 4)),
+    SAction.PURCHASE_01: (SCategory.PURCHASE, (0, 1)),
+    SAction.PURCHASE_02: (SCategory.PURCHASE, (0, 2)),
+    SAction.PURCHASE_03: (SCategory.PURCHASE, (0, 3)),
+    SAction.PURCHASE_04: (SCategory.PURCHASE, (0, 4)),
+    SAction.PURCHASE_11: (SCategory.PURCHASE, (1, 1)),
+    SAction.PURCHASE_12: (SCategory.PURCHASE, (1, 2)),
+    SAction.PURCHASE_13: (SCategory.PURCHASE, (1, 3)),
+    SAction.PURCHASE_14: (SCategory.PURCHASE, (1, 4)),
+    SAction.PURCHASE_21: (SCategory.PURCHASE, (2, 1)),
+    SAction.PURCHASE_22: (SCategory.PURCHASE, (2, 2)),
+    SAction.PURCHASE_23: (SCategory.PURCHASE, (2, 3)),
+    SAction.PURCHASE_24: (SCategory.PURCHASE, (2, 4)),
+    SAction.PURCHASE_RESERVE_0: (SCategory.PURCHASE_RESERVE, 0),
+    SAction.PURCHASE_RESERVE_1: (SCategory.PURCHASE_RESERVE, 1),
+    SAction.PURCHASE_RESERVE_2: (SCategory.PURCHASE_RESERVE, 2),
+    SAction.TAKE3_11100: (SCategory.TAKE3, np.array([1, 1, 1, 0, 0, 0])),
+    SAction.TAKE3_11010: (SCategory.TAKE3, np.array([1, 1, 0, 1, 0, 0])),
+    SAction.TAKE3_11001: (SCategory.TAKE3, np.array((1, 1, 0, 0, 1, 0))),
+    SAction.TAKE3_10110: (SCategory.TAKE3, np.array((1, 0, 1, 1, 0, 0))),
+    SAction.TAKE3_10101: (SCategory.TAKE3, np.array((1, 0, 1, 0, 1, 0))),
+    SAction.TAKE3_10011: (SCategory.TAKE3, np.array([1, 0, 0, 1, 1, 0])),
+    SAction.TAKE3_01110: (SCategory.TAKE3, np.array([0, 1, 1, 1, 0, 0])),
+    SAction.TAKE3_01101: (SCategory.TAKE3, np.array([0, 1, 1, 0, 1, 0])),
+    SAction.TAKE3_01011: (SCategory.TAKE3, np.array([0, 1, 0, 1, 1, 0])),
+    SAction.TAKE3_00111: (SCategory.TAKE3, np.array([0, 0, 1, 1, 1, 0])),
+    SAction.TAKE2_0: (SCategory.TAKE2, np.array([2, 0, 0, 0, 0, 0])),
+    SAction.TAKE2_1: (SCategory.TAKE2, np.array([0, 2, 0, 0, 0, 0])),
+    SAction.TAKE2_2: (SCategory.TAKE2, np.array([0, 0, 2, 0, 0, 0])),
+    SAction.TAKE2_3: (SCategory.TAKE2, np.array([0, 0, 0, 2, 0, 0])),
+    SAction.TAKE2_4: (SCategory.TAKE2, np.array([0, 0, 0, 0, 2, 0])),
+    SAction.RETURN_0: (SCategory.RETURN, np.array([1, 0, 0, 0, 0, 0])),
+    SAction.RETURN_1: (SCategory.RETURN, np.array([0, 1, 0, 0, 0, 0])),
+    SAction.RETURN_2: (SCategory.RETURN, np.array([0, 0, 1, 0, 0, 0])),
+    SAction.RETURN_3: (SCategory.RETURN, np.array([0, 0, 0, 1, 0, 0])),
+    SAction.RETURN_4: (SCategory.RETURN, np.array([0, 0, 0, 0, 1, 0])),
+    SAction.RETURN_GOLD: (SCategory.RETURN, np.array([0, 0, 0, 0, 0, 1])),
+    SAction.CONSUME_GOLD_WHITE: (SCategory.SPENDING_TURN, np.array([1, 0, 0, 0, 0, 0])),
+    SAction.CONSUME_GOLD_BLUE: (SCategory.SPENDING_TURN, np.array([0, 1, 0, 0, 0, 0])),
+    SAction.CONSUME_GOLD_GREEN: (SCategory.SPENDING_TURN, np.array([0, 0, 1, 0, 0, 0])),
+    SAction.CONSUME_GOLD_RED: (SCategory.SPENDING_TURN, np.array([0, 0, 0, 1, 0, 0])),
+    SAction.CONSUME_GOLD_BLACK: (SCategory.SPENDING_TURN, np.array([0, 0, 0, 0, 1, 0])),
+    SAction.END_SPENDING_TURN: (SCategory.SPENDING_TURN, None)
+}
+
+class SActions: 
+    """A class representing splendor actions associated with an arbitrary object and category that can be accessed with an id."""
+
+    def __init__(self):
+        self._action_map = SPLENDOR_ACTIONS
+
+    def get_action_object(self, id: int):
+        return self._action_map[id][1]
+
+    def get_category(self, id: int) -> int:
+        return self._action_map[id][0]
+
+    def get_action_ids(self, action_category: int):
+        action_ids = []
+        for action_id, (dict_action_category, _) in self._action_map.items():
+            if dict_action_category == action_category:
+                action_ids.append(action_id)
+        return action_ids
