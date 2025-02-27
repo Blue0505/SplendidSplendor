@@ -127,7 +127,8 @@ class SplendorState(pyspiel.State):
             consume_ids.pop() # Remove END_SPENDING_TURN. 
             for action_id in consume_ids:
                 gems = self._actions.get_action_object(action_id)
-                self.__spending_turn_afford(player, gems)
+                if self.__spending_turn_afford(player, gems):
+                    legal_actions.append(action_id)
 
             # "End turn" actions.
             if self._spending_card_exists and player.can_purchase(self._spending_card, using_gold=False):

@@ -5,6 +5,7 @@ from numpy.typing import NDArray
 from splendor.player import Player
 from splendor.card import Card 
 from splendor.gem import Gem
+from splendor.gems import Gems
 
 _TEST_CARD = Card(points=0, gem_type=Gem.BLUE, costs=(5, 5, 5, 5, 5))
 
@@ -40,23 +41,23 @@ class TestPlayer(unittest.TestCase):
         
         with self.subTest("Cannot purchase with resource gem combination."):
             set_resource_array(self.player, np.array([2, 6, 10, 5, 10]))
-            self.player._gems = np.array([2, 0, 0, 0, 0]) # 5 - 2 - 2 = 1; not enough.
+            self.player.gems = Gems(np.array([2, 0, 0, 0, 0, 0]))
             self.assertFalse(self.player.can_purchase(_TEST_CARD))
         
         with self.subTest("Can purchase with resource gem combination."):
             set_resource_array(self.player, np.array([2, 6, 10, 5, 10]))
             self.player._gems = np.array([3, 0, 0, 0, 0]) # 5 - 2 - 3 = 0; just barely enough.
+            self.player.gems = Gems(np.array([3, 0, 0, 0, 0, 0]))
             self.assertTrue(self.player.can_purchase(_TEST_CARD))
         
         with self.subTest("Player can only afford due to gold."):
             set_resource_array(self.player, np.array([2, 6, 10, 5, 10]))
-            self.player._gems = np.array([2, 0, 0, 0, 0]) # 5 - 2 - 2 = 1; not enough.
-            self.player._gold_gems = 1 # Enough with gold. 
+            self.player.gems = Gems(np.array([2, 0, 0, 0, 0, 1]))
             self.assertTrue(self.player.can_purchase(_TEST_CARD, using_gold=True))
         
         with self.subTest("Player can afford using only gold."):
             set_resource_array(self.player, np.zeros(5).astype(int))
-            self.player._gold_gems = 25
+            self.player.gems = Gems(np.array([0, 0, 0, 0, 0, 25]))
             self.assertTrue(self.player.can_purchase(_TEST_CARD, using_gold=True))
 
 

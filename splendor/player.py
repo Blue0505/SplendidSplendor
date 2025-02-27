@@ -81,7 +81,7 @@ class Player:
         return np.array([
             self.get_points(),
             *self.gems.get_array(),
-            *self.get_resources_array(),
+            *(self.get_resources_array()[:5]),
             *reserved_0,
             *reserved_1,
             *reserved_2

@@ -33,6 +33,7 @@ class TestArrayMethods(unittest.TestCase):
 
     def test_player_array(self):
         arr = np.array(Player())
+        print(len(arr))
         self.assertEqual(len(arr), 45)
 
     def test_board_array(self):
@@ -49,7 +50,7 @@ class TestArrayMethods(unittest.TestCase):
             np.concatenate([
                 np.zeros(splendor_game._PLAYER_SHAPE),
                 np.zeros(splendor_game._PLAYER_SHAPE),
-                np.array([board.BOARD_GEM_START]*5),
+                np.array([board.BOARD_COLOR_START]*5),
                 [board.BOARD_GOLD_START],
                 *decks[0][-4:],
                 *decks[1][-4:],

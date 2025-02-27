@@ -24,7 +24,7 @@ class Card:
             self._gem_type == Gem.GREEN,
             self._gem_type == Gem.RED,
             self._gem_type == Gem.BLACK,
-            *self.gems.get_array()
+            *(self.gems.get_array()[:5])
         ])
 
     def __str__(self) -> str:
