@@ -80,7 +80,7 @@ def get_action_name(action) -> str:
     
     return f"{action:>2}: {action_type} {action_details}{ansi.RESET}"
 
-game = pyspiel.load_game("python_splendor", {"shuffle_cards": False})
+game = pyspiel.load_game("python_splendor", {"shuffle_cards": True})
 state = game.new_initial_state()
 obs = make_observation(game)
 

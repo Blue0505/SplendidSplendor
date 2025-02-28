@@ -365,7 +365,7 @@ class BoardObserver:
         * Purchase_Card:
             - Card
     
-        Observation objects can be generated in the __array__ methods of the correspoding class type. 
+        Observation objects can be generated in the __array__ methods of the corresponding class type. 
     
     Observation tensor: [ Player0, Player1, Board, Purchase_Card ]
     """
