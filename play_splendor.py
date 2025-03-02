@@ -2,9 +2,12 @@ import pyspiel
 import pickle
 import splendor_game
 import time
+import sys
 import splendor.ansi_escape_codes as ansi
 from splendor.actions import SAction
 from open_spiel.python.observation import make_observation
+
+_DEBUG = False
 
 def get_action_name(action) -> str:
     action_name: str = SAction(action).name
@@ -80,28 +83,68 @@ def get_action_name(action) -> str:
     
     return f"{action:>2}: {action_type} {action_details}{ansi.RESET}"
 
-game = pyspiel.load_game("python_splendor", {"shuffle_cards": True})
-state = game.new_initial_state()
-obs = make_observation(game)
+def display_tensor(tensor):
+    def print_card(subtensor):
+        print("Points", subtensor[0])
+        print("Type:", subtensor[1:6])
+        print("Costs:", subtensor[6:11])
 
-while not state.is_terminal():
-    print(state)
-    legal_actions = state.legal_actions()
-    obs.set_from(state,0) #type: ignore
-    tensor = obs.tensor #type: ignore
-    for action in state.legal_actions():
-        print(get_action_name(action))
+    def print_player(subtensor):
+        print("Score:", subtensor[0])
+        print("Gems:", subtensor[1:7])
+        print("Resources:", subtensor[7:12])
+        print_card(subtensor[12:23])
+        print_card(subtensor[23:34])
+        print_card(subtensor[34:45])
 
-    action = -1
-    while action not in legal_actions:
-        try: 
-            action = int(input("Select action."))
-        except Exception as e:
-            print(f"Retry: input was not an action.")
-            continue
+    print("PLAYER 0")
+    print_player(tensor[0:45])
+    print("\n")
+    print("PLAYER 1")
+    print_player(tensor[45:90])
+    print("\n")
+    print("Board", tensor[90:228])
+    print("Reserving card", tensor[228:239])
 
-        if action not in legal_actions:
-            print(f"Retry: {action} is not a legal action.")
 
-    state.apply_action(action)
 
+    # 6 + 5 # card
+        # self.tensor = np.concatenate([
+        #     state._player_0,
+        #     state._player_1,
+        #     state._board,
+        #     state._spending_card if state._spending_card_exists else np.zeros(_CARD_SHAPE)
+        # ])
+
+
+def main():
+    game = pyspiel.load_game("python_splendor", {"shuffle_cards": True})
+    state = game.new_initial_state()
+    obs = make_observation(game)
+
+    while not state.is_terminal():
+        print(state)
+        legal_actions = state.legal_actions()
+        if _DEBUG:
+            obs.set_from(state,0) #type: ignore
+            tensor = obs.tensor #type: ignore
+            display_tensor(tensor)
+
+        for action in state.legal_actions():
+            print(get_action_name(action))
+
+        action = -1
+        while action not in legal_actions:
+            try: 
+                action = int(input("Select action."))
+            except Exception as e:
+                print(f"Retry: input was not an action.")
+                continue
+
+            if action not in legal_actions:
+                print(f"Retry: {action} is not a legal action.")
+
+        state.apply_action(action)
+
+if __name__ == '__main__':
+    main()

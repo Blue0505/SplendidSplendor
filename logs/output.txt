@@ -1,0 +1,884 @@
+long running version
+
+WARNING:tensorflow:From /Users/colevanverth/Desktop/Splendid/.venv/lib/python3.10/site-packages/tensorflow/python/compat/v2_compat.py:98: disable_resource_variables (from tensorflow.python.ops.resource_variables_toggle) is deprecated and will be removed in a future version.
+Instructions for updating:
+non-resource variables are not supported in the long term
+I0227 23:31:07.578981 8148399360 rl_environment.py:182] Using game string: python_splendor
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1740727867.618749  728523 mlir_graph_optimization_pass.cc:401] MLIR V1 optimization pass is not enabled
+2025-02-27 23:31:07.678900: W tensorflow/c/c_api.cc:305] Operation '{name:'mlp_3/bias_2/Assign' id:458 op device:{requested: '', assigned: ''} def:{{{node mlp_3/bias_2/Assign}} = Assign[T=DT_FLOAT, _class=["loc:@mlp_3/bias_2"], _has_manual_control_dependencies=true, use_locking=true, validate_shape=true](mlp_3/bias_2, mlp_3/zeros_2)}}' was changed by setting attribute after it was run by a session. This mutation will have no effect, and will trigger an error in the future. Either don't modify nodes after running them or create a new session.
+I0227 23:34:47.767375 8148399360 rl_dqn.py:113] [1000] Mean episode rewards [1065.7995  925.769 ]
+I0227 23:38:27.224968 8148399360 rl_dqn.py:113] [2000] Mean episode rewards [1044.547   969.1075]
+I0227 23:42:07.090279 8148399360 rl_dqn.py:113] [3000] Mean episode rewards [1063.3715  733.4845]
+I0227 23:45:44.882372 8148399360 rl_dqn.py:113] [4000] Mean episode rewards [1066.9145  958.6515]
+I0227 23:49:28.635627 8148399360 rl_dqn.py:113] [5000] Mean episode rewards [1081.1215  665.1645]
+I0227 23:53:09.857466 8148399360 rl_dqn.py:113] [6000] Mean episode rewards [1084.6535  435.5315]
+I0227 23:56:59.511745 8148399360 rl_dqn.py:113] [7000] Mean episode rewards [1051.9345  289.2595]
+I0228 00:01:28.242750 8148399360 rl_dqn.py:113] [8000] Mean episode rewards [1052.2245  428.678 ]
+I0228 00:05:17.068362 8148399360 rl_dqn.py:113] [9000] Mean episode rewards [1066.3635  328.4395]
+I0228 00:09:05.378376 8148399360 rl_dqn.py:113] [10000] Mean episode rewards [1058.849  -26.913]
+I0228 00:09:06.115651 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 00:09:06.125637 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 00:09:06.134748 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 00:09:06.143824 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 00:13:00.031774 8148399360 rl_dqn.py:113] [11000] Mean episode rewards [1058.1695 -161.222 ]
+I0228 00:16:55.412539 8148399360 rl_dqn.py:113] [12000] Mean episode rewards [1064.5255  301.9225]
+I0228 00:21:03.008342 8148399360 rl_dqn.py:113] [13000] Mean episode rewards [1083.3475 -633.194 ]
+I0228 00:25:07.180274 8148399360 rl_dqn.py:113] [14000] Mean episode rewards [1080.045  -184.3755]
+I0228 00:29:05.084197 8148399360 rl_dqn.py:113] [15000] Mean episode rewards [1077.4325  124.761 ]
+I0228 00:33:42.835141 8148399360 rl_dqn.py:113] [16000] Mean episode rewards [1062.3195 -166.7045]
+I0228 00:37:31.033654 8148399360 rl_dqn.py:113] [17000] Mean episode rewards [1052.478   629.5605]
+I0228 00:41:33.497744 8148399360 rl_dqn.py:113] [18000] Mean episode rewards [1011.013 -348.653]
+I0228 00:45:29.302779 8148399360 rl_dqn.py:113] [19000] Mean episode rewards [1000.196  487.843]
+I0228 00:49:17.208864 8148399360 rl_dqn.py:113] [20000] Mean episode rewards [980.8165 835.2635]
+I0228 00:49:17.214622 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 00:49:17.219402 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 00:49:17.224360 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 00:49:17.228856 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 00:53:29.071214 8148399360 rl_dqn.py:113] [21000] Mean episode rewards [900.8465 738.4815]
+I0228 00:58:03.239300 8148399360 rl_dqn.py:113] [22000] Mean episode rewards [939.8135 203.811 ]
+I0228 01:02:22.416945 8148399360 rl_dqn.py:113] [23000] Mean episode rewards [796.9965 623.6435]
+I0228 01:06:22.534326 8148399360 rl_dqn.py:113] [24000] Mean episode rewards [313.052 960.853]
+I0228 01:11:17.635089 8148399360 rl_dqn.py:113] [25000] Mean episode rewards [603.304  905.4015]
+I0228 01:16:13.992826 8148399360 rl_dqn.py:113] [26000] Mean episode rewards [888.9795 903.916 ]
+I0228 01:20:50.691527 8148399360 rl_dqn.py:113] [27000] Mean episode rewards [775.116  730.0065]
+I0228 01:25:41.119466 8148399360 rl_dqn.py:113] [28000] Mean episode rewards [862.74   568.6575]
+I0228 01:29:35.890873 8148399360 rl_dqn.py:113] [29000] Mean episode rewards [718.7045 882.657 ]
+I0228 01:34:01.894412 8148399360 rl_dqn.py:113] [30000] Mean episode rewards [428.575  918.2225]
+I0228 01:34:01.900019 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 01:34:01.904853 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 01:34:01.910181 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 01:34:01.914824 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 01:38:21.178225 8148399360 rl_dqn.py:113] [31000] Mean episode rewards [896.1215 921.662 ]
+I0228 01:42:47.319224 8148399360 rl_dqn.py:113] [32000] Mean episode rewards [739.1495 959.6135]
+I0228 01:47:18.503947 8148399360 rl_dqn.py:113] [33000] Mean episode rewards [815.3155 877.0925]
+I0228 01:51:52.783377 8148399360 rl_dqn.py:113] [34000] Mean episode rewards [805.4685 899.559 ]
+I0228 01:56:27.675461 8148399360 rl_dqn.py:113] [35000] Mean episode rewards [616.347  939.9585]
+I0228 02:01:04.346946 8148399360 rl_dqn.py:113] [36000] Mean episode rewards [896.01  952.574]
+I0228 02:05:13.945812 8148399360 rl_dqn.py:113] [37000] Mean episode rewards [896.9195 706.0325]
+I0228 02:09:33.629539 8148399360 rl_dqn.py:113] [38000] Mean episode rewards [898.6835 896.5465]
+I0228 02:13:44.489228 8148399360 rl_dqn.py:113] [39000] Mean episode rewards [655.7235 582.7555]
+I0228 02:18:05.975588 8148399360 rl_dqn.py:113] [40000] Mean episode rewards [754.667  756.2625]
+I0228 02:18:05.981162 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 02:18:05.986361 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 02:18:05.991660 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 02:18:05.996761 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 02:22:41.770977 8148399360 rl_dqn.py:113] [41000] Mean episode rewards [231.0175 898.347 ]
+I0228 02:27:59.247770 8148399360 rl_dqn.py:113] [42000] Mean episode rewards [123.617 943.056]
+I0228 02:32:41.064623 8148399360 rl_dqn.py:113] [43000] Mean episode rewards [293.32   914.0495]
+I0228 02:37:12.926141 8148399360 rl_dqn.py:113] [44000] Mean episode rewards [844.995 883.409]
+I0228 02:41:10.981263 8148399360 rl_dqn.py:113] [45000] Mean episode rewards [767.208  795.8205]
+I0228 02:45:21.909467 8148399360 rl_dqn.py:113] [46000] Mean episode rewards [908.753  530.1815]
+I0228 02:49:29.057060 8148399360 rl_dqn.py:113] [47000] Mean episode rewards [943.689 851.385]
+I0228 02:53:34.336072 8148399360 rl_dqn.py:113] [48000] Mean episode rewards [891.0405 743.33  ]
+I0228 02:57:37.784667 8148399360 rl_dqn.py:113] [49000] Mean episode rewards [531.787  803.5315]
+I0228 03:02:01.877825 8148399360 rl_dqn.py:113] [50000] Mean episode rewards [816.5195 841.012 ]
+I0228 03:02:01.883173 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 03:02:01.888292 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 03:02:01.892940 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 03:02:01.897445 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 03:06:35.505820 8148399360 rl_dqn.py:113] [51000] Mean episode rewards [799.996 880.975]
+I0228 03:11:07.457823 8148399360 rl_dqn.py:113] [52000] Mean episode rewards [794.2185 713.715 ]
+I0228 03:15:09.762697 8148399360 rl_dqn.py:113] [53000] Mean episode rewards [710.2295 725.103 ]
+I0228 03:18:53.326052 8148399360 rl_dqn.py:113] [54000] Mean episode rewards [631.2095 889.387 ]
+I0228 03:23:55.123737 8148399360 rl_dqn.py:113] [55000] Mean episode rewards [724.74  648.571]
+I0228 03:28:01.361110 8148399360 rl_dqn.py:113] [56000] Mean episode rewards [823.7755 850.634 ]
+I0228 03:32:27.693803 8148399360 rl_dqn.py:113] [57000] Mean episode rewards [892.158  801.8125]
+I0228 03:37:20.037050 8148399360 rl_dqn.py:113] [58000] Mean episode rewards [749.787  607.2575]
+I0228 03:41:20.403239 8148399360 rl_dqn.py:113] [59000] Mean episode rewards [844.145 568.12 ]
+I0228 03:46:09.280097 8148399360 rl_dqn.py:113] [60000] Mean episode rewards [928.128  832.4205]
+I0228 03:46:09.286063 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 03:46:09.291025 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 03:46:09.296148 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 03:46:09.300864 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 03:49:58.190569 8148399360 rl_dqn.py:113] [61000] Mean episode rewards [938.148 686.865]
+I0228 03:53:41.878210 8148399360 rl_dqn.py:113] [62000] Mean episode rewards [914.518 794.883]
+I0228 03:57:43.386017 8148399360 rl_dqn.py:113] [63000] Mean episode rewards [921.66   -24.9035]
+I0228 04:01:48.097939 8148399360 rl_dqn.py:113] [64000] Mean episode rewards [ 974.0145 -109.034 ]
+I0228 04:05:50.842380 8148399360 rl_dqn.py:113] [65000] Mean episode rewards [988.039  -78.6215]
+I0228 04:09:45.451891 8148399360 rl_dqn.py:113] [66000] Mean episode rewards [1000.944   33.775]
+I0228 04:13:34.755768 8148399360 rl_dqn.py:113] [67000] Mean episode rewards [1004.4    324.716]
+I0228 04:17:28.046214 8148399360 rl_dqn.py:113] [68000] Mean episode rewards [1011.7175  305.2045]
+I0228 04:21:14.763338 8148399360 rl_dqn.py:113] [69000] Mean episode rewards [988.0965 465.8015]
+I0228 04:25:03.160324 8148399360 rl_dqn.py:113] [70000] Mean episode rewards [1013.935  446.201]
+I0228 04:25:03.165646 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 04:25:03.171006 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 04:25:03.175582 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 04:25:03.180567 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 04:29:02.158988 8148399360 rl_dqn.py:113] [71000] Mean episode rewards [1008.6365  722.0495]
+I0228 04:32:48.396723 8148399360 rl_dqn.py:113] [72000] Mean episode rewards [1022.7185  375.4855]
+I0228 04:36:44.032265 8148399360 rl_dqn.py:113] [73000] Mean episode rewards [972.4655 593.576 ]
+I0228 04:40:39.365924 8148399360 rl_dqn.py:113] [74000] Mean episode rewards [1024.505  447.577]
+I0228 04:44:21.810042 8148399360 rl_dqn.py:113] [75000] Mean episode rewards [984.973 814.174]
+I0228 04:48:57.289580 8148399360 rl_dqn.py:113] [76000] Mean episode rewards [1012.096    45.7905]
+I0228 04:52:47.908033 8148399360 rl_dqn.py:113] [77000] Mean episode rewards [1008.459   514.5705]
+I0228 04:56:47.539064 8148399360 rl_dqn.py:113] [78000] Mean episode rewards [1000.6645 -116.2325]
+I0228 05:00:33.027556 8148399360 rl_dqn.py:113] [79000] Mean episode rewards [1000.5645  491.09  ]
+I0228 05:04:21.977786 8148399360 rl_dqn.py:113] [80000] Mean episode rewards [1002.6915  259.8515]
+I0228 05:04:21.984109 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 05:04:21.989092 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 05:04:21.994392 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 05:04:21.999348 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 05:08:14.691866 8148399360 rl_dqn.py:113] [81000] Mean episode rewards [991.7115  68.954 ]
+I0228 05:12:09.822025 8148399360 rl_dqn.py:113] [82000] Mean episode rewards [1006.498   667.1555]
+I0228 05:16:09.247352 8148399360 rl_dqn.py:113] [83000] Mean episode rewards [1018.0635  305.842 ]
+I0228 05:20:00.819877 8148399360 rl_dqn.py:113] [84000] Mean episode rewards [993.4255 503.1895]
+I0228 05:24:34.390187 8148399360 rl_dqn.py:113] [85000] Mean episode rewards [ 996.1185 -131.9365]
+I0228 05:28:39.024773 8148399360 rl_dqn.py:113] [86000] Mean episode rewards [1009.447  180.663]
+I0228 05:33:12.584959 8148399360 rl_dqn.py:113] [87000] Mean episode rewards [999.479  -74.2465]
+I0228 05:36:53.082152 8148399360 rl_dqn.py:113] [88000] Mean episode rewards [1003.914  725.373]
+I0228 05:40:39.328741 8148399360 rl_dqn.py:113] [89000] Mean episode rewards [989.7265 357.227 ]
+I0228 05:44:41.104734 8148399360 rl_dqn.py:113] [90000] Mean episode rewards [987.7535 237.6975]
+I0228 05:44:41.111318 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 05:44:41.116835 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 05:44:41.121845 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 05:44:41.127246 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 05:48:31.811999 8148399360 rl_dqn.py:113] [91000] Mean episode rewards [1021.468  641.209]
+I0228 05:52:12.277332 8148399360 rl_dqn.py:113] [92000] Mean episode rewards [996.006  762.1665]
+I0228 05:56:44.597018 8148399360 rl_dqn.py:113] [93000] Mean episode rewards [1034.1805  101.232 ]
+I0228 06:00:33.385819 8148399360 rl_dqn.py:113] [94000] Mean episode rewards [898.9795 728.6835]
+I0228 06:04:28.942671 8148399360 rl_dqn.py:113] [95000] Mean episode rewards [892.0055 -21.9985]
+I0228 06:08:23.556354 8148399360 rl_dqn.py:113] [96000] Mean episode rewards [916.0065 704.8125]
+I0228 06:12:17.946894 8148399360 rl_dqn.py:113] [97000] Mean episode rewards [811.206 889.858]
+I0228 06:16:01.714040 8148399360 rl_dqn.py:113] [98000] Mean episode rewards [900.7625 857.364 ]
+I0228 06:20:47.505825 8148399360 rl_dqn.py:113] [99000] Mean episode rewards [954.4225 583.888 ]
+I0228 06:24:44.826618 8148399360 rl_dqn.py:113] [100000] Mean episode rewards [1002.547   485.7535]
+I0228 06:24:44.834254 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 06:24:44.839567 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 06:24:44.844594 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 06:24:44.849584 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 06:28:29.442767 8148399360 rl_dqn.py:113] [101000] Mean episode rewards [861.258 375.872]
+I0228 06:32:08.900175 8148399360 rl_dqn.py:113] [102000] Mean episode rewards [892.3235 591.778 ]
+I0228 06:36:55.473144 8148399360 rl_dqn.py:113] [103000] Mean episode rewards [876.081  768.6785]
+I0228 06:40:41.977430 8148399360 rl_dqn.py:113] [104000] Mean episode rewards [856.24 532.6 ]
+I0228 06:44:54.528838 8148399360 rl_dqn.py:113] [105000] Mean episode rewards [746.8185 783.3435]
+I0228 06:50:37.452579 8148399360 rl_dqn.py:113] [106000] Mean episode rewards [210.95  912.393]
+I0228 06:55:24.501447 8148399360 rl_dqn.py:113] [107000] Mean episode rewards [893.06  949.327]
+I0228 07:00:19.354125 8148399360 rl_dqn.py:113] [108000] Mean episode rewards [650.8835 983.295 ]
+I0228 07:05:03.053881 8148399360 rl_dqn.py:113] [109000] Mean episode rewards [750.6935 962.907 ]
+I0228 07:09:49.829799 8148399360 rl_dqn.py:113] [110000] Mean episode rewards [544.981 932.714]
+I0228 07:09:49.836498 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 07:09:49.841657 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 07:09:49.846458 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 07:09:49.851694 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 07:14:52.688967 8148399360 rl_dqn.py:113] [111000] Mean episode rewards [799.7155 934.451 ]
+I0228 07:19:33.969741 8148399360 rl_dqn.py:113] [112000] Mean episode rewards [878.9585 953.701 ]
+I0228 07:24:18.412061 8148399360 rl_dqn.py:113] [113000] Mean episode rewards [758.0265 783.301 ]
+I0228 07:29:08.204825 8148399360 rl_dqn.py:113] [114000] Mean episode rewards [222.896 944.394]
+I0228 07:34:23.185302 8148399360 rl_dqn.py:113] [115000] Mean episode rewards [140.6665 860.5995]
+I0228 07:38:57.132394 8148399360 rl_dqn.py:113] [116000] Mean episode rewards [888.4195 886.0715]
+I0228 07:42:53.047869 8148399360 rl_dqn.py:113] [117000] Mean episode rewards [875.129 910.27 ]
+I0228 07:47:10.054233 8148399360 rl_dqn.py:113] [118000] Mean episode rewards [778.002  981.5705]
+I0228 07:51:44.693697 8148399360 rl_dqn.py:113] [119000] Mean episode rewards [243.994 903.683]
+I0228 07:56:18.199407 8148399360 rl_dqn.py:113] [120000] Mean episode rewards [720.0525 945.697 ]
+I0228 07:56:18.206773 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 07:56:18.211961 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 07:56:18.216733 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 07:56:18.221431 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 08:01:06.197099 8148399360 rl_dqn.py:113] [121000] Mean episode rewards [484.415  942.7465]
+I0228 08:05:47.035686 8148399360 rl_dqn.py:113] [122000] Mean episode rewards [696.77   975.7705]
+I0228 08:10:48.229661 8148399360 rl_dqn.py:113] [123000] Mean episode rewards [114.7395 947.2705]
+I0228 08:15:40.692605 8148399360 rl_dqn.py:113] [124000] Mean episode rewards [ 805.548 1008.135]
+I0228 08:20:10.534820 8148399360 rl_dqn.py:113] [125000] Mean episode rewards [788.469  842.0685]
+I0228 08:24:21.035187 8148399360 rl_dqn.py:113] [126000] Mean episode rewards [691.389 820.458]
+I0228 08:29:06.153808 8148399360 rl_dqn.py:113] [127000] Mean episode rewards [629.485 940.142]
+I0228 08:33:52.827085 8148399360 rl_dqn.py:113] [128000] Mean episode rewards [538.0025 943.836 ]
+I0228 08:38:33.569029 8148399360 rl_dqn.py:113] [129000] Mean episode rewards [925.852 979.053]
+I0228 08:42:41.844655 8148399360 rl_dqn.py:113] [130000] Mean episode rewards [943.4465 959.9055]
+I0228 08:42:41.852027 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 08:42:41.857367 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 08:42:41.862529 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 08:42:41.867293 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 08:46:28.106696 8148399360 rl_dqn.py:113] [131000] Mean episode rewards [872.03 905.69]
+I0228 08:51:22.601050 8148399360 rl_dqn.py:113] [132000] Mean episode rewards [473.1005 727.142 ]
+I0228 08:56:02.353027 8148399360 rl_dqn.py:113] [133000] Mean episode rewards [632.1655 813.589 ]
+I0228 09:00:10.214056 8148399360 rl_dqn.py:113] [134000] Mean episode rewards [708.239  765.2235]
+I0228 09:04:50.558256 8148399360 rl_dqn.py:113] [135000] Mean episode rewards [206.9195 915.6955]
+I0228 09:09:42.153658 8148399360 rl_dqn.py:113] [136000] Mean episode rewards [830.754  924.0575]
+I0228 09:14:11.799906 8148399360 rl_dqn.py:113] [137000] Mean episode rewards [803.0045 841.493 ]
+I0228 09:18:33.817784 8148399360 rl_dqn.py:113] [138000] Mean episode rewards [844.7195 700.666 ]
+I0228 09:23:22.179324 8148399360 rl_dqn.py:113] [139000] Mean episode rewards [866.6995 838.5005]
+I0228 09:27:25.604907 8148399360 rl_dqn.py:113] [140000] Mean episode rewards [954.317  783.2765]
+I0228 09:27:25.612793 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 09:27:25.618553 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 09:27:25.623579 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 09:27:25.628205 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 09:31:35.977551 8148399360 rl_dqn.py:113] [141000] Mean episode rewards [898.1415 673.2165]
+I0228 09:35:22.021701 8148399360 rl_dqn.py:113] [142000] Mean episode rewards [994.883  521.0065]
+I0228 09:39:21.920094 8148399360 rl_dqn.py:113] [143000] Mean episode rewards [966.606 123.978]
+I0228 09:43:18.225089 8148399360 rl_dqn.py:113] [144000] Mean episode rewards [994.2445 388.5365]
+I0228 09:47:13.752282 8148399360 rl_dqn.py:113] [145000] Mean episode rewards [1003.58    109.3595]
+I0228 09:51:10.895653 8148399360 rl_dqn.py:113] [146000] Mean episode rewards [1008.264   407.2425]
+I0228 09:54:51.352393 8148399360 rl_dqn.py:113] [147000] Mean episode rewards [1005.971  687.081]
+I0228 09:58:39.407424 8148399360 rl_dqn.py:113] [148000] Mean episode rewards [1021.4785  437.8115]
+I0228 10:02:40.428182 8148399360 rl_dqn.py:113] [149000] Mean episode rewards [1010.995   534.1235]
+I0228 10:06:30.778082 8148399360 rl_dqn.py:113] [150000] Mean episode rewards [1011.2915  773.2835]
+I0228 10:06:30.786044 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 10:06:30.791303 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 10:06:30.796195 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 10:06:30.800891 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 10:10:11.522682 8148399360 rl_dqn.py:113] [151000] Mean episode rewards [1027.3175  442.5425]
+I0228 10:14:13.550483 8148399360 rl_dqn.py:113] [152000] Mean episode rewards [1013.303  -258.7515]
+I0228 10:18:03.654429 8148399360 rl_dqn.py:113] [153000] Mean episode rewards [1036.209   535.8635]
+I0228 10:22:44.021893 8148399360 rl_dqn.py:113] [154000] Mean episode rewards [1021.41    -77.8265]
+I0228 10:26:42.530833 8148399360 rl_dqn.py:113] [155000] Mean episode rewards [1030.5265  206.3465]
+I0228 10:31:22.658756 8148399360 rl_dqn.py:113] [156000] Mean episode rewards [1010.9615  -40.909 ]
+I0228 10:36:02.906110 8148399360 rl_dqn.py:113] [157000] Mean episode rewards [1031.9025 -103.5835]
+I0228 10:40:02.588396 8148399360 rl_dqn.py:113] [158000] Mean episode rewards [1003.5295  306.4455]
+I0228 10:43:57.731472 8148399360 rl_dqn.py:113] [159000] Mean episode rewards [1028.3895  309.966 ]
+I0228 10:47:41.482496 8148399360 rl_dqn.py:113] [160000] Mean episode rewards [1036.149   757.0095]
+I0228 10:47:41.490394 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 10:47:41.496206 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 10:47:41.502106 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 10:47:41.508529 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 10:51:32.300909 8148399360 rl_dqn.py:113] [161000] Mean episode rewards [1020.4645  360.035 ]
+I0228 10:55:27.819371 8148399360 rl_dqn.py:113] [162000] Mean episode rewards [1019.037   312.4995]
+I0228 10:59:16.943767 8148399360 rl_dqn.py:113] [163000] Mean episode rewards [1009.0465  611.8135]
+I0228 11:03:57.257006 8148399360 rl_dqn.py:113] [164000] Mean episode rewards [1032.6235  123.3695]
+I0228 11:07:49.954185 8148399360 rl_dqn.py:113] [165000] Mean episode rewards [1012.5045  223.38  ]
+I0228 11:11:45.951494 8148399360 rl_dqn.py:113] [166000] Mean episode rewards [1027.475  419.583]
+I0228 11:15:44.768639 8148399360 rl_dqn.py:113] [167000] Mean episode rewards [1019.293  652.022]
+I0228 11:19:29.285521 8148399360 rl_dqn.py:113] [168000] Mean episode rewards [1016.5105  503.4155]
+I0228 11:24:10.607882 8148399360 rl_dqn.py:113] [169000] Mean episode rewards [1032.938    18.5425]
+I0228 11:28:54.839246 8148399360 rl_dqn.py:113] [170000] Mean episode rewards [1027.584 -113.214]
+I0228 11:28:54.847768 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 11:28:54.853456 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 11:28:54.858675 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 11:28:54.863681 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 11:32:48.225493 8148399360 rl_dqn.py:113] [171000] Mean episode rewards [1013.9295  563.8675]
+I0228 11:37:30.811444 8148399360 rl_dqn.py:113] [172000] Mean episode rewards [1032.428  -187.0605]
+I0228 11:41:18.115720 8148399360 rl_dqn.py:113] [173000] Mean episode rewards [1012.301  697.313]
+I0228 11:45:07.039026 8148399360 rl_dqn.py:113] [174000] Mean episode rewards [1001.784  262.543]
+I0228 11:49:51.762700 8148399360 rl_dqn.py:113] [175000] Mean episode rewards [1000.465   66.778]
+I0228 11:53:46.910374 8148399360 rl_dqn.py:113] [176000] Mean episode rewards [1001.315  332.596]
+I0228 11:57:31.147176 8148399360 rl_dqn.py:113] [177000] Mean episode rewards [1020.559  491.481]
+I0228 12:01:11.766319 8148399360 rl_dqn.py:113] [178000] Mean episode rewards [1000.0045  816.1005]
+I0228 12:05:05.908367 8148399360 rl_dqn.py:113] [179000] Mean episode rewards [988.0045  59.4805]
+I0228 12:09:08.145077 8148399360 rl_dqn.py:113] [180000] Mean episode rewards [1007.821   347.3885]
+I0228 12:09:08.153506 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 12:09:08.158869 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 12:09:08.163927 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 12:09:08.168922 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 12:12:56.422091 8148399360 rl_dqn.py:113] [181000] Mean episode rewards [1018.3675  362.441 ]
+I0228 12:16:43.455059 8148399360 rl_dqn.py:113] [182000] Mean episode rewards [998.4345 787.0755]
+I0228 12:20:49.208749 8148399360 rl_dqn.py:113] [183000] Mean episode rewards [1001.5785  534.9125]
+I0228 12:24:43.208848 8148399360 rl_dqn.py:113] [184000] Mean episode rewards [1005.0275  795.0415]
+I0228 12:28:28.717851 8148399360 rl_dqn.py:113] [185000] Mean episode rewards [996.788  384.4585]
+I0228 12:32:25.763873 8148399360 rl_dqn.py:113] [186000] Mean episode rewards [1001.379  369.569]
+I0228 12:36:27.114280 8148399360 rl_dqn.py:113] [187000] Mean episode rewards [977.1555 787.016 ]
+I0228 12:40:31.777552 8148399360 rl_dqn.py:113] [188000] Mean episode rewards [1027.3165 -158.6945]
+I0228 12:45:14.816673 8148399360 rl_dqn.py:113] [189000] Mean episode rewards [1005.386  181.75 ]
+I0228 12:49:00.501388 8148399360 rl_dqn.py:113] [190000] Mean episode rewards [1006.4955  505.443 ]
+I0228 12:49:00.509814 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 12:49:00.514786 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 12:49:00.519750 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 12:49:00.524570 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 12:52:54.399151 8148399360 rl_dqn.py:113] [191000] Mean episode rewards [962.6105 635.189 ]
+I0228 12:57:34.942545 8148399360 rl_dqn.py:113] [192000] Mean episode rewards [934.3695 381.6275]
+I0228 13:01:44.022742 8148399360 rl_dqn.py:113] [193000] Mean episode rewards [970.111 332.517]
+I0228 13:06:21.831954 8148399360 rl_dqn.py:113] [194000] Mean episode rewards [884.44  732.159]
+I0228 13:11:16.998246 8148399360 rl_dqn.py:113] [195000] Mean episode rewards [723.302  863.3075]
+I0228 13:15:58.693588 8148399360 rl_dqn.py:113] [196000] Mean episode rewards [649.0275 776.0675]
+I0228 13:21:50.975779 8148399360 rl_dqn.py:113] [197000] Mean episode rewards [544.347  917.4325]
+I0228 13:26:57.435867 8148399360 rl_dqn.py:113] [198000] Mean episode rewards [733.419 888.363]
+I0228 13:32:21.838818 8148399360 rl_dqn.py:113] [199000] Mean episode rewards [613.4825 881.925 ]
+I0228 13:37:27.136534 8148399360 rl_dqn.py:113] [200000] Mean episode rewards [848.463 948.772]
+I0228 13:37:27.160826 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 13:37:27.167670 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 13:37:27.176271 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 13:37:27.182555 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 13:42:16.980051 8148399360 rl_dqn.py:113] [201000] Mean episode rewards [748.9405 717.074 ]
+I0228 13:47:23.665691 8148399360 rl_dqn.py:113] [202000] Mean episode rewards [706.9475 965.412 ]
+I0228 13:52:25.533563 8148399360 rl_dqn.py:113] [203000] Mean episode rewards [789.5735 912.0875]
+I0228 13:57:24.374763 8148399360 rl_dqn.py:113] [204000] Mean episode rewards [601.396  923.4685]
+I0228 14:02:43.819530 8148399360 rl_dqn.py:113] [205000] Mean episode rewards [388.4955 929.232 ]
+I0228 14:07:57.251960 8148399360 rl_dqn.py:113] [206000] Mean episode rewards [709.5185 944.7185]
+I0228 14:14:07.167549 8148399360 rl_dqn.py:113] [207000] Mean episode rewards [147.966 937.531]
+I0228 14:19:30.581228 8148399360 rl_dqn.py:113] [208000] Mean episode rewards [375.0075 978.5385]
+I0228 14:24:40.703469 8148399360 rl_dqn.py:113] [209000] Mean episode rewards [866.424 978.888]
+I0228 14:29:25.180119 8148399360 rl_dqn.py:113] [210000] Mean episode rewards [835.9575 970.254 ]
+I0228 14:29:25.191644 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 14:29:25.215415 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 14:29:25.221922 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 14:29:25.228400 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 14:34:57.722584 8148399360 rl_dqn.py:113] [211000] Mean episode rewards [152.442 880.356]
+I0228 14:39:51.073955 8148399360 rl_dqn.py:113] [212000] Mean episode rewards [569.5055 899.974 ]
+I0228 14:44:36.992975 8148399360 rl_dqn.py:113] [213000] Mean episode rewards [344.9305 712.215 ]
+I0228 14:50:02.826684 8148399360 rl_dqn.py:113] [214000] Mean episode rewards [378.4565 906.0725]
+I0228 14:56:32.313328 8148399360 rl_dqn.py:113] [215000] Mean episode rewards [263.572  912.5585]
+I0228 15:01:50.316534 8148399360 rl_dqn.py:113] [216000] Mean episode rewards [160.851 922.059]
+I0228 15:06:54.958822 8148399360 rl_dqn.py:113] [217000] Mean episode rewards [832.798  957.9515]
+I0228 15:11:38.826251 8148399360 rl_dqn.py:113] [218000] Mean episode rewards [945.1485 841.3395]
+I0228 15:16:04.073544 8148399360 rl_dqn.py:113] [219000] Mean episode rewards [771.719  677.3525]
+I0228 15:21:14.924464 8148399360 rl_dqn.py:113] [220000] Mean episode rewards [306.494  944.3695]
+I0228 15:21:14.937481 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 15:21:14.946970 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 15:21:14.953310 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 15:21:14.959562 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 15:26:12.628859 8148399360 rl_dqn.py:113] [221000] Mean episode rewards [443.6645 917.5355]
+I0228 15:31:30.262523 8148399360 rl_dqn.py:113] [222000] Mean episode rewards [-206.8965  881.149 ]
+I0228 15:37:00.517698 8148399360 rl_dqn.py:113] [223000] Mean episode rewards [657.006  932.1725]
+I0228 15:43:01.739496 8148399360 rl_dqn.py:113] [224000] Mean episode rewards [158.1905 925.8125]
+I0228 15:47:37.334382 8148399360 rl_dqn.py:113] [225000] Mean episode rewards [618.1735 775.413 ]
+I0228 15:52:35.289699 8148399360 rl_dqn.py:113] [226000] Mean episode rewards [740.451 800.795]
+I0228 15:57:32.652630 8148399360 rl_dqn.py:113] [227000] Mean episode rewards [533.745 897.285]
+I0228 16:03:03.969532 8148399360 rl_dqn.py:113] [228000] Mean episode rewards [656.1865 874.2675]
+I0228 16:09:28.189597 8148399360 rl_dqn.py:113] [229000] Mean episode rewards [163.689 883.522]
+I0228 16:14:34.484208 8148399360 rl_dqn.py:113] [230000] Mean episode rewards [873.9615 842.8715]
+I0228 16:14:34.497329 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 16:14:34.503350 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 16:14:34.510195 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 16:14:34.516037 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 16:19:09.104868 8148399360 rl_dqn.py:113] [231000] Mean episode rewards [842.2175 705.1585]
+I0228 16:23:29.243127 8148399360 rl_dqn.py:113] [232000] Mean episode rewards [625.2345 445.9335]
+I0228 16:28:24.968294 8148399360 rl_dqn.py:113] [233000] Mean episode rewards [888.044  879.2655]
+I0228 16:32:18.350188 8148399360 rl_dqn.py:113] [234000] Mean episode rewards [909.3085 686.9875]
+I0228 16:36:06.111568 8148399360 rl_dqn.py:113] [235000] Mean episode rewards [905.0745 897.0705]
+I0228 16:40:03.977829 8148399360 rl_dqn.py:113] [236000] Mean episode rewards [916.4915 511.216 ]
+I0228 16:44:43.300402 8148399360 rl_dqn.py:113] [237000] Mean episode rewards [950.354  -28.6805]
+I0228 16:48:49.328466 8148399360 rl_dqn.py:113] [238000] Mean episode rewards [960.367  70.003]
+I0228 16:53:48.772417 8148399360 rl_dqn.py:113] [239000] Mean episode rewards [929.292  -72.5515]
+I0228 16:57:55.738357 8148399360 rl_dqn.py:113] [240000] Mean episode rewards [972.071  851.4605]
+I0228 16:57:55.762149 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 16:57:55.770939 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 16:57:55.781121 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 16:57:55.789737 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 17:02:49.988432 8148399360 rl_dqn.py:113] [241000] Mean episode rewards [ 927.0105 -159.3   ]
+I0228 17:07:52.269927 8148399360 rl_dqn.py:113] [242000] Mean episode rewards [930.723  -78.3075]
+I0228 17:12:30.641324 8148399360 rl_dqn.py:113] [243000] Mean episode rewards [930.3885 370.055 ]
+I0228 17:18:12.559394 8148399360 rl_dqn.py:113] [244000] Mean episode rewards [ 963.5815 -179.9785]
+I0228 17:23:16.696532 8148399360 rl_dqn.py:113] [245000] Mean episode rewards [967.5195  -2.2925]
+I0228 17:27:29.503669 8148399360 rl_dqn.py:113] [246000] Mean episode rewards [966.616  536.4655]
+I0228 17:31:56.063706 8148399360 rl_dqn.py:113] [247000] Mean episode rewards [941.671 808.786]
+I0228 17:36:21.956996 8148399360 rl_dqn.py:113] [248000] Mean episode rewards [966.4395 151.463 ]
+I0228 17:40:45.180917 8148399360 rl_dqn.py:113] [249000] Mean episode rewards [975.259 410.541]
+I0228 17:45:05.602910 8148399360 rl_dqn.py:113] [250000] Mean episode rewards [955.8235 387.146 ]
+I0228 17:45:05.904538 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 17:45:05.919848 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 17:45:05.931588 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 17:45:05.940834 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 17:50:21.980850 8148399360 rl_dqn.py:113] [251000] Mean episode rewards [975.001 -21.539]
+I0228 17:54:53.893661 8148399360 rl_dqn.py:113] [252000] Mean episode rewards [948.8015 699.1145]
+I0228 17:59:14.994554 8148399360 rl_dqn.py:113] [253000] Mean episode rewards [936.4215 646.236 ]
+I0228 18:03:32.792698 8148399360 rl_dqn.py:113] [254000] Mean episode rewards [937.31  569.385]
+I0228 18:08:03.153234 8148399360 rl_dqn.py:113] [255000] Mean episode rewards [966.6605  22.9565]
+I0228 18:12:36.901329 8148399360 rl_dqn.py:113] [256000] Mean episode rewards [988.9985 -35.232 ]
+I0228 18:17:12.830709 8148399360 rl_dqn.py:113] [257000] Mean episode rewards [963.729  575.6975]
+I0228 18:21:51.443322 8148399360 rl_dqn.py:113] [258000] Mean episode rewards [937.9135 601.6165]
+I0228 18:26:45.170026 8148399360 rl_dqn.py:113] [259000] Mean episode rewards [935.0765 222.8955]
+I0228 18:31:05.718476 8148399360 rl_dqn.py:113] [260000] Mean episode rewards [966.9735 713.675 ]
+I0228 18:31:06.069989 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 18:31:06.117455 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 18:31:06.129886 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 18:31:06.140700 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 18:36:20.761064 8148399360 rl_dqn.py:113] [261000] Mean episode rewards [ 964.9795 -110.556 ]
+I0228 18:41:58.182576 8148399360 rl_dqn.py:113] [262000] Mean episode rewards [974.2525  34.532 ]
+I0228 18:47:04.752110 8148399360 rl_dqn.py:113] [263000] Mean episode rewards [987.0705  74.7395]
+I0228 18:51:37.923860 8148399360 rl_dqn.py:113] [264000] Mean episode rewards [945.374 727.796]
+I0228 18:55:46.384328 8148399360 rl_dqn.py:113] [265000] Mean episode rewards [969.271  370.9395]
+I0228 19:00:15.801529 8148399360 rl_dqn.py:113] [266000] Mean episode rewards [974.5095 124.8445]
+I0228 19:05:01.661413 8148399360 rl_dqn.py:113] [267000] Mean episode rewards [994.9085 496.1785]
+I0228 19:09:34.956011 8148399360 rl_dqn.py:113] [268000] Mean episode rewards [963.937 426.176]
+I0228 19:13:55.730967 8148399360 rl_dqn.py:113] [269000] Mean episode rewards [978.631 327.327]
+I0228 19:18:23.776228 8148399360 rl_dqn.py:113] [270000] Mean episode rewards [ 966.8075 -119.364 ]
+I0228 19:18:24.007626 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 19:18:24.055350 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 19:18:24.070093 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 19:18:24.084797 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 19:22:47.265072 8148399360 rl_dqn.py:113] [271000] Mean episode rewards [947.333 337.406]
+I0228 19:27:14.750487 8148399360 rl_dqn.py:113] [272000] Mean episode rewards [997.822  831.9365]
+I0228 19:31:29.379151 8148399360 rl_dqn.py:113] [273000] Mean episode rewards [966.3865 366.2245]
+I0228 19:35:53.994945 8148399360 rl_dqn.py:113] [274000] Mean episode rewards [959.1215 612.389 ]
+I0228 19:41:16.056617 8148399360 rl_dqn.py:113] [275000] Mean episode rewards [893.993   96.4585]
+I0228 19:46:07.687482 8148399360 rl_dqn.py:113] [276000] Mean episode rewards [941.679 400.961]
+I0228 19:50:33.568765 8148399360 rl_dqn.py:113] [277000] Mean episode rewards [997.9085 323.1055]
+I0228 19:55:09.143563 8148399360 rl_dqn.py:113] [278000] Mean episode rewards [788.8945 565.7435]
+I0228 19:59:22.808917 8148399360 rl_dqn.py:113] [279000] Mean episode rewards [898.879 850.734]
+I0228 20:03:44.013945 8148399360 rl_dqn.py:113] [280000] Mean episode rewards [656.761  774.8655]
+I0228 20:03:44.111063 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 20:03:44.121283 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 20:03:44.142114 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 20:03:44.164448 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 20:08:21.615756 8148399360 rl_dqn.py:113] [281000] Mean episode rewards [ 65.3345 926.2945]
+I0228 20:13:16.516407 8148399360 rl_dqn.py:113] [282000] Mean episode rewards [138.5725 956.8155]
+I0228 20:18:27.443329 8148399360 rl_dqn.py:113] [283000] Mean episode rewards [ 69.3745 852.2525]
+I0228 20:23:47.442288 8148399360 rl_dqn.py:113] [284000] Mean episode rewards [322.0385 920.8285]
+I0228 20:28:17.275355 8148399360 rl_dqn.py:113] [285000] Mean episode rewards [746.256  968.8515]
+I0228 20:33:25.551060 8148399360 rl_dqn.py:113] [286000] Mean episode rewards [-96.865  932.5105]
+I0228 20:38:12.569993 8148399360 rl_dqn.py:113] [287000] Mean episode rewards [372.9485 894.708 ]
+I0228 20:43:19.375381 8148399360 rl_dqn.py:113] [288000] Mean episode rewards [ 42.5025 910.1265]
+I0228 20:48:26.830415 8148399360 rl_dqn.py:113] [289000] Mean episode rewards [-15.5005 873.9195]
+I0228 20:53:01.861262 8148399360 rl_dqn.py:113] [290000] Mean episode rewards [342.8805 889.5735]
+I0228 20:53:01.926878 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 20:53:01.940184 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 20:53:01.946989 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 20:53:01.956073 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 20:57:53.958369 8148399360 rl_dqn.py:113] [291000] Mean episode rewards [828.4745 877.6905]
+I0228 21:03:07.627240 8148399360 rl_dqn.py:113] [292000] Mean episode rewards [302.518  922.8255]
+I0228 21:07:50.321515 8148399360 rl_dqn.py:113] [293000] Mean episode rewards [-78.719  836.0975]
+I0228 21:11:57.614544 8148399360 rl_dqn.py:113] [294000] Mean episode rewards [855.1665 887.282 ]
+I0228 21:16:49.253533 8148399360 rl_dqn.py:113] [295000] Mean episode rewards [862.539  901.4865]
+I0228 21:21:06.453641 8148399360 rl_dqn.py:113] [296000] Mean episode rewards [736.9535 891.649 ]
+I0228 21:25:36.813915 8148399360 rl_dqn.py:113] [297000] Mean episode rewards [541.6435 905.4795]
+I0228 21:30:19.054971 8148399360 rl_dqn.py:113] [298000] Mean episode rewards [635.487  833.2185]
+I0228 21:35:11.065094 8148399360 rl_dqn.py:113] [299000] Mean episode rewards [357.723 881.541]
+I0228 21:39:45.365386 8148399360 rl_dqn.py:113] [300000] Mean episode rewards [474.397  898.9675]
+I0228 21:39:45.655508 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 21:39:45.717623 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 21:39:45.776885 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 21:39:45.788896 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 21:44:25.276121 8148399360 rl_dqn.py:113] [301000] Mean episode rewards [741.4235 873.486 ]
+I0228 21:49:15.329175 8148399360 rl_dqn.py:113] [302000] Mean episode rewards [576.7545 848.2825]
+I0228 21:54:00.419960 8148399360 rl_dqn.py:113] [303000] Mean episode rewards [256.332 922.706]
+I0228 21:58:10.944415 8148399360 rl_dqn.py:113] [304000] Mean episode rewards [648.9315 979.394 ]
+I0228 22:03:02.517096 8148399360 rl_dqn.py:113] [305000] Mean episode rewards [315.8205 912.482 ]
+I0228 22:07:16.935632 8148399360 rl_dqn.py:113] [306000] Mean episode rewards [472.258 878.278]
+I0228 22:12:05.216598 8148399360 rl_dqn.py:113] [307000] Mean episode rewards [324.721 874.613]
+I0228 22:17:00.293824 8148399360 rl_dqn.py:113] [308000] Mean episode rewards [-11.801 896.389]
+I0228 22:21:18.087814 8148399360 rl_dqn.py:113] [309000] Mean episode rewards [699.6995 895.0655]
+I0228 22:25:57.997955 8148399360 rl_dqn.py:113] [310000] Mean episode rewards [850.5975 880.832 ]
+I0228 22:25:58.266477 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 22:25:58.283772 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 22:25:58.294560 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 22:25:58.307453 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 22:30:19.268806 8148399360 rl_dqn.py:113] [311000] Mean episode rewards [632.246 947.027]
+I0228 22:35:49.761863 8148399360 rl_dqn.py:113] [312000] Mean episode rewards [ 72.942 692.791]
+I0228 22:41:48.816816 8148399360 rl_dqn.py:113] [313000] Mean episode rewards [164.7865 581.9325]
+I0228 22:46:53.211846 8148399360 rl_dqn.py:113] [314000] Mean episode rewards [880.7105 932.9685]
+I0228 22:51:32.916287 8148399360 rl_dqn.py:113] [315000] Mean episode rewards [925.2465 894.9015]
+I0228 22:55:38.742135 8148399360 rl_dqn.py:113] [316000] Mean episode rewards [882.599 815.621]
+I0228 23:01:10.448152 8148399360 rl_dqn.py:113] [317000] Mean episode rewards [859.5715 594.696 ]
+I0228 23:06:39.284070 8148399360 rl_dqn.py:113] [318000] Mean episode rewards [922.266 853.245]
+I0228 23:11:58.016026 8148399360 rl_dqn.py:113] [319000] Mean episode rewards [822.9965 906.7445]
+I0228 23:16:24.634394 8148399360 rl_dqn.py:113] [320000] Mean episode rewards [697.916 882.741]
+I0228 23:16:24.893338 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0228 23:16:24.938970 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0228 23:16:24.951103 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0228 23:16:24.984694 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0228 23:21:04.948135 8148399360 rl_dqn.py:113] [321000] Mean episode rewards [870.7745 517.746 ]
+I0228 23:26:06.169916 8148399360 rl_dqn.py:113] [322000] Mean episode rewards [930.5575 641.183 ]
+I0228 23:32:02.977030 8148399360 rl_dqn.py:113] [323000] Mean episode rewards [945.491 660.754]
+I0228 23:37:35.518362 8148399360 rl_dqn.py:113] [324000] Mean episode rewards [978.525 677.271]
+I0228 23:44:06.373246 8148399360 rl_dqn.py:113] [325000] Mean episode rewards [945.3805 415.514 ]
+I0228 23:49:36.438295 8148399360 rl_dqn.py:113] [326000] Mean episode rewards [973.282  913.9495]
+I0228 23:54:53.315958 8148399360 rl_dqn.py:113] [327000] Mean episode rewards [814.224 868.696]
+I0301 00:00:16.293454 8148399360 rl_dqn.py:113] [328000] Mean episode rewards [843.48  593.903]
+I0301 00:06:16.829622 8148399360 rl_dqn.py:113] [329000] Mean episode rewards [991.1105 -31.4215]
+I0301 00:11:53.845476 8148399360 rl_dqn.py:113] [330000] Mean episode rewards [992.158 858.713]
+I0301 00:11:54.069761 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0301 00:11:54.081346 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0301 00:11:54.113573 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0301 00:11:54.146903 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0301 00:17:06.283825 8148399360 rl_dqn.py:113] [331000] Mean episode rewards [947.819 662.659]
+I0301 00:23:18.011768 8148399360 rl_dqn.py:113] [332000] Mean episode rewards [969.9295 277.89  ]
+I0301 00:29:34.140085 8148399360 rl_dqn.py:113] [333000] Mean episode rewards [963.443  446.4265]
+I0301 00:35:41.678052 8148399360 rl_dqn.py:113] [334000] Mean episode rewards [983.6215 693.007 ]
+I0301 00:41:54.129014 8148399360 rl_dqn.py:113] [335000] Mean episode rewards [916.553  445.6725]
+I0301 00:48:05.633301 8148399360 rl_dqn.py:113] [336000] Mean episode rewards [868.9875 931.339 ]
+I0301 00:53:05.558974 8148399360 rl_dqn.py:113] [337000] Mean episode rewards [978.6635 965.64  ]
+I0301 00:58:04.752458 8148399360 rl_dqn.py:113] [338000] Mean episode rewards [793.162 816.19 ]
+I0301 01:04:48.324491 8148399360 rl_dqn.py:113] [339000] Mean episode rewards [210.6195 840.493 ]
+I0301 01:11:39.289182 8148399360 rl_dqn.py:113] [340000] Mean episode rewards [942.271  793.5565]
+I0301 01:11:39.439701 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0301 01:11:39.461812 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0301 01:11:39.476246 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0301 01:11:39.490206 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0301 01:37:48.719088 8148399360 rl_dqn.py:113] [341000] Mean episode rewards [773.845 909.363]
+I0301 02:15:03.441597 8148399360 rl_dqn.py:113] [342000] Mean episode rewards [479.833 967.303]
+I0301 03:23:16.795129 8148399360 rl_dqn.py:113] [343000] Mean episode rewards [802.8345 942.9545]
+I0301 03:59:37.032258 8148399360 rl_dqn.py:113] [344000] Mean episode rewards [747.602  902.8045]
+I0301 04:58:42.212039 8148399360 rl_dqn.py:113] [345000] Mean episode rewards [586.7835 935.7435]
+I0301 05:44:02.391933 8148399360 rl_dqn.py:113] [346000] Mean episode rewards [107.3485 939.793 ]
+I0301 06:45:30.841444 8148399360 rl_dqn.py:113] [347000] Mean episode rewards [651.2575 928.395 ]
+I0301 07:06:05.320283 8148399360 rl_dqn.py:113] [348000] Mean episode rewards [391.715 981.308]
+I0301 07:59:28.613667 8148399360 rl_dqn.py:113] [349000] Mean episode rewards [623.085  976.3595]
+I0301 08:22:00.770615 8148399360 rl_dqn.py:113] [350000] Mean episode rewards [783.106  981.5015]
+I0301 08:22:01.185295 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0301 08:22:01.200633 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0301 08:22:01.235536 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0301 08:22:01.253240 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0301 08:28:44.763741 8148399360 rl_dqn.py:113] [351000] Mean episode rewards [ 26.825 957.589]
+I0301 09:09:46.018375 8148399360 rl_dqn.py:113] [352000] Mean episode rewards [251.259  933.8715]
+I0301 09:28:19.715581 8148399360 rl_dqn.py:113] [353000] Mean episode rewards [-349.9555  956.4235]
+I0301 09:34:49.175522 8148399360 rl_dqn.py:113] [354000] Mean episode rewards [566.678 994.685]
+I0301 09:43:32.202178 8148399360 rl_dqn.py:113] [355000] Mean episode rewards [ -1.3625 983.4505]
+I0301 09:51:09.259806 8148399360 rl_dqn.py:113] [356000] Mean episode rewards [126.6965 950.69  ]
+I0301 09:58:58.836093 8148399360 rl_dqn.py:113] [357000] Mean episode rewards [210.909 971.706]
+I0301 10:07:29.170017 8148399360 rl_dqn.py:113] [358000] Mean episode rewards [862.2995 955.39  ]
+I0301 10:16:25.367493 8148399360 rl_dqn.py:113] [359000] Mean episode rewards [-300.079  932.888]
+I0301 10:25:01.446099 8148399360 rl_dqn.py:113] [360000] Mean episode rewards [439.278  972.1245]
+I0301 10:25:01.666231 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0301 10:25:01.701188 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0301 10:25:01.733716 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0301 10:25:01.752560 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0301 10:34:18.659984 8148399360 rl_dqn.py:113] [361000] Mean episode rewards [803.665  972.3565]
+I0301 10:44:54.892280 8148399360 rl_dqn.py:113] [362000] Mean episode rewards [104.722 909.379]
+I0301 10:53:37.319964 8148399360 rl_dqn.py:113] [363000] Mean episode rewards [634.591 906.543]
+I0301 11:01:22.020769 8148399360 rl_dqn.py:113] [364000] Mean episode rewards [238.1235 922.8255]
+I0301 11:11:45.054037 8148399360 rl_dqn.py:113] [365000] Mean episode rewards [181.649 933.343]
+I0301 11:20:53.046886 8148399360 rl_dqn.py:113] [366000] Mean episode rewards [551.522 926.854]
+I0301 11:29:48.435504 8148399360 rl_dqn.py:113] [367000] Mean episode rewards [167.357  867.0505]
+I0301 11:39:33.420165 8148399360 rl_dqn.py:113] [368000] Mean episode rewards [657.025 926.232]
+I0301 11:48:20.325886 8148399360 rl_dqn.py:113] [369000] Mean episode rewards [737.583  781.4425]
+I0301 11:57:28.698439 8148399360 rl_dqn.py:113] [370000] Mean episode rewards [491.704 703.958]
+I0301 11:57:28.844583 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0301 11:57:28.860430 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0301 11:57:28.874902 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0301 11:57:28.890229 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0301 12:08:04.869487 8148399360 rl_dqn.py:113] [371000] Mean episode rewards [895.937 864.711]
+I0301 12:17:10.563189 8148399360 rl_dqn.py:113] [372000] Mean episode rewards [664.5505 875.162 ]
+I0301 12:27:39.838364 8148399360 rl_dqn.py:113] [373000] Mean episode rewards [851.1525 717.935 ]
+I0301 12:47:47.936373 8148399360 rl_dqn.py:113] [374000] Mean episode rewards [818.573 292.848]
+I0301 13:00:54.851044 8148399360 rl_dqn.py:113] [375000] Mean episode rewards [734.815  649.9855]
+I0301 13:07:00.166159 8148399360 rl_dqn.py:113] [376000] Mean episode rewards [ 883.74   -263.1125]
+I0301 13:13:01.015121 8148399360 rl_dqn.py:113] [377000] Mean episode rewards [875.348  -33.3385]
+I0301 13:20:28.477283 8148399360 rl_dqn.py:113] [378000] Mean episode rewards [907.8735 -70.4335]
+I0301 13:26:08.679816 8148399360 rl_dqn.py:113] [379000] Mean episode rewards [955.845  337.1215]
+I0301 13:31:38.212532 8148399360 rl_dqn.py:113] [380000] Mean episode rewards [ 889.1425 -639.0875]
+I0301 13:31:38.694768 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0301 13:31:38.746412 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0301 13:31:38.805839 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0301 13:31:38.817458 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0301 13:36:48.515237 8148399360 rl_dqn.py:113] [381000] Mean episode rewards [918.4995 767.973 ]
+I0301 13:41:56.862025 8148399360 rl_dqn.py:113] [382000] Mean episode rewards [926.5985 500.151 ]
+I0301 13:47:12.036674 8148399360 rl_dqn.py:113] [383000] Mean episode rewards [ 931.469  -232.9715]
+I0301 13:51:54.082827 8148399360 rl_dqn.py:113] [384000] Mean episode rewards [902.4665 402.854 ]
+I0301 13:56:35.127094 8148399360 rl_dqn.py:113] [385000] Mean episode rewards [934.481  601.9855]
+I0301 14:01:44.513895 8148399360 rl_dqn.py:113] [386000] Mean episode rewards [979.181 -89.572]
+I0301 14:06:28.319272 8148399360 rl_dqn.py:113] [387000] Mean episode rewards [942.2605 202.7215]
+I0301 14:11:18.813977 8148399360 rl_dqn.py:113] [388000] Mean episode rewards [980.0775 429.695 ]
+I0301 14:16:07.895834 8148399360 rl_dqn.py:113] [389000] Mean episode rewards [948.2965 114.141 ]
+I0301 14:21:15.874614 8148399360 rl_dqn.py:113] [390000] Mean episode rewards [937.404  -55.4635]
+I0301 14:21:16.317008 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0301 14:21:16.363687 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0301 14:21:16.385840 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0301 14:21:16.425059 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0301 14:26:08.822806 8148399360 rl_dqn.py:113] [391000] Mean episode rewards [ 915.9115 -183.411 ]
+I0301 14:31:56.366506 8148399360 rl_dqn.py:113] [392000] Mean episode rewards [ 988.327 -137.918]
+I0301 14:37:11.800485 8148399360 rl_dqn.py:113] [393000] Mean episode rewards [ 929.674 -190.71 ]
+I0301 14:42:03.764119 8148399360 rl_dqn.py:113] [394000] Mean episode rewards [940.783  636.2645]
+I0301 14:46:52.625385 8148399360 rl_dqn.py:113] [395000] Mean episode rewards [955.654 759.267]
+I0301 14:51:45.749675 8148399360 rl_dqn.py:113] [396000] Mean episode rewards [953.1415 604.2785]
+I0301 14:56:30.829795 8148399360 rl_dqn.py:113] [397000] Mean episode rewards [961.855  655.8965]
+I0301 15:01:10.372743 8148399360 rl_dqn.py:113] [398000] Mean episode rewards [910.3265 482.889 ]
+I0301 15:06:33.921319 8148399360 rl_dqn.py:113] [399000] Mean episode rewards [ 932.2545 -124.0035]
+I0301 15:11:07.610714 8148399360 rl_dqn.py:113] [400000] Mean episode rewards [981.537  509.2635]
+I0301 15:11:08.087347 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0301 15:11:08.175390 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0301 15:11:08.199141 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0301 15:11:08.211781 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0301 15:16:13.756292 8148399360 rl_dqn.py:113] [401000] Mean episode rewards [920.2555  51.402 ]
+I0301 15:21:26.356590 8148399360 rl_dqn.py:113] [402000] Mean episode rewards [944.9155 -45.1755]
+I0301 15:26:15.015447 8148399360 rl_dqn.py:113] [403000] Mean episode rewards [932.843  222.3925]
+I0301 15:31:56.557607 8148399360 rl_dqn.py:113] [404000] Mean episode rewards [947.659 -14.768]
+I0301 15:36:48.475654 8148399360 rl_dqn.py:113] [405000] Mean episode rewards [897.0085 275.6535]
+I0301 15:41:23.211421 8148399360 rl_dqn.py:113] [406000] Mean episode rewards [914.2245 417.0345]
+I0301 15:46:36.427835 8148399360 rl_dqn.py:113] [407000] Mean episode rewards [871.077 464.844]
+I0301 15:52:17.244992 8148399360 rl_dqn.py:113] [408000] Mean episode rewards [ 869.7595 -108.0915]
+I0301 15:57:17.958683 8148399360 rl_dqn.py:113] [409000] Mean episode rewards [913.1835 159.577 ]
+I0301 16:02:12.674762 8148399360 rl_dqn.py:113] [410000] Mean episode rewards [938.7045 703.752 ]
+I0301 16:02:13.192296 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0301 16:02:13.283693 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0301 16:02:13.315402 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0301 16:02:13.377552 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0301 16:06:40.129287 8148399360 rl_dqn.py:113] [411000] Mean episode rewards [893.172  656.5175]
+I0301 16:11:22.820612 8148399360 rl_dqn.py:113] [412000] Mean episode rewards [890.956 273.081]
+I0301 16:16:25.405256 8148399360 rl_dqn.py:113] [413000] Mean episode rewards [912.0695 195.795 ]
+I0301 16:21:41.764786 8148399360 rl_dqn.py:113] [414000] Mean episode rewards [912.903 160.431]
+I0301 16:26:34.423631 8148399360 rl_dqn.py:113] [415000] Mean episode rewards [881.945 839.95 ]
+I0301 16:31:31.224014 8148399360 rl_dqn.py:113] [416000] Mean episode rewards [953.803 -58.452]
+I0301 16:36:28.310201 8148399360 rl_dqn.py:113] [417000] Mean episode rewards [894.5425 441.666 ]
+I0301 16:41:23.265012 8148399360 rl_dqn.py:113] [418000] Mean episode rewards [941.854  537.9705]
+I0301 16:47:05.754420 8148399360 rl_dqn.py:113] [419000] Mean episode rewards [891.869   38.0605]
+I0301 16:52:30.845080 8148399360 rl_dqn.py:113] [420000] Mean episode rewards [763.204 863.358]
+I0301 16:52:31.300738 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0301 16:52:31.360532 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0301 16:52:31.387294 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0301 16:52:31.420675 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0301 16:57:22.675456 8148399360 rl_dqn.py:113] [421000] Mean episode rewards [577.231 429.122]
+I0301 17:02:13.959310 8148399360 rl_dqn.py:113] [422000] Mean episode rewards [465.499 836.711]
+I0301 17:07:13.912585 8148399360 rl_dqn.py:113] [423000] Mean episode rewards [482.214  950.8575]
+I0301 17:12:08.387228 8148399360 rl_dqn.py:113] [424000] Mean episode rewards [737.459 969.313]
+I0301 17:17:04.132784 8148399360 rl_dqn.py:113] [425000] Mean episode rewards [679.781 985.641]
+I0301 17:21:46.524648 8148399360 rl_dqn.py:113] [426000] Mean episode rewards [767.5065 964.205 ]
+I0301 17:28:13.344411 8148399360 rl_dqn.py:113] [427000] Mean episode rewards [ 39.3885 951.929 ]
+I0301 17:33:36.514130 8148399360 rl_dqn.py:113] [428000] Mean episode rewards [ 368.2755 1002.751 ]
+I0301 17:38:51.310675 8148399360 rl_dqn.py:113] [429000] Mean episode rewards [-92.485 993.078]
+I0301 17:43:47.731386 8148399360 rl_dqn.py:113] [430000] Mean episode rewards [410.7905 975.7755]
+I0301 17:43:48.234106 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0301 17:43:48.326961 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0301 17:43:48.339702 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0301 17:43:48.366615 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0301 17:48:43.610929 8148399360 rl_dqn.py:113] [431000] Mean episode rewards [448.3305 979.2015]
+I0301 17:53:43.162292 8148399360 rl_dqn.py:113] [432000] Mean episode rewards [677.76   989.8665]
+I0301 17:58:49.378251 8148399360 rl_dqn.py:113] [433000] Mean episode rewards [592.3255 958.91  ]
+I0301 18:03:49.737205 8148399360 rl_dqn.py:113] [434000] Mean episode rewards [487.4115 975.4095]
+I0301 18:09:49.534914 8148399360 rl_dqn.py:113] [435000] Mean episode rewards [-57.422 999.875]
+I0301 18:15:01.647041 8148399360 rl_dqn.py:113] [436000] Mean episode rewards [869.1755 968.0295]
+I0301 18:20:03.526340 8148399360 rl_dqn.py:113] [437000] Mean episode rewards [433.0795 982.575 ]
+I0301 18:25:13.969887 8148399360 rl_dqn.py:113] [438000] Mean episode rewards [118.036 961.067]
+I0301 18:30:06.169354 8148399360 rl_dqn.py:113] [439000] Mean episode rewards [774.53  986.784]
+I0301 18:34:51.673110 8148399360 rl_dqn.py:113] [440000] Mean episode rewards [786.781 958.709]
+I0301 18:34:52.237982 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0301 18:34:52.296520 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0301 18:34:52.344584 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0301 18:34:52.375690 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0301 18:39:36.484946 8148399360 rl_dqn.py:113] [441000] Mean episode rewards [425.0065 927.2225]
+I0301 18:44:27.861897 8148399360 rl_dqn.py:113] [442000] Mean episode rewards [698.8165 895.511 ]
+I0301 18:49:35.306036 8148399360 rl_dqn.py:113] [443000] Mean episode rewards [634.006 955.702]
+I0301 18:54:29.262392 8148399360 rl_dqn.py:113] [444000] Mean episode rewards [585.5995 933.698 ]
+I0301 18:59:35.378318 8148399360 rl_dqn.py:113] [445000] Mean episode rewards [  2.992  905.4515]
+I0301 19:04:48.718372 8148399360 rl_dqn.py:113] [446000] Mean episode rewards [ 93.971  930.5925]
+I0301 19:10:32.790880 8148399360 rl_dqn.py:113] [447000] Mean episode rewards [ 44.4855 943.656 ]
+I0301 19:15:20.806153 8148399360 rl_dqn.py:113] [448000] Mean episode rewards [951.2065 968.021 ]
+I0301 19:20:04.113354 8148399360 rl_dqn.py:113] [449000] Mean episode rewards [778.9735 910.0775]
+I0301 19:25:02.019464 8148399360 rl_dqn.py:113] [450000] Mean episode rewards [257.691 905.933]
+I0301 19:25:02.530554 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0301 19:25:02.583393 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0301 19:25:02.648879 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0301 19:25:02.679265 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0301 19:30:06.265047 8148399360 rl_dqn.py:113] [451000] Mean episode rewards [135.787  969.8065]
+I0301 19:35:17.307205 8148399360 rl_dqn.py:113] [452000] Mean episode rewards [697.9195 893.6   ]
+I0301 19:41:04.712109 8148399360 rl_dqn.py:113] [453000] Mean episode rewards [115.717 929.2  ]
+I0301 19:46:04.282102 8148399360 rl_dqn.py:113] [454000] Mean episode rewards [579.8405 826.029 ]
+I0301 19:51:10.165621 8148399360 rl_dqn.py:113] [455000] Mean episode rewards [ 32.6335 981.224 ]
+I0301 19:56:05.927069 8148399360 rl_dqn.py:113] [456000] Mean episode rewards [ 94.142  954.1205]
+I0301 20:00:54.070338 8148399360 rl_dqn.py:113] [457000] Mean episode rewards [741.9395 992.6415]
+I0301 20:06:47.375124 8148399360 rl_dqn.py:113] [458000] Mean episode rewards [ 80.341  960.2855]
+I0301 20:11:53.042819 8148399360 rl_dqn.py:113] [459000] Mean episode rewards [874.3005 956.23  ]
+I0301 20:16:55.256999 8148399360 rl_dqn.py:113] [460000] Mean episode rewards [540.777  923.7155]
+I0301 20:16:55.812994 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0301 20:16:55.835156 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0301 20:16:55.905204 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0301 20:16:55.956016 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0301 20:21:45.761087 8148399360 rl_dqn.py:113] [461000] Mean episode rewards [775.5715 993.2145]
+I0301 20:26:46.999062 8148399360 rl_dqn.py:113] [462000] Mean episode rewards [880.5285 792.1295]
+I0301 20:33:03.147002 8148399360 rl_dqn.py:113] [463000] Mean episode rewards [906.329 758.514]
+I0301 20:38:54.535624 8148399360 rl_dqn.py:113] [464000] Mean episode rewards [682.021 759.039]
+I0301 20:44:39.585410 8148399360 rl_dqn.py:113] [465000] Mean episode rewards [644.6995 797.892 ]
+I0301 20:50:43.848806 8148399360 rl_dqn.py:113] [466000] Mean episode rewards [728.0395 806.871 ]
+I0301 20:58:03.368091 8148399360 rl_dqn.py:113] [467000] Mean episode rewards [948.989  695.2165]
+I0301 21:05:51.719541 8148399360 rl_dqn.py:113] [468000] Mean episode rewards [827.774 920.493]
+I0301 21:12:25.044339 8148399360 rl_dqn.py:113] [469000] Mean episode rewards [851.2625 883.0935]
+I0301 21:17:35.466506 8148399360 rl_dqn.py:113] [470000] Mean episode rewards [347.366  922.3015]
+I0301 21:17:36.059267 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0301 21:17:36.128669 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0301 21:17:36.144428 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0301 21:17:36.166260 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0301 21:23:28.583341 8148399360 rl_dqn.py:113] [471000] Mean episode rewards [779.4705 886.36  ]
+I0301 21:28:32.359318 8148399360 rl_dqn.py:113] [472000] Mean episode rewards [586.3285 839.347 ]
+I0301 21:34:37.382247 8148399360 rl_dqn.py:113] [473000] Mean episode rewards [912.5055 872.334 ]
+I0301 21:40:56.789175 8148399360 rl_dqn.py:113] [474000] Mean episode rewards [982.68  463.659]
+I0301 21:47:21.747462 8148399360 rl_dqn.py:113] [475000] Mean episode rewards [943.925 815.502]
+I0301 21:53:43.774937 8148399360 rl_dqn.py:113] [476000] Mean episode rewards [981.8775 483.459 ]
+I0301 22:00:13.457160 8148399360 rl_dqn.py:113] [477000] Mean episode rewards [927.5245 -17.2115]
+I0301 22:06:12.535249 8148399360 rl_dqn.py:113] [478000] Mean episode rewards [976.23 807.63]
+I0301 22:11:54.265712 8148399360 rl_dqn.py:113] [479000] Mean episode rewards [910.835  859.5185]
+I0301 22:17:35.479141 8148399360 rl_dqn.py:113] [480000] Mean episode rewards [1033.004   649.4405]
+I0301 22:17:36.011556 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0301 22:17:36.026822 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0301 22:17:36.063898 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0301 22:17:36.126501 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0301 22:23:43.590451 8148399360 rl_dqn.py:113] [481000] Mean episode rewards [1005.391    69.4315]
+I0301 22:29:48.337707 8148399360 rl_dqn.py:113] [482000] Mean episode rewards [992.1465 652.9595]
+I0301 22:36:08.601269 8148399360 rl_dqn.py:113] [483000] Mean episode rewards [973.786 777.056]
+I0301 22:42:02.884432 8148399360 rl_dqn.py:113] [484000] Mean episode rewards [970.4515 765.4955]
+I0301 22:47:20.837016 8148399360 rl_dqn.py:113] [485000] Mean episode rewards [711.325  767.0715]
+I0301 22:52:39.506983 8148399360 rl_dqn.py:113] [486000] Mean episode rewards [914.177 577.549]
+I0301 22:57:57.762607 8148399360 rl_dqn.py:113] [487000] Mean episode rewards [918.025 453.755]
+I0301 23:03:50.946256 8148399360 rl_dqn.py:113] [488000] Mean episode rewards [ 965.712 -358.394]
+I0301 23:10:23.044963 8148399360 rl_dqn.py:113] [489000] Mean episode rewards [999.758  -67.0705]
+I0301 23:16:06.732517 8148399360 rl_dqn.py:113] [490000] Mean episode rewards [930.9775 625.0405]
+I0301 23:16:07.500792 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0301 23:16:07.531872 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0301 23:16:07.632905 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0301 23:16:07.672276 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0301 23:22:02.000364 8148399360 rl_dqn.py:113] [491000] Mean episode rewards [953.26  648.808]
+I0301 23:28:07.886961 8148399360 rl_dqn.py:113] [492000] Mean episode rewards [872.6975 542.8485]
+I0301 23:34:00.362377 8148399360 rl_dqn.py:113] [493000] Mean episode rewards [1010.4645  465.408 ]
+I0301 23:40:04.148702 8148399360 rl_dqn.py:113] [494000] Mean episode rewards [963.363 399.265]
+I0301 23:46:56.618917 8148399360 rl_dqn.py:113] [495000] Mean episode rewards [931.8705  61.3085]
+I0301 23:52:14.874041 8148399360 rl_dqn.py:113] [496000] Mean episode rewards [884.327  487.0035]
+I0301 23:57:48.529520 8148399360 rl_dqn.py:113] [497000] Mean episode rewards [919.3485 493.9085]
+I0302 00:03:26.508744 8148399360 rl_dqn.py:113] [498000] Mean episode rewards [956.308 423.457]
+I0302 00:08:54.071549 8148399360 rl_dqn.py:113] [499000] Mean episode rewards [964.7565 419.368 ]
+I0302 00:14:55.642345 8148399360 rl_dqn.py:113] [500000] Mean episode rewards [969.497 143.531]
+I0302 00:14:56.340425 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0302 00:14:56.378648 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0302 00:14:56.402626 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0302 00:14:56.426245 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0302 00:20:33.854384 8148399360 rl_dqn.py:113] [501000] Mean episode rewards [928.6845 774.655 ]
+I0302 00:26:05.079912 8148399360 rl_dqn.py:113] [502000] Mean episode rewards [983.4355 800.5765]
+I0302 00:31:54.085389 8148399360 rl_dqn.py:113] [503000] Mean episode rewards [896.491  592.1295]
+I0302 00:37:09.443943 8148399360 rl_dqn.py:113] [504000] Mean episode rewards [927.124  667.7245]
+I0302 00:42:03.013407 8148399360 rl_dqn.py:113] [505000] Mean episode rewards [902.0755 596.808 ]
+I0302 00:47:33.915675 8148399360 rl_dqn.py:113] [506000] Mean episode rewards [909.8505 534.2325]
+I0302 00:52:56.159320 8148399360 rl_dqn.py:113] [507000] Mean episode rewards [900.7015 668.442 ]
+I0302 00:58:40.743891 8148399360 rl_dqn.py:113] [508000] Mean episode rewards [923.33   626.4265]
+I0302 01:03:37.675994 8148399360 rl_dqn.py:113] [509000] Mean episode rewards [906.2585 806.545 ]
+I0302 01:08:46.476247 8148399360 rl_dqn.py:113] [510000] Mean episode rewards [701.869  804.3015]
+I0302 01:08:46.774310 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0302 01:08:46.815073 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0302 01:08:46.842362 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0302 01:08:46.869174 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0302 01:14:35.519994 8148399360 rl_dqn.py:113] [511000] Mean episode rewards [709.2805 904.9765]
+I0302 01:20:15.176752 8148399360 rl_dqn.py:113] [512000] Mean episode rewards [986.815 870.646]
+I0302 01:25:59.971713 8148399360 rl_dqn.py:113] [513000] Mean episode rewards [676.9775 856.257 ]
+I0302 01:32:18.919198 8148399360 rl_dqn.py:113] [514000] Mean episode rewards [637.031 912.129]
+I0302 01:38:20.685882 8148399360 rl_dqn.py:113] [515000] Mean episode rewards [882.9045 935.4845]
+I0302 01:44:32.018270 8148399360 rl_dqn.py:113] [516000] Mean episode rewards [808.7195 866.409 ]
+I0302 01:49:58.883258 8148399360 rl_dqn.py:113] [517000] Mean episode rewards [833.136 892.323]
+I0302 01:55:50.756098 8148399360 rl_dqn.py:113] [518000] Mean episode rewards [581.6815 966.81  ]
+I0302 02:01:12.379925 8148399360 rl_dqn.py:113] [519000] Mean episode rewards [835.8735 826.42  ]
+I0302 02:06:33.044732 8148399360 rl_dqn.py:113] [520000] Mean episode rewards [987.6325 763.3075]
+I0302 02:06:33.595559 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0302 02:06:33.637204 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0302 02:06:33.672794 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0302 02:06:33.703066 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0302 02:11:44.910680 8148399360 rl_dqn.py:113] [521000] Mean episode rewards [940.636  707.6735]
+I0302 02:17:01.168678 8148399360 rl_dqn.py:113] [522000] Mean episode rewards [383.564 828.512]
+I0302 02:23:02.974615 8148399360 rl_dqn.py:113] [523000] Mean episode rewards [276.1735 921.8025]
+I0302 02:29:07.838773 8148399360 rl_dqn.py:113] [524000] Mean episode rewards [821.245  883.1265]
+I0302 02:35:34.516653 8148399360 rl_dqn.py:113] [525000] Mean episode rewards [317.5    705.7245]
+I0302 02:40:29.113461 8148399360 rl_dqn.py:113] [526000] Mean episode rewards [782.6655 824.8465]
+I0302 02:45:40.828927 8148399360 rl_dqn.py:113] [527000] Mean episode rewards [704.2255 736.075 ]
+I0302 02:50:52.799309 8148399360 rl_dqn.py:113] [528000] Mean episode rewards [895.9655 610.576 ]
+I0302 02:56:49.991942 8148399360 rl_dqn.py:113] [529000] Mean episode rewards [808.182  889.5075]
+I0302 03:02:05.691436 8148399360 rl_dqn.py:113] [530000] Mean episode rewards [909.5035 326.691 ]
+I0302 03:02:06.077602 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0302 03:02:06.094641 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0302 03:02:06.128534 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0302 03:02:06.200181 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0302 03:06:51.442618 8148399360 rl_dqn.py:113] [531000] Mean episode rewards [944.576 863.303]
+I0302 03:12:32.881566 8148399360 rl_dqn.py:113] [532000] Mean episode rewards [605.831 863.552]
+I0302 03:18:50.432207 8148399360 rl_dqn.py:113] [533000] Mean episode rewards [813.305  691.5815]
+I0302 03:24:30.304699 8148399360 rl_dqn.py:113] [534000] Mean episode rewards [962.5645 655.6365]
+I0302 03:30:20.976997 8148399360 rl_dqn.py:113] [535000] Mean episode rewards [808.688 787.444]
+I0302 03:35:10.052684 8148399360 rl_dqn.py:113] [536000] Mean episode rewards [808.865  636.5365]
+I0302 03:40:44.816240 8148399360 rl_dqn.py:113] [537000] Mean episode rewards [880.8125 428.577 ]
+I0302 03:46:54.102427 8148399360 rl_dqn.py:113] [538000] Mean episode rewards [960.8485 846.402 ]
+I0302 03:52:39.076528 8148399360 rl_dqn.py:113] [539000] Mean episode rewards [835.343 867.922]
+I0302 03:58:11.571383 8148399360 rl_dqn.py:113] [540000] Mean episode rewards [904.808 914.495]
+I0302 03:58:12.057728 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0302 03:58:12.092030 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0302 03:58:12.130597 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0302 03:58:12.158026 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0302 04:02:31.357332 8148399360 rl_dqn.py:113] [541000] Mean episode rewards [736.554  747.6365]
+I0302 04:08:19.267887 8148399360 rl_dqn.py:113] [542000] Mean episode rewards [715.524  877.5795]
+I0302 04:13:59.480065 8148399360 rl_dqn.py:113] [543000] Mean episode rewards [937.8515 929.52  ]
+I0302 04:19:03.272150 8148399360 rl_dqn.py:113] [544000] Mean episode rewards [960.7105 702.419 ]
+I0302 04:25:04.245151 8148399360 rl_dqn.py:113] [545000] Mean episode rewards [955.2765 400.063 ]
+I0302 04:31:08.541427 8148399360 rl_dqn.py:113] [546000] Mean episode rewards [957.462  860.6875]
+I0302 04:36:29.023199 8148399360 rl_dqn.py:113] [547000] Mean episode rewards [784.41   860.7965]
+I0302 04:42:48.299470 8148399360 rl_dqn.py:113] [548000] Mean episode rewards [551.906 862.285]
+I0302 04:47:45.663043 8148399360 rl_dqn.py:113] [549000] Mean episode rewards [559.4625 645.828 ]
+I0302 04:53:10.237277 8148399360 rl_dqn.py:113] [550000] Mean episode rewards [978.4555 611.7695]
+I0302 04:53:10.727168 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0302 04:53:10.771727 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0302 04:53:10.843125 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0302 04:53:10.902851 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0302 04:58:53.290476 8148399360 rl_dqn.py:113] [551000] Mean episode rewards [982.5785 919.8355]
+I0302 05:04:43.724307 8148399360 rl_dqn.py:113] [552000] Mean episode rewards [910.0475 884.9465]
+I0302 05:10:10.277601 8148399360 rl_dqn.py:113] [553000] Mean episode rewards [641.438  942.5925]
+I0302 05:17:09.461359 8148399360 rl_dqn.py:113] [554000] Mean episode rewards [537.057 972.136]
+I0302 05:22:36.723858 8148399360 rl_dqn.py:113] [555000] Mean episode rewards [864.5005 850.5675]
+I0302 05:27:26.776229 8148399360 rl_dqn.py:113] [556000] Mean episode rewards [915.9795 973.986 ]
+I0302 05:32:59.749140 8148399360 rl_dqn.py:113] [557000] Mean episode rewards [941.6975 348.5945]
+I0302 05:38:46.090086 8148399360 rl_dqn.py:113] [558000] Mean episode rewards [880.6035 800.0905]
+I0302 05:44:01.621087 8148399360 rl_dqn.py:113] [559000] Mean episode rewards [868.9565 828.1715]
+I0302 05:48:38.432197 8148399360 rl_dqn.py:113] [560000] Mean episode rewards [590.334 309.046]
+I0302 05:48:38.929291 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0302 05:48:38.967798 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0302 05:48:38.994484 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0302 05:48:39.015197 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0302 05:54:40.223205 8148399360 rl_dqn.py:113] [561000] Mean episode rewards [927.73  522.707]
+I0302 06:00:58.183476 8148399360 rl_dqn.py:113] [562000] Mean episode rewards [951.4235 869.995 ]
+I0302 06:05:49.463169 8148399360 rl_dqn.py:113] [563000] Mean episode rewards [808.112  891.7705]
+I0302 06:11:16.576058 8148399360 rl_dqn.py:113] [564000] Mean episode rewards [792.9135 713.225 ]
+I0302 06:15:59.563637 8148399360 rl_dqn.py:113] [565000] Mean episode rewards [806.2805 798.83  ]
+I0302 06:20:47.285893 8148399360 rl_dqn.py:113] [566000] Mean episode rewards [798.5985 550.2455]
+I0302 06:25:26.683820 8148399360 rl_dqn.py:113] [567000] Mean episode rewards [819.4965 592.64  ]
+I0302 06:30:45.789551 8148399360 rl_dqn.py:113] [568000] Mean episode rewards [898.7435 397.9755]
+I0302 06:35:33.816323 8148399360 rl_dqn.py:113] [569000] Mean episode rewards [842.813  117.6425]
+I0302 06:40:19.382591 8148399360 rl_dqn.py:113] [570000] Mean episode rewards [935.504 168.166]
+I0302 06:40:19.964400 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0302 06:40:20.009449 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0302 06:40:20.052419 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0302 06:40:20.086426 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0302 06:45:02.446639 8148399360 rl_dqn.py:113] [571000] Mean episode rewards [959.2415 396.2885]
+I0302 06:49:42.012491 8148399360 rl_dqn.py:113] [572000] Mean episode rewards [971.8275 778.0565]
+I0302 06:54:04.334594 8148399360 rl_dqn.py:113] [573000] Mean episode rewards [970.476  616.4995]
+I0302 06:59:01.018917 8148399360 rl_dqn.py:113] [574000] Mean episode rewards [896.3965 395.061 ]
+I0302 07:04:14.769587 8148399360 rl_dqn.py:113] [575000] Mean episode rewards [971.023  74.73 ]
+I0302 07:09:09.248332 8148399360 rl_dqn.py:113] [576000] Mean episode rewards [ 986.578  -103.8455]
+I0302 07:13:56.219681 8148399360 rl_dqn.py:113] [577000] Mean episode rewards [959.236  542.0075]
+I0302 07:18:38.018861 8148399360 rl_dqn.py:113] [578000] Mean episode rewards [969.7695 691.2685]
+I0302 07:23:59.271779 8148399360 rl_dqn.py:113] [579000] Mean episode rewards [938.669  479.5835]
+I0302 07:29:49.249580 8148399360 rl_dqn.py:113] [580000] Mean episode rewards [ 938.4105 -196.728 ]
+I0302 07:29:49.769693 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0302 07:29:49.809116 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0302 07:29:49.839951 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0302 07:29:49.869812 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0302 07:34:24.185688 8148399360 rl_dqn.py:113] [581000] Mean episode rewards [1001.5165  730.73  ]
+I0302 07:38:59.280186 8148399360 rl_dqn.py:113] [582000] Mean episode rewards [971.035  527.2335]
+I0302 07:43:31.866751 8148399360 rl_dqn.py:113] [583000] Mean episode rewards [967.0245 596.3575]
+I0302 07:48:25.919462 8148399360 rl_dqn.py:113] [584000] Mean episode rewards [954.847  235.9945]
+I0302 07:53:17.408592 8148399360 rl_dqn.py:113] [585000] Mean episode rewards [958.238  492.8985]
+I0302 07:57:50.267358 8148399360 rl_dqn.py:113] [586000] Mean episode rewards [949.4095 756.764 ]
+I0302 08:02:09.336159 8148399360 rl_dqn.py:113] [587000] Mean episode rewards [942.3735 549.7195]
+I0302 08:06:44.432044 8148399360 rl_dqn.py:113] [588000] Mean episode rewards [957.756 261.369]
+I0302 08:11:50.423979 8148399360 rl_dqn.py:113] [589000] Mean episode rewards [961.1655 564.919 ]
+I0302 08:16:40.148972 8148399360 rl_dqn.py:113] [590000] Mean episode rewards [933.2875 607.8545]
+I0302 08:16:40.730997 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0302 08:16:40.787325 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0302 08:16:40.822110 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0302 08:16:40.865999 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0302 08:21:35.137421 8148399360 rl_dqn.py:113] [591000] Mean episode rewards [972.8045 262.913 ]
+I0302 08:26:05.765387 8148399360 rl_dqn.py:113] [592000] Mean episode rewards [959.8205 647.2115]
+I0302 08:30:48.133439 8148399360 rl_dqn.py:113] [593000] Mean episode rewards [959.506  836.3545]
+I0302 08:35:34.284232 8148399360 rl_dqn.py:113] [594000] Mean episode rewards [ 909.739  -159.9845]
+I0302 08:40:25.397473 8148399360 rl_dqn.py:113] [595000] Mean episode rewards [950.3125 216.4565]
+I0302 08:45:01.775560 8148399360 rl_dqn.py:113] [596000] Mean episode rewards [966.5725 823.1285]
+I0302 08:49:55.162227 8148399360 rl_dqn.py:113] [597000] Mean episode rewards [996.2315 193.414 ]
+I0302 08:54:54.622364 8148399360 rl_dqn.py:113] [598000] Mean episode rewards [946.8135 557.765 ]
+I0302 08:59:43.907473 8148399360 rl_dqn.py:113] [599000] Mean episode rewards [883.443 793.964]
+I0302 09:05:07.784557 8148399360 rl_dqn.py:113] [600000] Mean episode rewards [949.993   5.179]
+I0302 09:05:08.245064 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid0
+I0302 09:05:08.325519 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid0
+I0302 09:05:08.353326 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/q_network_pid1
+I0302 09:05:08.369874 8148399360 dqn.py:360] Saved to path: /tmp/dqn_test/target_q_network_pid1
+I0302 09:09:49.866945 8148399360 rl_dqn.py:113] [601000] Mean episode rewards [815.033  749.3375]
+I0302 09:15:14.802031 8148399360 rl_dqn.py:113] [602000] Mean episode rewards [755.2885 894.3825]
+I0302 09:20:47.358992 8148399360 rl_dqn.py:113] [603000] Mean episode rewards [746.4945 886.5385]
+I0302 09:26:57.682049 8148399360 rl_dqn.py:113] [604000] Mean episode rewards [346.6155 928.905 ]
+I0302 09:33:12.306981 8148399360 rl_dqn.py:113] [605000] Mean episode rewards [891.5675 921.8925]
+I0302 09:39:07.266330 8148399360 rl_dqn.py:113] [606000] Mean episode rewards [773.8005 951.0745]
+I0302 09:44:43.839699 8148399360 rl_dqn.py:113] [607000] Mean episode rewards [681.763  862.1005]
+I0302 09:50:57.438383 8148399360 rl_dqn.py:113] [608000] Mean episode rewards [588.379  913.0105]
+239
+Traceback (most recent call last):
+  File "/Users/colevanverth/Desktop/Splendid/rl_dqn.py", line 135, in <module>
+    
+  File "/Users/colevanverth/Desktop/Splendid/.venv/lib/python3.10/site-packages/absl/app.py", line 308, in run
+    _run_main(main, args)
+  File "/Users/colevanverth/Desktop/Splendid/.venv/lib/python3.10/site-packages/absl/app.py", line 254, in _run_main
+    sys.exit(main(argv))
+  File "/Users/colevanverth/Desktop/Splendid/rl_dqn.py", line 127, in main
+    state_representation_size=info_state_size,
+  File "/Users/colevanverth/Desktop/Splendid/.venv/lib/python3.10/site-packages/open_spiel/python/rl_environment.py", line 322, in step
+    return self.get_time_step()
+  File "/Users/colevanverth/Desktop/Splendid/.venv/lib/python3.10/site-packages/open_spiel/python/rl_environment.py", line 246, in get_time_step
+    self._state.observation_tensor(player_id) if self._use_observation
+  File "/Users/colevanverth/Desktop/Splendid/splendor_game.py", line 88, in new_initial_state
+    return SplendorState(self, self.shuffle_cards)
+  File "/Users/colevanverth/Desktop/Splendid/splendor_game.py", line 107, in __init__
+    self._board: Board = Board(_CARDS_FILENAME, shuffle_cards)
+  File "/Users/colevanverth/Desktop/Splendid/splendor/board.py", line 32, in __init__
+    self._decks: list[list[Card]] = csv_import(filepath)
+  File "/Users/colevanverth/Desktop/Splendid/splendor/card_importer.py", line 32, in csv_import
+    decks[int(row["level"]) - 1].append(Card(points, gem_type, costs))
+  File "/Users/colevanverth/Desktop/Splendid/splendor/card.py", line 17, in __init__
+    self.gems = Gems([*np.array(costs), 0])
+  File "/Users/colevanverth/Desktop/Splendid/splendor/gems.py", line 8, in __init__
+    def __init__(self, gems: NDArray):
+KeyboardInterrupt

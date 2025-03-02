@@ -1,9 +1,9 @@
 # Splendor Code Refactoring
 
 ## High Priority  
-- [ ] Rewrite/fix tests  
-  - [ ] Remove the action logging system (?)  
-  - [ ] Play through game and write tests for anything that goes wrong  
+- [ X ] Rewrite/fix tests  
+  - [ X ] Remove the action logging system (?)  
+  - [ X ] Play through game and write tests for anything that goes wrong  
 
 ## Low Priority  
 - [ ] Add type hints everywhere  

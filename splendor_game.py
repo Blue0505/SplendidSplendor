@@ -29,6 +29,10 @@ _REWARD_POINTS_SCALE = 10
 _REWARD_RESOURCES_SCALE = 1.5
 _REWARD_WIN_SCALE = 1000
 
+_PENALTY_RETURN_SCALE = 1.5
+_PENALTY_GEM_HOARD_SCALE = 0.5
+_PENALTY_RESOURCE_HOARD_SCALE = 0.5
+
 _NUM_PLAYERS = 2
 _CARDS_FILENAME = "data/cards.csv"
 _WIN_POINTS = 15
@@ -182,6 +186,7 @@ class SplendorState(pyspiel.State):
 
     def _apply_action(self, action):
         """Applies the specified action to the state."""
+
         player = self._player_0 if self._cur_player == 0 else self._player_1
         action_category = self._actions.get_category(action)
         action_object = self._actions.get_action_object(action)
@@ -207,6 +212,7 @@ class SplendorState(pyspiel.State):
                 self.__apply_reserve(player, row, col)
 
             elif action_category == SCategory.PURCHASE:
+    
                 row, col = action_object
                 self._spending_card = self._board.pop_card(row, col)
                 self._spending_card_exists = True
@@ -238,7 +244,6 @@ class SplendorState(pyspiel.State):
             self.__swap_player()
             if len(self._legal_actions(self._cur_player)) == 0: # Both players have no action.
                 self._is_terminal = True
-        
     
     def _action_to_string(self, player, action):  # TODO.
         """Action -> string."""
@@ -257,7 +262,8 @@ class SplendorState(pyspiel.State):
         elif self._player_1.get_points() >= _WIN_POINTS: reward_win = -_REWARD_WIN_SCALE
         else: reward_win = 0
       
-        player0_reward = reward_points + reward_resources + reward_win
+        player0_reward = reward_points + reward_resources + reward_win # TODO: Change back. 
+   
         return [player0_reward, -player0_reward]
 
     def __str__(self):
@@ -277,7 +283,9 @@ class SplendorState(pyspiel.State):
             player1_str += " <-- \n"
 
         output += player0_str + dashes + str(self._player_0)
+        output += f"   Score: {self.returns()[0]}"
         output += player1_str + dashes + str(self._player_1)
+        output += f"   Score: {self.returns()[1]}"
 
         if self._turn_type == TurnType.SPENDING:
             output += f"{ansi.B_WHITE}\nSPENDING CARD:{ansi.RESET}\n"
@@ -335,10 +343,6 @@ class SplendorState(pyspiel.State):
         player.gems.update(np.array([0, 0, 0, 0, 0, -1]))
         self._board.gems.update(np.array([0, 0, 0, 0, 0, 1]))
         self._spending_card.gems.update(-gems)
-
-
-    def __register_actions(self):
-        self._actions: Actions = Actions()
 
       
 
