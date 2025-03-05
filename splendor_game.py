@@ -25,13 +25,12 @@ from splendor.gems import Gems
 from splendor.actions import SActions, SAction, SCategory
 import splendor.ansi_escape_codes as ansi
 
-_REWARD_POINTS_SCALE = 10
-_REWARD_RESOURCES_SCALE = 1.5
+_REWARD_POINTS_SCALE = 0
+_REWARD_RESOURCES_SCALE = 0
 _REWARD_WIN_SCALE = 1000
 
-_PENALTY_RETURN_SCALE = 1.5
-_PENALTY_GEM_HOARD_SCALE = 0.5
-_PENALTY_RESOURCE_HOARD_SCALE = 0.5
+_PENALTY_RETURN_SCALE = -1.5
+_PENALTY_MOVELESS = -1.5
 
 _NUM_PLAYERS = 2
 _CARDS_FILENAME = "data/cards.csv"
@@ -115,6 +114,7 @@ class SplendorState(pyspiel.State):
         self._turn_type = TurnType.NORMAL
         self._spending_card: Card
         self._spending_card_exists: bool = False
+        self._tie = False
 
     def current_player(self):
         """Returns id of the next player to move, or TERMINAL if game is over."""
@@ -199,6 +199,7 @@ class SplendorState(pyspiel.State):
                 self.__apply_spending_turn(player, action_object)
 
         elif self._turn_type == TurnType.RETURN:
+            player.num_returns += 1
             gems = np.copy(action_object)
             player.gems.update(-gems)
             self._board.gems.update(gems)
@@ -237,12 +238,22 @@ class SplendorState(pyspiel.State):
                 else:
                     self.__swap_player()
 
-        if player.get_points() >= _WIN_POINTS or not self._board.enough_cards():
+        if player.get_points() >= _WIN_POINTS:
+            print("WIN")
             self._is_terminal = True
         
+        if not self._board.enough_cards():
+            self._is_terminal = True
+            self._tie = True
+            print("TIE: NOT ENOUGH CARDS")
+        
         if len(self._legal_actions(self._cur_player)) == 0: # Next player has no action.
+            player = self._player_0 if self._cur_player == 0 else self._player_1
+            player.no_moves += 1
             self.__swap_player()
             if len(self._legal_actions(self._cur_player)) == 0: # Both players have no action.
+                print("TIE: NO ACTIONS")
+                self._tie = True
                 self._is_terminal = True
     
     def _action_to_string(self, player, action):  # TODO.
@@ -255,14 +266,36 @@ class SplendorState(pyspiel.State):
 
     def returns(self):
         """Total reward for each player over the course of the game so far."""
-        reward_points = _REWARD_POINTS_SCALE * ( self._player_0.get_points() - self._player_1.get_points() )
-        reward_resources = _REWARD_RESOURCES_SCALE * ( self._player_0.get_resources_sum() - self._player_1.get_resources_sum() ) 
+        if self._tie:
+            return [0, 0]
+        
+        reward_points = 0
+        reward_resources = 0
+        if self._spending_card_exists:
+            reward_points = self._spending_card.points
+            reward_points = reward_points * -1 if self._cur_player == 1 else reward_points * 1
+            reward_resources = 1
+            reward_resources = reward_resources * -1 if self._cur_player == 1 else reward_resources * 1
+        reward_points += self._player_0.get_points() - self._player_1.get_points()
+        reward_resources += self._player_0.get_resources_sum() - self._player_1.get_resources_sum()
+
         reward_win = 0
-        if self._player_0.get_points() >= _WIN_POINTS: reward_win = _REWARD_WIN_SCALE
-        elif self._player_1.get_points() >= _WIN_POINTS: reward_win = -_REWARD_WIN_SCALE
+        if self._player_0.get_points() >= _WIN_POINTS: reward_win = 1
+        elif self._player_1.get_points() >= _WIN_POINTS: reward_win = -1
         else: reward_win = 0
+
+        penalty_returns =  self._player_0.num_returns - self._player_1.num_returns 
+
+        penalty_no_moves = self._player_0.no_moves - self._player_1.no_moves
       
-        player0_reward = reward_points + reward_resources + reward_win # TODO: Change back. 
+        player0_reward = (
+            reward_points * _REWARD_POINTS_SCALE +
+            reward_resources * _REWARD_RESOURCES_SCALE + 
+            reward_win * _REWARD_WIN_SCALE + 
+            penalty_returns * _PENALTY_RETURN_SCALE +
+            penalty_no_moves * _PENALTY_MOVELESS
+
+        )
    
         return [player0_reward, -player0_reward]
 

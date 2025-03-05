@@ -1,4 +1,4 @@
-used learning rate 0.00035
+used learning rate 0.00035. one 128 hidden layer. replay size 500,000.
 
 WARNING:tensorflow:From /Users/colevanverth/Desktop/Splendid/.venv/lib/python3.10/site-packages/tensorflow/python/compat/v2_compat.py:98: disable_resource_variables (from tensorflow.python.ops.resource_variables_toggle) is deprecated and will be removed in a future version.
 Instructions for updating:

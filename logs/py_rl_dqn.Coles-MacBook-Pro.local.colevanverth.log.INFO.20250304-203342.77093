@@ -1,0 +1,11 @@
+I0304 20:33:42.707252 8534586624 rl_environment.py:182] Using game string: python_splendor
+I0304 20:33:42.707839 8534586624 rl_dqn.py:127] MESSAGE: Increased hidden layers.
+
+I0304 20:33:42.707866 8534586624 rl_dqn.py:128] Checkpoint directory: /tmp/dqn_test
+I0304 20:33:42.707883 8534586624 rl_dqn.py:129] Save every: 10000
+I0304 20:33:42.707898 8534586624 rl_dqn.py:130] Evaluate every: 1000
+I0304 20:33:42.707912 8534586624 rl_dqn.py:131] Evaluate amount: 1000
+I0304 20:33:42.707926 8534586624 rl_dqn.py:132] Hidden layers sizes: ['239', '64']
+I0304 20:33:42.707941 8534586624 rl_dqn.py:133] Replay buffer capacity: 100000
+I0304 20:33:42.707952 8534586624 rl_dqn.py:134] Batch sizses: 32
+I0304 20:33:42.707967 8534586624 rl_dqn.py:135] Learning rate: 0.001

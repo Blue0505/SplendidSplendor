@@ -17,6 +17,9 @@ class Player:
 
     def __init__(self):
         self.gems = Gems(np.full((6), PLAYER_GEMS_START))
+        self.since_used_gem = np.zeros(6)
+        self.num_returns = 0
+        self.no_moves = 0
         self._purchased_cards: list[Card] = []
         self._reserved_cards: list[Card] = []
 
@@ -50,7 +53,7 @@ class Player:
         return not len(self._reserved_cards) < MAX_RESERVE
 
     def get_points(self):
-        return sum(card._points for card in self._purchased_cards)
+        return sum(card.points for card in self._purchased_cards)
 
     def can_purchase(self, card: Card, using_gold: bool = True) -> bool:
         """Return True if the player can afford a card using their resources, gems, and (optionally) gold."""
@@ -66,7 +69,7 @@ class Player:
         """Returns counts of all permanent gems from resource cards."""
         resources = np.zeros(6).astype(int)
         for card in self._purchased_cards:
-            resources[card._gem_type] += 1
+            resources[card.gem_type] += 1
 
         return resources
 

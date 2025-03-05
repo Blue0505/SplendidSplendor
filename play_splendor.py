@@ -107,16 +107,6 @@ def display_tensor(tensor):
     print("Reserving card", tensor[228:239])
 
 
-
-    # 6 + 5 # card
-        # self.tensor = np.concatenate([
-        #     state._player_0,
-        #     state._player_1,
-        #     state._board,
-        #     state._spending_card if state._spending_card_exists else np.zeros(_CARD_SHAPE)
-        # ])
-
-
 def main():
     game = pyspiel.load_game("python_splendor", {"shuffle_cards": True})
     state = game.new_initial_state()

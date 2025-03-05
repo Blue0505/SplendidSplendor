@@ -30,6 +30,10 @@ import splendor_game
 
 FLAGS = flags.FLAGS
 
+# Message for output in the locks
+flags.DEFINE_string("msg", "",
+                    "Message for the top of the logging file.")
+
 # Training parameters
 flags.DEFINE_string("checkpoint_dir", "/tmp/dqn_test",
                     "Directory to save/load the agent models.")
@@ -119,7 +123,8 @@ def main(_):
       for idx in range(num_players)
   ]
 
-  # Log hyperparameters.
+  # Log info.
+  logging.info(f"MESSAGE: {FLAGS.msg}\n")
   logging.info(f"Checkpoint directory: {FLAGS.checkpoint_dir}")
   logging.info(f"Save every: {FLAGS.save_every}")
   logging.info(f"Evaluate every: {FLAGS.eval_every}")
@@ -143,6 +148,15 @@ def main(_):
             replay_buffer_capacity=FLAGS.replay_buffer_capacity,
             batch_size=FLAGS.batch_size) for idx in range(num_players)
     ]
+
+    # TODO: Change back
+    agents.pop()
+    agents.append(random_agent.RandomAgent(player_id=1, num_actions=num_actions))
+
+#  random_agents = [
+#       random_agent.RandomAgent(player_id=idx, num_actions=num_actions)
+#       for idx in range(num_players)
+#   ]
     sess.run(tf.global_variables_initializer())
 
     for ep in range(FLAGS.num_train_episodes):
@@ -156,9 +170,9 @@ def main(_):
             pickle.dump(ep, bout)
             pickle.dump(stats, bout)
 
-      if (ep + 1) % FLAGS.save_every == 0:
-        for agent in agents:
-          agent.save(FLAGS.checkpoint_dir)
+      # if (ep + 1) % FLAGS.save_every == 0:
+        # for agent in agents:
+        #   agent.save(FLAGS.checkpoint_dir)
 
       time_step = env.reset()
       while not time_step.last():
