@@ -35,8 +35,6 @@ flags.DEFINE_string("msg", "",
                     "Message for the top of the logging file.")
 
 # Training parameters
-flags.DEFINE_string("checkpoint_dir", "/tmp/dqn_test",
-                    "Directory to save/load the agent models.")
 flags.DEFINE_integer(
     "save_every", int(1e4),
     "Episode frequency at which the DQN agent models are saved.")
@@ -55,7 +53,7 @@ flags.DEFINE_list("hidden_layers_sizes", [64, 64],
                   "Number of hidden units in the Q-Network MLP.")
 flags.DEFINE_integer("replay_buffer_capacity", int(1e5),
                      "Size of the replay buffer.")
-flags.DEFINE_integer("batch_size", 32,
+flags.DEFINE_integer("batch_size", 128, # Was 32.
                      "Number of transitions to sample at each learning step.")
 flags.DEFINE_float("learning_rate", 0.01,
                      "Learning rate.")
@@ -67,6 +65,7 @@ def eval_against_random_bots(env, trained_agents, random_agents, num_episodes):
   total_episode_rewards = [[], []]
   game_lengths = [[], []]
   game_wins = [0, 0]
+  game_ties = [0, 0]
 
   for player_pos in range(num_players):
     cur_agents = random_agents[:]
@@ -89,8 +88,10 @@ def eval_against_random_bots(env, trained_agents, random_agents, num_episodes):
           action_list = [agent_output.action for agent_output in agents_output]
         time_step = env.step(action_list)
         episode_rewards += time_step.rewards[player_pos]
-      if time_step.rewards[player_pos] > 0:
+      if time_step.rewards[player_pos] > 0: 
         game_wins[player_pos] += 1
+      if time_step.rewards == [0, 0]:
+        game_ties[player_pos] += 1
       total_episode_rewards[player_pos].append(episode_rewards)
       game_lengths[player_pos].append(game_length)
     
@@ -103,6 +104,7 @@ def eval_against_random_bots(env, trained_agents, random_agents, num_episodes):
     stats[f"p{pos}_game_length_avg"] = sum(game_lengths[pos]) / num_episodes
     stats[f"p{pos}_game_length_std"] = float(np.std(game_lengths[pos]))
     stats[f"p{pos}_game_wins"] = game_wins[pos]
+    stats[f'p{pos}_game_ties'] = game_ties[pos]
   return stats
 
 
@@ -125,7 +127,6 @@ def main(_):
 
   # Log info.
   logging.info(f"MESSAGE: {FLAGS.msg}\n")
-  logging.info(f"Checkpoint directory: {FLAGS.checkpoint_dir}")
   logging.info(f"Save every: {FLAGS.save_every}")
   logging.info(f"Evaluate every: {FLAGS.eval_every}")
   logging.info(f"Evaluate amount: {FLAGS.eval_amount}")
@@ -153,10 +154,6 @@ def main(_):
     agents.pop()
     agents.append(random_agent.RandomAgent(player_id=1, num_actions=num_actions))
 
-#  random_agents = [
-#       random_agent.RandomAgent(player_id=idx, num_actions=num_actions)
-#       for idx in range(num_players)
-#   ]
     sess.run(tf.global_variables_initializer())
 
     for ep in range(FLAGS.num_train_episodes):
@@ -170,9 +167,9 @@ def main(_):
             pickle.dump(ep, bout)
             pickle.dump(stats, bout)
 
-      # if (ep + 1) % FLAGS.save_every == 0:
-        # for agent in agents:
-        #   agent.save(FLAGS.checkpoint_dir)
+      if (ep + 1) % FLAGS.save_every == 0:
+        for agent in agents:
+          agent.save(logging.get_log_file_name())
 
       time_step = env.reset()
       while not time_step.last():

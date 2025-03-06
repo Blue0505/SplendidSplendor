@@ -25,7 +25,7 @@ from splendor.gems import Gems
 from splendor.actions import SActions, SAction, SCategory
 import splendor.ansi_escape_codes as ansi
 
-_REWARD_POINTS_SCALE = 0
+_REWARD_POINTS_SCALE = 10
 _REWARD_RESOURCES_SCALE = 0
 _REWARD_WIN_SCALE = 1000
 
