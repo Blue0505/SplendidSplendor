@@ -232,19 +232,19 @@ class SplendorState(pyspiel.State):
             self.__swap_player() # Note: Was indented. 
 
         if player.get_points() >= _WIN_POINTS:
-            print("WIN")
+            # print("WIN")
             self._is_terminal = True
         
         if not self._board.enough_cards():
             self._is_terminal = True
-            print("TIE: NOT ENOUGH CARDS")
+            # print("TIE: NOT ENOUGH CARDS")
         
         if len(self._legal_actions(self._cur_player)) == 0: # Next player has no action.
             player = self._player_0 if self._cur_player == 0 else self._player_1
             player.no_moves += 1
             self.__swap_player()
             if len(self._legal_actions(self._cur_player)) == 0: # Both players have no action.
-                print("TIE: NO ACTIONS")
+                # print("TIE: NO ACTIONS")
                 self._is_terminal = True
     
     def _action_to_string(self, player, action):  # TODO.
@@ -296,22 +296,22 @@ class SplendorState(pyspiel.State):
     def __swap_player(self):
         self._cur_player = 0 if self._cur_player == 1 else 1
 
-    def __spending_turn_afford(self, player: Player, gems_array: NDArray):
-        "Check if a player can still afford a card after a gold is spent for a specific color."
-        if player.gems.get_gold() == 0:
-            return False
+    # def __spending_turn_afford(self, player: Player, gems_array: NDArray):
+    #     "Check if a player can still afford a card after a gold is spent for a specific color."
+    #     if player.gems.get_gold() == 0:
+    #         return False
             
-        if not self._spending_card.gems.has_at_least(gems_array):
-            return False
+    #     if not self._spending_card.gems.has_at_least(gems_array):
+    #         return False
 
-        player.gems.update(np.array([0, 0, 0, 0, 0, -1]))
-        can_afford = False
+    #     player.gems.update(np.array([0, 0, 0, 0, 0, -1]))
+    #     can_afford = False
 
-        self._spending_card.gems.update(-gems_array)
-        can_afford = player.can_purchase(self._spending_card)
-        self._spending_card.gems.update(gems_array)
-        player.gems.update(np.array([0, 0, 0, 0, 0, 1]))
-        return can_afford
+    #     self._spending_card.gems.update(-gems_array)
+    #     can_afford = player.can_purchase(self._spending_card)
+    #     self._spending_card.gems.update(gems_array)
+    #     player.gems.update(np.array([0, 0, 0, 0, 0, 1]))
+    #     return can_afford
 
     def __apply_take_gems(self, player: Player, gems):
         """Moves gems from the board to the player."""
@@ -336,11 +336,11 @@ class SplendorState(pyspiel.State):
         self._board.gems.update(to_update)
         player.add_purchased_card(self._spending_card)
 
-    def __apply_spending_turn(self, player: Player, gems: Gems):
-        """Moves a player's gold back to the board and reduces the gem of the card it was used for."""
-        player.gems.update(np.array([0, 0, 0, 0, 0, -1]))
-        self._board.gems.update(np.array([0, 0, 0, 0, 0, 1]))
-        self._spending_card.gems.update(-gems)
+    # def __apply_spending_turn(self, player: Player, gems: Gems):
+    #     """Moves a player's gold back to the board and reduces the gem of the card it was used for."""
+    #     player.gems.update(np.array([0, 0, 0, 0, 0, -1]))
+    #     self._board.gems.update(np.array([0, 0, 0, 0, 0, 1]))
+    #     self._spending_card.gems.update(-gems)
 
       
 

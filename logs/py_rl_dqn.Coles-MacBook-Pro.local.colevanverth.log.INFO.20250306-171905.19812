@@ -1,0 +1,21 @@
+I0306 17:19:05.212527 8534586624 rl_environment.py:182] Using game string: python_splendor
+I0306 17:19:05.213310 8534586624 rl_dqn.py:130] MESSAGE: Simplified the game.
+
+I0306 17:19:05.213338 8534586624 rl_dqn.py:131] Save every: 10000
+I0306 17:19:05.213356 8534586624 rl_dqn.py:132] Evaluate every: 1000
+I0306 17:19:05.213371 8534586624 rl_dqn.py:133] Evaluate amount: 1000
+I0306 17:19:05.213386 8534586624 rl_dqn.py:134] Epsilon decay: 1000000
+I0306 17:19:05.213401 8534586624 rl_dqn.py:135] Hidden layers sizes: ['239', '128']
+I0306 17:19:05.213414 8534586624 rl_dqn.py:136] Replay buffer capacity: 100000
+I0306 17:19:05.213428 8534586624 rl_dqn.py:137] Batch sizses: 128
+I0306 17:19:05.213442 8534586624 rl_dqn.py:138] Learning rate: 0.001
+I0306 17:22:13.330160 8534586624 rl_dqn.py:165] Episode: 999
+I0306 17:22:13.330994 8534586624 rl_dqn.py:166] Stats: {'p0_rewards_avg': -0.648, 'p0_rewards_std': 0.7029196255618418, 'p0_rewards_max': 1.0, 'p0_rewards_min': -1.0, 'p0_game_length_avg': 75.973, 'p0_game_length_std': 15.009139582267865, 'p0_game_wins': 133, 'p0_game_ties': 86, 'p1_rewards_avg': -0.062, 'p1_rewards_std': 0.9011969817969876, 'p1_rewards_max': 1.0, 'p1_rewards_min': -1.0, 'p1_game_length_avg': 70.715, 'p1_game_length_std': 17.157032814563248, 'p1_game_wins': 377, 'p1_game_ties': 184}
+I0306 17:25:22.861467 8534586624 rl_dqn.py:165] Episode: 1999
+I0306 17:25:22.862172 8534586624 rl_dqn.py:166] Stats: {'p0_rewards_avg': -0.577, 'p0_rewards_std': 0.7785056197613477, 'p0_rewards_max': 1.0, 'p0_rewards_min': -1.0, 'p0_game_length_avg': 76.9, 'p0_game_length_std': 13.729967225015507, 'p0_game_wins': 181, 'p0_game_ties': 61, 'p1_rewards_avg': -0.096, 'p1_rewards_std': 0.9147589846511486, 'p1_rewards_max': 1.0, 'p1_rewards_min': -1.0, 'p1_game_length_avg': 72.025, 'p1_game_length_std': 15.737610206127233, 'p1_game_wins': 375, 'p1_game_ties': 154}
+I0306 17:28:13.720374 8534586624 rl_dqn.py:165] Episode: 2999
+I0306 17:28:13.720731 8534586624 rl_dqn.py:166] Stats: {'p0_rewards_avg': 0.772, 'p0_rewards_std': 0.4690586317295526, 'p0_rewards_max': 1.0, 'p0_rewards_min': -1.0, 'p0_game_length_avg': 54.236, 'p0_game_length_std': 18.85068444380734, 'p0_game_wins': 794, 'p0_game_ties': 184, 'p1_rewards_avg': -0.026, 'p1_rewards_std': 0.9172371558108623, 'p1_rewards_max': 1.0, 'p1_rewards_min': -1.0, 'p1_game_length_avg': 71.842, 'p1_game_length_std': 15.793765732085557, 'p1_game_wins': 408, 'p1_game_ties': 158}
+I0306 17:31:06.975945 8534586624 rl_dqn.py:165] Episode: 3999
+I0306 17:31:06.976238 8534586624 rl_dqn.py:166] Stats: {'p0_rewards_avg': 0.902, 'p0_rewards_std': 0.3583238758441865, 'p0_rewards_max': 1.0, 'p0_rewards_min': -1.0, 'p0_game_length_avg': 61.506, 'p0_game_length_std': 12.619824246002795, 'p0_game_wins': 922, 'p0_game_ties': 58, 'p1_rewards_avg': -0.034, 'p1_rewards_std': 0.9082092269956301, 'p1_rewards_max': 1.0, 'p1_rewards_min': -1.0, 'p1_game_length_avg': 71.944, 'p1_game_length_std': 16.00096447093112, 'p1_game_wins': 396, 'p1_game_ties': 174}
+I0306 17:33:59.882380 8534586624 rl_dqn.py:165] Episode: 4999
+I0306 17:33:59.883162 8534586624 rl_dqn.py:166] Stats: {'p0_rewards_avg': 0.905, 'p0_rewards_std': 0.34924919470200644, 'p0_rewards_max': 1.0, 'p0_rewards_min': -1.0, 'p0_game_length_avg': 59.396, 'p0_game_length_std': 12.231483311520316, 'p0_game_wins': 923, 'p0_game_ties': 59, 'p1_rewards_avg': -0.041, 'p1_rewards_std': 0.8951642307420467, 'p1_rewards_max': 1.0, 'p1_rewards_min': -1.0, 'p1_game_length_avg': 71.082, 'p1_game_length_std': 16.620206857918465, 'p1_game_wins': 381, 'p1_game_ties': 197}
