@@ -26,7 +26,7 @@ from splendor.actions import SActions, SAction, SCategory
 import splendor.ansi_escape_codes as ansi
 
 _NUM_PLAYERS = 2
-_CARDS_FILENAME = "data/cards.csv"
+_CARDS_FILENAME = "../data/cards.csv"
 _WIN_POINTS = 15
 _MAX_PLAYER_GEMS = 10
 _MAX_TAKE2_GEMS = 4
@@ -84,12 +84,7 @@ class SplendorGame(pyspiel.Game):
         return SplendorState(self, self.shuffle_cards)
 
     def make_py_observer(self, iig_obs_type=None, params=None):
-        if (iig_obs_type is None) or (
-            iig_obs_type.public_info and not iig_obs_type.perfect_recall
-        ):
-            return BoardObserver(params)
-        else:
-            return IIGObserverForPublicInfoGame(iig_obs_type, params)
+        return BoardObserver(params)
 
 
 class SplendorState(pyspiel.State):
