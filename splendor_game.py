@@ -25,13 +25,6 @@ from splendor.gems import Gems
 from splendor.actions import SActions, SAction, SCategory
 import splendor.ansi_escape_codes as ansi
 
-_REWARD_POINTS_SCALE = 10
-_REWARD_RESOURCES_SCALE = 0
-_REWARD_WIN_SCALE = 1000
-
-_PENALTY_RETURN_SCALE = -1.5
-_PENALTY_MOVELESS = -1.5
-
 _NUM_PLAYERS = 2
 _CARDS_FILENAME = "data/cards.csv"
 _WIN_POINTS = 15
@@ -66,8 +59,8 @@ _GAME_INFO = pyspiel.GameInfo(
     num_distinct_actions=len(SAction),
     max_chance_outcomes=0,
     num_players=2,
-    min_utility=-float('inf'), 
-    max_utility=float('inf'),
+    min_utility=-1,  
+    max_utility=1, 
     utility_sum=0.0,
     max_game_length=1000,
 )
@@ -75,8 +68,8 @@ _GAME_INFO = pyspiel.GameInfo(
 
 class TurnType(enum.IntEnum):
     NORMAL = 0
-    SPENDING = enum.auto()  # Player consumes gold for a card.
-    RETURN = enum.auto()  # Player gives back gems to the board to not exceed 10 gems.
+    # SPENDING = enum.auto()  # Player consumes gold for a card.
+    # RETURN = enum.auto()  # Player gives back gems to the board to not exceed 10 gems.
 
 
 class SplendorGame(pyspiel.Game):
@@ -114,7 +107,6 @@ class SplendorState(pyspiel.State):
         self._turn_type = TurnType.NORMAL
         self._spending_card: Card
         self._spending_card_exists: bool = False
-        self._tie = False
 
     def current_player(self):
         """Returns id of the next player to move, or TERMINAL if game is over."""
@@ -125,29 +117,29 @@ class SplendorState(pyspiel.State):
         player = self._player_0 if self._cur_player == 0 else self._player_1
         legal_actions: list[int] = []
 
-        # "SPENDING" turn.
-        if self._turn_type == TurnType.SPENDING:
-            consume_ids = self._actions.get_action_ids(SCategory.SPENDING_TURN)
-            consume_ids.pop() # Remove END_SPENDING_TURN. 
-            for action_id in consume_ids:
-                gems = self._actions.get_action_object(action_id)
-                if self.__spending_turn_afford(player, gems):
-                    legal_actions.append(action_id)
+        # # "SPENDING" turn.
+        # if self._turn_type == TurnType.SPENDING:
+        #     consume_ids = self._actions.get_action_ids(SCategory.SPENDING_TURN)
+        #     consume_ids.pop() # Remove END_SPENDING_TURN. 
+        #     for action_id in consume_ids:
+        #         gems = self._actions.get_action_object(action_id)
+        #         if self.__spending_turn_afford(player, gems):
+        #             legal_actions.append(action_id)
 
-            # "End turn" actions.
-            if self._spending_card_exists and player.can_purchase(self._spending_card, using_gold=False):
-                legal_actions.append(SAction.END_SPENDING_TURN)
+        #     # "End turn" actions.
+        #     if self._spending_card_exists and player.can_purchase(self._spending_card, using_gold=False):
+        #         legal_actions.append(SAction.END_SPENDING_TURN)
 
-            return legal_actions
+        #     return legal_actions
 
-        # "RETURN" turn.
-        elif self._turn_type == TurnType.RETURN:
-            return_ids = self._actions.get_action_ids(SCategory.RETURN)
-            for action_id in return_ids:
-                gems = self._actions.get_action_object(action_id)
-                if player.gems.has_at_least(gems):
-                    legal_actions.append(action_id)
-            return legal_actions
+        # # "RETURN" turn.
+        # elif self._turn_type == TurnType.RETURN:
+        #     return_ids = self._actions.get_action_ids(SCategory.RETURN)
+        #     for action_id in return_ids:
+        #         gems = self._actions.get_action_object(action_id)
+        #         if player.gems.has_at_least(gems):
+        #             legal_actions.append(action_id)
+        #     return legal_actions
 
         # "NORMAL" turn.
 
@@ -191,52 +183,53 @@ class SplendorState(pyspiel.State):
         action_category = self._actions.get_category(action)
         action_object = self._actions.get_action_object(action)
 
-        if self._turn_type == TurnType.SPENDING:
-            if action == SAction.END_SPENDING_TURN:
-                self._turn_type = TurnType.NORMAL
-                self.__apply_end_spending_turn(player)
-            else:  # Player spent gold.
-                self.__apply_spending_turn(player, action_object)
+        # if self._turn_type == TurnType.SPENDING:
+        #     if action == SAction.END_SPENDING_TURN:
+        #         self._turn_type = TurnType.NORMAL
+        #         self.__apply_end_spending_turn(player)
+        #     else:  # Player spent gold.
+        #         self.__apply_spending_turn(player, action_object)
 
-        elif self._turn_type == TurnType.RETURN:
-            player.num_returns += 1
-            gems = np.copy(action_object)
-            player.gems.update(-gems)
-            self._board.gems.update(gems)
-            if player.gems.get_gem_sum() <= 10:
-                self._turn_type = TurnType.NORMAL
-                self.__swap_player()
+        # elif self._turn_type == TurnType.RETURN:
+        #     player.num_returns += 1
+        #     gems = np.copy(action_object)
+        #     player.gems.update(-gems)
+        #     self._board.gems.update(gems)
+        #     if player.gems.get_gem_sum() <= 10:
+        #         self._turn_type = TurnType.NORMAL
+        #         self.__swap_player()
 
-        else:  # "NORMAL" turn.
-            if action_category == SCategory.RESERVE:
-                row, col = action_object
-                self.__apply_reserve(player, row, col)
+        # else:  # "NORMAL" turn.
+        # Note: Everything below was indented. 
+        if action_category == SCategory.RESERVE:
+            row, col = action_object
+            self.__apply_reserve(player, row, col)
 
-            elif action_category == SCategory.PURCHASE:
-    
-                row, col = action_object
-                self._spending_card = self._board.pop_card(row, col)
-                self._spending_card_exists = True
-                if player.gems.has_gold():
-                    self._turn_type = TurnType.SPENDING
-                else:
-                    self.__apply_end_spending_turn(player)
+        elif action_category == SCategory.PURCHASE:
+
+            row, col = action_object
+            self._spending_card = self._board.pop_card(row, col)
+            # self._spending_card_exists = True
+            # if player.gems.has_gold():
+            #     self._turn_type = TurnType.SPENDING
+            # else:
+            self.__apply_end_spending_turn(player) # Note: Was indented. 
 
 
-            elif action_category == SCategory.PURCHASE_RESERVE:
-                self._spending_card = player.pop_reserved_card(action_object)
-                self._spending_card_exists = True
-                if player.gems.has_gold():
-                    self._turn_type = TurnType.SPENDING
-                else:
-                    self.__apply_end_spending_turn(player)
+        elif action_category == SCategory.PURCHASE_RESERVE:
+            self._spending_card = player.pop_reserved_card(action_object)
+            # self._spending_card_exists = True
+            # if player.gems.has_gold():
+            #     self._turn_type = TurnType.SPENDING
+            # else:
+            self.__apply_end_spending_turn(player) # Note: Was indented. 
 
-            elif (action_category == SCategory.TAKE2 or action_category == SCategory.TAKE3):
-                self.__apply_take_gems(player, action_object)
-                if player.gems.get_gem_sum() > _MAX_PLAYER_GEMS:
-                    self._turn_type = TurnType.RETURN
-                else:
-                    self.__swap_player()
+        elif (action_category == SCategory.TAKE2 or action_category == SCategory.TAKE3):
+            self.__apply_take_gems(player, action_object)
+            # if player.gems.get_gem_sum() > _MAX_PLAYER_GEMS:
+            #     self._turn_type = TurnType.RETURN
+            # else:
+            self.__swap_player() # Note: Was indented. 
 
         if player.get_points() >= _WIN_POINTS:
             print("WIN")
@@ -244,7 +237,6 @@ class SplendorState(pyspiel.State):
         
         if not self._board.enough_cards():
             self._is_terminal = True
-            self._tie = True
             print("TIE: NOT ENOUGH CARDS")
         
         if len(self._legal_actions(self._cur_player)) == 0: # Next player has no action.
@@ -253,7 +245,6 @@ class SplendorState(pyspiel.State):
             self.__swap_player()
             if len(self._legal_actions(self._cur_player)) == 0: # Both players have no action.
                 print("TIE: NO ACTIONS")
-                self._tie = True
                 self._is_terminal = True
     
     def _action_to_string(self, player, action):  # TODO.
@@ -266,38 +257,12 @@ class SplendorState(pyspiel.State):
 
     def returns(self):
         """Total reward for each player over the course of the game so far."""
-        if self._tie:
+        if self._player_0.get_points() >= _WIN_POINTS:
+            return [1, -1]
+        elif self._player_1.get_points() >= _WIN_POINTS:
+            return [-1, 1]
+        else:
             return [0, 0]
-        
-        reward_points = 0
-        reward_resources = 0
-        if self._spending_card_exists:
-            reward_points = self._spending_card.points
-            reward_points = reward_points * -1 if self._cur_player == 1 else reward_points * 1
-            reward_resources = 1
-            reward_resources = reward_resources * -1 if self._cur_player == 1 else reward_resources * 1
-        reward_points += self._player_0.get_points() - self._player_1.get_points()
-        reward_resources += self._player_0.get_resources_sum() - self._player_1.get_resources_sum()
-
-        reward_win = 0
-        if self._player_0.get_points() >= _WIN_POINTS: reward_win = 1
-        elif self._player_1.get_points() >= _WIN_POINTS: reward_win = -1
-        else: reward_win = 0
-
-        penalty_returns =  self._player_0.num_returns - self._player_1.num_returns 
-
-        penalty_no_moves = self._player_0.no_moves - self._player_1.no_moves
-      
-        player0_reward = (
-            reward_points * _REWARD_POINTS_SCALE +
-            reward_resources * _REWARD_RESOURCES_SCALE + 
-            reward_win * _REWARD_WIN_SCALE + 
-            penalty_returns * _PENALTY_RETURN_SCALE +
-            penalty_no_moves * _PENALTY_MOVELESS
-
-        )
-   
-        return [player0_reward, -player0_reward]
 
     def __str__(self):
         """String for debug purposes. No particular semantics are required."""
@@ -320,10 +285,10 @@ class SplendorState(pyspiel.State):
         output += player1_str + dashes + str(self._player_1)
         output += f"   Score: {self.returns()[1]}"
 
-        if self._turn_type == TurnType.SPENDING:
-            output += f"{ansi.B_WHITE}\nSPENDING CARD:{ansi.RESET}\n"
-            output += dashes
-            output += "   " + str(self._spending_card) + "\n"
+        # if self._turn_type == TurnType.SPENDING:
+        #     output += f"{ansi.B_WHITE}\nSPENDING CARD:{ansi.RESET}\n"
+        #     output += dashes
+        #     output += "   " + str(self._spending_card) + "\n"
 
 
         return output
@@ -355,16 +320,16 @@ class SplendorState(pyspiel.State):
 
     def __apply_reserve(self, player: Player, row, col):
         """Moves a card from the board to the reserve slot of a player."""
-        if self._board.gems.has_gold():
-            self._board.gems.update(np.array([0, 0, 0, 0, 0, -1]))
-            player.gems.update(np.array([0, 0, 0, 0, 0, 1]))
+        # if self._board.gems.has_gold():
+        #     self._board.gems.update(np.array([0, 0, 0, 0, 0, -1]))
+        #     player.gems.update(np.array([0, 0, 0, 0, 0, 1]))
         card = self._board.pop_card(row, col)
         player.add_reserved_card(card)
         self.__swap_player()
 
     def __apply_end_spending_turn(self, player: Player):
         self.__swap_player()
-        self._spending_card_exists = False
+        # self._spending_card_exists = False
         to_update = self._spending_card.gems.get_array() - player.get_resources_array()
         to_update = np.clip(to_update, a_min=0, a_max=None)
         player.gems.update(-to_update)

@@ -57,6 +57,7 @@ flags.DEFINE_integer("batch_size", 128, # Was 32.
                      "Number of transitions to sample at each learning step.")
 flags.DEFINE_float("learning_rate", 0.01,
                      "Learning rate.")
+flags.DEFINE_integer("epsilon_decay", int(1e6), "Epsilon decay.")
 
 
 def eval_against_random_bots(env, trained_agents, random_agents, num_episodes):
@@ -130,6 +131,7 @@ def main(_):
   logging.info(f"Save every: {FLAGS.save_every}")
   logging.info(f"Evaluate every: {FLAGS.eval_every}")
   logging.info(f"Evaluate amount: {FLAGS.eval_amount}")
+  logging.info(f"Epsilon decay: {FLAGS.epsilon_decay}")
   logging.info(f"Hidden layers sizes: {FLAGS.hidden_layers_sizes}")
   logging.info(f"Replay buffer capacity: {FLAGS.replay_buffer_capacity}")
   logging.info(f"Batch sizses: {FLAGS.batch_size}")
@@ -147,6 +149,7 @@ def main(_):
             learning_rate=FLAGS.learning_rate, 
             hidden_layers_sizes=hidden_layers_sizes,
             replay_buffer_capacity=FLAGS.replay_buffer_capacity,
+            epsilon_decay_duration=FLAGS.epsilon_decay,
             batch_size=FLAGS.batch_size) for idx in range(num_players)
     ]
 

@@ -68,19 +68,19 @@ class SAction(enum.IntEnum):
     TAKE2_3 = enum.auto()
     TAKE2_4 = enum.auto()
 
-    RETURN_0 = enum.auto()
-    RETURN_1 = enum.auto()
-    RETURN_2 = enum.auto()
-    RETURN_3 = enum.auto()
-    RETURN_4 = enum.auto()
-    RETURN_GOLD = enum.auto()
+    # RETURN_0 = enum.auto()
+    # RETURN_1 = enum.auto()
+    # RETURN_2 = enum.auto()
+    # RETURN_3 = enum.auto()
+    # RETURN_4 = enum.auto()
+    # RETURN_GOLD = enum.auto()
 
-    CONSUME_GOLD_WHITE = enum.auto()
-    CONSUME_GOLD_BLUE = enum.auto()
-    CONSUME_GOLD_GREEN = enum.auto()
-    CONSUME_GOLD_RED = enum.auto()
-    CONSUME_GOLD_BLACK = enum.auto()
-    END_SPENDING_TURN = enum.auto()
+    # CONSUME_GOLD_WHITE = enum.auto()
+    # CONSUME_GOLD_BLUE = enum.auto()
+    # CONSUME_GOLD_GREEN = enum.auto()
+    # CONSUME_GOLD_RED = enum.auto()
+    # CONSUME_GOLD_BLACK = enum.auto()
+    # END_SPENDING_TURN = enum.auto()
     
 SPLENDOR_ACTIONS = {
     SAction.RESERVE_00: (SCategory.RESERVE, (0, 0)),
@@ -128,18 +128,18 @@ SPLENDOR_ACTIONS = {
     SAction.TAKE2_2: (SCategory.TAKE2, np.array([0, 0, 2, 0, 0, 0])),
     SAction.TAKE2_3: (SCategory.TAKE2, np.array([0, 0, 0, 2, 0, 0])),
     SAction.TAKE2_4: (SCategory.TAKE2, np.array([0, 0, 0, 0, 2, 0])),
-    SAction.RETURN_0: (SCategory.RETURN, np.array([1, 0, 0, 0, 0, 0])),
-    SAction.RETURN_1: (SCategory.RETURN, np.array([0, 1, 0, 0, 0, 0])),
-    SAction.RETURN_2: (SCategory.RETURN, np.array([0, 0, 1, 0, 0, 0])),
-    SAction.RETURN_3: (SCategory.RETURN, np.array([0, 0, 0, 1, 0, 0])),
-    SAction.RETURN_4: (SCategory.RETURN, np.array([0, 0, 0, 0, 1, 0])),
-    SAction.RETURN_GOLD: (SCategory.RETURN, np.array([0, 0, 0, 0, 0, 1])),
-    SAction.CONSUME_GOLD_WHITE: (SCategory.SPENDING_TURN, np.array([1, 0, 0, 0, 0, 0])),
-    SAction.CONSUME_GOLD_BLUE: (SCategory.SPENDING_TURN, np.array([0, 1, 0, 0, 0, 0])),
-    SAction.CONSUME_GOLD_GREEN: (SCategory.SPENDING_TURN, np.array([0, 0, 1, 0, 0, 0])),
-    SAction.CONSUME_GOLD_RED: (SCategory.SPENDING_TURN, np.array([0, 0, 0, 1, 0, 0])),
-    SAction.CONSUME_GOLD_BLACK: (SCategory.SPENDING_TURN, np.array([0, 0, 0, 0, 1, 0])),
-    SAction.END_SPENDING_TURN: (SCategory.SPENDING_TURN, None)
+    # SAction.RETURN_0: (SCategory.RETURN, np.array([1, 0, 0, 0, 0, 0])),
+    # SAction.RETURN_1: (SCategory.RETURN, np.array([0, 1, 0, 0, 0, 0])),
+    # SAction.RETURN_2: (SCategory.RETURN, np.array([0, 0, 1, 0, 0, 0])),
+    # SAction.RETURN_3: (SCategory.RETURN, np.array([0, 0, 0, 1, 0, 0])),
+    # SAction.RETURN_4: (SCategory.RETURN, np.array([0, 0, 0, 0, 1, 0])),
+    # SAction.RETURN_GOLD: (SCategory.RETURN, np.array([0, 0, 0, 0, 0, 1])),
+    # SAction.CONSUME_GOLD_WHITE: (SCategory.SPENDING_TURN, np.array([1, 0, 0, 0, 0, 0])),
+    # SAction.CONSUME_GOLD_BLUE: (SCategory.SPENDING_TURN, np.array([0, 1, 0, 0, 0, 0])),
+    # SAction.CONSUME_GOLD_GREEN: (SCategory.SPENDING_TURN, np.array([0, 0, 1, 0, 0, 0])),
+    # SAction.CONSUME_GOLD_RED: (SCategory.SPENDING_TURN, np.array([0, 0, 0, 1, 0, 0])),
+    # SAction.CONSUME_GOLD_BLACK: (SCategory.SPENDING_TURN, np.array([0, 0, 0, 0, 1, 0])),
+    # SAction.END_SPENDING_TURN: (SCategory.SPENDING_TURN, None)
 }
 
 class SActions: 
