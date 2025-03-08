@@ -2,15 +2,15 @@ import unittest
 
 import numpy as np
 import pyspiel
-import splendor_game
+import splendor_hard.splendor_game as splendor_game
 
-import splendor.board as board
+import splendor_hard.board as board
 
-from splendor.card_importer import csv_import
-from splendor.gem import Gem
-from splendor.card import Card
-from splendor.board import Board
-from splendor.player import Player
+from splendor_hard.card_importer import csv_import
+from splendor_hard.gem import Gem
+from splendor_hard.card import Card
+from splendor_hard.board import Board
+from splendor_hard.player import Player
 
 from open_spiel.python.observation import make_observation
 
@@ -41,7 +41,7 @@ class TestArrayMethods(unittest.TestCase):
         self.assertEqual(len(arr), 138)
 
     def test_observation_tensor_init(self):
-        game = pyspiel.load_game("python_splendor", {"shuffle_cards": False})
+        game = pyspiel.load_game("splendor_hard", {"shuffle_cards": False})
         state = game.new_initial_state()
         obs = make_observation(game)
         obs.set_from(state, 0) # type: ignore
@@ -60,13 +60,13 @@ class TestArrayMethods(unittest.TestCase):
         )
 
     def test_observation_tensor_size(self):
-        game = pyspiel.load_game("python_splendor", {"shuffle_cards": False})
+        game = pyspiel.load_game("splendor_hard", {"shuffle_cards": False})
         state = game.new_initial_state()
         observation = state.observation_tensor()
         self.assertEqual(len(observation), 239)
 
     def test_observation_tensor_update(self):
-        game = pyspiel.load_game("python_splendor", {"shuffle_cards": False})
+        game = pyspiel.load_game("splendor_hard", {"shuffle_cards": False})
         state = game.new_initial_state()
         init_obs = make_observation(game)
         init_obs.set_from(state,0) #type: ignore

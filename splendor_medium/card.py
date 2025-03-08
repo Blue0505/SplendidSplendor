@@ -1,9 +1,9 @@
 import numpy as np
 from numpy.typing import NDArray
 
-from splendor.gem import Gem
-import splendor.ansi_escape_codes as ansi
-from splendor.gems import Gems
+from splendor_hard.gem import Gem
+import splendor_hard.ansi_escape_codes as ansi
+from splendor_hard.gems import Gems
 
 
 class Card:

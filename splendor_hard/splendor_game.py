@@ -26,7 +26,7 @@ from splendor_hard.actions import SActions, SAction, SCategory
 import splendor_hard.ansi_escape_codes as ansi
 
 _NUM_PLAYERS = 2
-_CARDS_FILENAME = "../data/cards.csv"
+_CARDS_FILENAME = "./data/cards.csv"
 _WIN_POINTS = 15
 _MAX_TAKE2_GEMS = 4
 _MAX_PLAYER_GEMS = 10
@@ -38,8 +38,8 @@ _PLAYER_SHAPE = _GEM_SHAPE + ( 3 * _CARD_SHAPE ) + 1 + 5
 _TENSOR_SHAPE = ( _NUM_PLAYERS * _PLAYER_SHAPE ) + _BOARD_SHAPE + _CARD_SHAPE
 
 _GAME_TYPE = pyspiel.GameType(
-    short_name="splendor_medium",
-    long_name="Splendor Medium",
+    short_name="splendor_hard",
+    long_name="Splendor Hard",
     dynamics=pyspiel.GameType.Dynamics.SEQUENTIAL,
     chance_mode=pyspiel.GameType.ChanceMode.DETERMINISTIC,
     information=pyspiel.GameType.Information.IMPERFECT_INFORMATION,

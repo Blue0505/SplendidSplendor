@@ -1,8 +1,8 @@
 import numpy as np
 from numpy.typing import NDArray
 
-from splendor.card import Card
-from splendor.gems import Gems, gem_array_str
+from splendor_hard.card import Card
+from splendor_hard.gems import Gems, gem_array_str
 
 PLAYER_GEMS_START: int = 0
 MAX_RESERVE: int = 3

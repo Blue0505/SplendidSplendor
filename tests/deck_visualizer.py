@@ -1,5 +1,5 @@
-import splendor.ansi_escape_codes as ansi
-import splendor.board as sds
+import splendor_hard.ansi_escape_codes as ansi
+import splendor_hard.board as sds
 
 
 def deck_display():

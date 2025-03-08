@@ -1,8 +1,8 @@
 import unittest
 import numpy as np
 
-from splendor.board import Board
-from splendor.gems import Gems
+from splendor_hard.board import Board
+from splendor_hard.gems import Gems
 
 
 _RANDOM_BOARD = [10, 3, 22, 1, 7, 5]

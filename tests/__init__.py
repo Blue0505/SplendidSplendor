@@ -1,0 +1,1 @@
+"""Tests written for the "hard" version of Splendor."""

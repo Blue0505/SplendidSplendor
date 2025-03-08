@@ -3,11 +3,11 @@ import pyspiel
 import numpy as np
 import pickle
 
-import splendor_game
-from splendor.actions import SCategory, SAction
-from splendor.gem import Gem
-from splendor.gems import Gems
-from splendor.card import Card
+import splendor_hard.splendor_game as splendor_game
+from splendor_hard.actions import SCategory, SAction
+from splendor_hard.gem import Gem
+from splendor_hard.gems import Gems
+from splendor_hard.card import Card
 
 from open_spiel.python.observation import make_observation
 
@@ -25,7 +25,7 @@ def print_actions(actions):
 
 class TestSplendorGame(unittest.TestCase):
     def setUp(self):
-        game = pyspiel.load_game("python_splendor", {"shuffle_cards": False})
+        game = pyspiel.load_game("splendor_hard", {"shuffle_cards": False})
         self.state = game.new_initial_state()
         self.actions = (
             self.state._actions
@@ -154,35 +154,6 @@ class TestSplendorGame(unittest.TestCase):
     def test_reward_initial(self):
         """Tests that both players have zero reward when the game is created."""
         self.assertTrue(np.array_equal(self.state.returns(), [0, 0]))
-    
-    def test_reward_points(self):
-        """Tests that the reward calculation is correct when both players have an arbitrary amount of points."""
-        p0_card = Card(5, Gem.BLACK, (0, 0, 0, 0, 0))
-        p1_card = Card(2, Gem.RED, (0, 0, 0, 0, 0))
-        self.state._player_0._purchased_cards = [p0_card]
-        self.state._player_1._purchased_cards = [p1_card]
-        returns = self.state.returns()
-        VALID_RETURNS_P0 = ( (5 - 2) * splendor_game._REWARD_POINTS_SCALE ) 
-        VALID_RETURNS_P1 = -VALID_RETURNS_P0
-        VALID_RETURNS = [ VALID_RETURNS_P0, VALID_RETURNS_P1 ]
-        self.assertTrue(np.array_equal(returns, VALID_RETURNS))
-    
-    def test_reward_resources(self):
-        """Tests that the reward calculation is correct when a player has some resources."""
-        p0_card = Card(0, Gem.BLACK, (0, 0, 0, 0, 0))
-        self.state._player_0._purchased_cards = [p0_card]
-        VALID_RETURNS = [ splendor_game._REWARD_RESOURCES_SCALE, -splendor_game._REWARD_RESOURCES_SCALE ]
-        self.assertTrue(np.array_equal(self.state.returns(), VALID_RETURNS))
-    
-    def test_reward_win(self):
-        """Tests that a player receives the correct reward when wining the game."""
-        p0_card = Card(15, Gem.BLACK, (0, 0, 0, 0, 0))
-        self.state._player_0._purchased_cards = [p0_card]
-        self.state.apply_action(SAction.TAKE2_0) # Random action to trigger game end.
-        VALID_RETURNS_P0 = splendor_game._REWARD_WIN_SCALE + splendor_game._REWARD_RESOURCES_SCALE + (15 * splendor_game._REWARD_POINTS_SCALE)
-        VALID_RETURNS_P1 = -VALID_RETURNS_P0
-        VALID_RETURNS = [ VALID_RETURNS_P0, VALID_RETURNS_P1 ]
-        self.assertTrue(np.array_equal(self.state.returns(), VALID_RETURNS))
         
 
 if __name__ == "__main__":

@@ -18,12 +18,12 @@ import numpy as np
 from numpy.typing import NDArray
 import enum
 
-from splendor.board import Board
-from splendor.player import Player
-from splendor.card import Card
-from splendor.gems import Gems
-from splendor.actions import SActions, SAction, SCategory
-import splendor.ansi_escape_codes as ansi
+from splendor_hard.board import Board
+from splendor_hard.player import Player
+from splendor_hard.card import Card
+from splendor_hard.gems import Gems
+from splendor_hard.actions import SActions, SAction, SCategory
+import splendor_hard.ansi_escape_codes as ansi
 
 _NUM_PLAYERS = 2
 _CARDS_FILENAME = "../data/cards.csv"
@@ -39,8 +39,8 @@ _TENSOR_SHAPE = ( _NUM_PLAYERS * _PLAYER_SHAPE ) + _BOARD_SHAPE + _CARD_SHAPE
 _DECK_CARDS = 5
 
 _GAME_TYPE = pyspiel.GameType(
-    short_name="python_splendor",
-    long_name="Python Splendor",
+    short_name="splendor_medium",
+    long_name="Splendor Medium",
     dynamics=pyspiel.GameType.Dynamics.SEQUENTIAL,
     chance_mode=pyspiel.GameType.ChanceMode.DETERMINISTIC,
     information=pyspiel.GameType.Information.IMPERFECT_INFORMATION,

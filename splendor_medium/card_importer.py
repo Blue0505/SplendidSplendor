@@ -1,7 +1,7 @@
 import csv
 
-from splendor.card import Card
-from splendor.gem import Gem
+from splendor_hard.card import Card
+from splendor_hard.gem import Gem
 
 
 def csv_import(filepath: str) -> list[list[Card]]:

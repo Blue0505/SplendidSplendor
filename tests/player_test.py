@@ -2,10 +2,10 @@ import unittest
 import numpy as np
 from numpy.typing import NDArray
 
-from splendor.player import Player
-from splendor.card import Card 
-from splendor.gem import Gem
-from splendor.gems import Gems
+from splendor_hard.player import Player
+from splendor_hard.card import Card 
+from splendor_hard.gem import Gem
+from splendor_hard.gems import Gems
 
 _TEST_CARD = Card(points=0, gem_type=Gem.BLUE, costs=(5, 5, 5, 5, 5))
 

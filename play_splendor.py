@@ -1,10 +1,10 @@
 import pyspiel
 import pickle
-import splendor_game
+import splendor_hard.splendor_game as splendor_game
 import time
 import sys
-import splendor.ansi_escape_codes as ansi
-from splendor.actions import SAction
+import splendor_hard.ansi_escape_codes as ansi
+from splendor_hard.actions import SAction
 from open_spiel.python.observation import make_observation
 
 _DEBUG = False

@@ -19,14 +19,14 @@ from absl import flags
 from absl import logging
 import pickle
 import time
-import splendor_game
+import splendor_hard.splendor_game as splendor_game
 import numpy as np
 import tensorflow.compat.v1 as tf
 
 from open_spiel.python import rl_environment
 from open_spiel.python.algorithms import dqn
 from open_spiel.python.algorithms import random_agent
-import splendor_game
+import splendor_hard.splendor_game as splendor_game
 
 FLAGS = flags.FLAGS
 
