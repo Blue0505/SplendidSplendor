@@ -4,19 +4,18 @@ This is a monorepo containing three implementations of two person Splendor at di
 1. Install Python 3.11
 2. `python -m venv .venv`
 3. `source .venv/bin/activate`
-4. `pip install https://github.com/nathanlct/open_spiel/releases/download/v1.pttt/open_spiel-1.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl`
+4. `pip install openspiel`
 5. `pip install -r requirements.txt`
 
 
 # RL Training
 * DQN
     - Run `python -m rl.dqn.py`
-    - Model is saved to `rl/model_dqn.pkl`
-    - Stats file is saved to `rl/stats_dqn.pkl`
 
 * MMD
     - Hard: Run `python -m rl.mmd game=splendor_hard`
     - Medium: Run `python -m rl.mmd game=splendor_medium`
+    - Light: Run `python -m rl.mmd game=splendor_lite`
 
 # Testing
 There are unit tests for the "difficult" version of Splendor, which the other three were based after. To run them,
