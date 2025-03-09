@@ -128,18 +128,6 @@ SPLENDOR_ACTIONS = {
     SAction.TAKE2_2: (SCategory.TAKE2, np.array([0, 0, 2, 0, 0, 0])),
     SAction.TAKE2_3: (SCategory.TAKE2, np.array([0, 0, 0, 2, 0, 0])),
     SAction.TAKE2_4: (SCategory.TAKE2, np.array([0, 0, 0, 0, 2, 0])),
-    # SAction.RETURN_0: (SCategory.RETURN, np.array([1, 0, 0, 0, 0, 0])),
-    # SAction.RETURN_1: (SCategory.RETURN, np.array([0, 1, 0, 0, 0, 0])),
-    # SAction.RETURN_2: (SCategory.RETURN, np.array([0, 0, 1, 0, 0, 0])),
-    # SAction.RETURN_3: (SCategory.RETURN, np.array([0, 0, 0, 1, 0, 0])),
-    # SAction.RETURN_4: (SCategory.RETURN, np.array([0, 0, 0, 0, 1, 0])),
-    # SAction.RETURN_GOLD: (SCategory.RETURN, np.array([0, 0, 0, 0, 0, 1])),
-    # SAction.CONSUME_GOLD_WHITE: (SCategory.SPENDING_TURN, np.array([1, 0, 0, 0, 0, 0])),
-    # SAction.CONSUME_GOLD_BLUE: (SCategory.SPENDING_TURN, np.array([0, 1, 0, 0, 0, 0])),
-    # SAction.CONSUME_GOLD_GREEN: (SCategory.SPENDING_TURN, np.array([0, 0, 1, 0, 0, 0])),
-    # SAction.CONSUME_GOLD_RED: (SCategory.SPENDING_TURN, np.array([0, 0, 0, 1, 0, 0])),
-    # SAction.CONSUME_GOLD_BLACK: (SCategory.SPENDING_TURN, np.array([0, 0, 0, 0, 1, 0])),
-    # SAction.END_SPENDING_TURN: (SCategory.SPENDING_TURN, None)
 }
 
 class SActions: 

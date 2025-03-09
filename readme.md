@@ -18,5 +18,5 @@ This is a monorepo containing three implementations of two person Splendor at di
     - Lite: Run `python -m rl.mmd game=splendor_lite`
 
 # Testing
-There are unit tests for the "difficult" version of Splendor, which the other three were based after. To run them,
+There are unit tests for the "hard" version of Splendor, which the other three were based after. To run them,
 execute `python -m unittest discover -s tests -p "*.py"`. 
