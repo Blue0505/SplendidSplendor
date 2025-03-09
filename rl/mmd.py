@@ -26,7 +26,7 @@ def main(cfg: DictConfig):
     print(os.getcwd())
     set_seed(cfg.seed)
     game = pyspiel.load_game(cfg.game)
-    runner = RunMMD(cfg, game, expl_callback=False)
+    runner = RunMMD(cfg, game, expl_callback=None)
     runner.run()
 
 if __name__ == "__main__":

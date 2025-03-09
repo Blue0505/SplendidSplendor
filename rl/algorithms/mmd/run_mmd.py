@@ -55,12 +55,13 @@ class RunMMD:
     def __init__(self, config, game, expl_callback):
         self.meta_config = config
         self.config = config.algorithm
+        self.game_name = config.game
         self.game = game
         self.expl_callback = expl_callback
 
     def run(self):
-        model_save_name = os.getcwd() + "/rl/model_mmd.pkl"
-        stats_save_name = os.getcwd() + "/rl/stats_mmd.pkl"
+        model_save_name = os.getcwd() + f"/rl/runs/model_{self.game_name}_mmd.pkl"
+        stats_save_name = os.getcwd() + f"/rl/runs/stats_{self.game_name}_mmd.pkl"
         if os.path.exists(stats_save_name):
             os.remove(stats_save_name)
 
@@ -153,7 +154,7 @@ class RunMMD:
                     self.expl_callback(
                         self.get_model(), self.get_model(), self.agent.total_steps_done
                     )
-                self.agent.save(f"{self.meta_config.experiment_dir}/agent.pth")
+                self.agent.save(model_save_name)
 
             if update % self.config.eval_every == 0:
                 stats = eval.eval_against_random_bots(env, self.agent, random_agent, 1000, mmd=True)

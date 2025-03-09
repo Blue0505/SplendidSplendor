@@ -64,8 +64,8 @@ flags.DEFINE_integer("epsilon_decay", int(1e6), "Epsilon decay.")
 
 
 def main(_):
-  model_save_name = os.getcwd() + "/rl/model_dqn.pkl"
-  stats_save_name = os.getcwd() + "/rl/stats_dqn.pkl"
+  model_save_name = os.getcwd() + "/rl/runs/model_dqn"
+  stats_save_name = os.getcwd() + "/rl/runs/stats_dqn.pkl"
 
   if os.path.exists(stats_save_name):
     os.remove(stats_save_name)
