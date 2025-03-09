@@ -15,7 +15,7 @@ This is a monorepo containing three implementations of two person Splendor at di
 * MMD
     - Hard: Run `python -m rl.mmd game=splendor_hard`
     - Medium: Run `python -m rl.mmd game=splendor_medium`
-    - Light: Run `python -m rl.mmd game=splendor_lite`
+    - Lite: Run `python -m rl.mmd game=splendor_lite`
 
 # Testing
 There are unit tests for the "difficult" version of Splendor, which the other three were based after. To run them,
