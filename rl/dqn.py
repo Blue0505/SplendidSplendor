@@ -67,6 +67,9 @@ def main(_):
   model_save_name = os.getcwd() + "/rl/model_dqn.pkl"
   stats_save_name = os.getcwd() + "/rl/stats_dqn.pkl"
 
+  if os.path.exists(stats_save_name):
+    os.remove(stats_save_name)
+
   game = "splendor_hard"
   num_players = 2
   random_id = 1
@@ -109,7 +112,7 @@ def main(_):
 
     for ep in range(FLAGS.num_train_episodes):
       if (ep + 1) % FLAGS.eval_every == 0:
-        stats = eval_against_random_bots(env, dqn_agent, random_agent, 1000, mmd=False)
+        stats = eval_against_random_bots(env, dqn_agent, random_agent, FLAGS.eval_every, mmd=False)
         logging.info(f"Episode: {ep}")
         logging.info(f"Stats: {stats}")
         

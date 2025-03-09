@@ -8,6 +8,7 @@ from omegaconf import OmegaConf, DictConfig
 import os
 
 from splendor_medium import splendor_game
+from splendor_hard import splendor_game
 
 """Train an MMD agent."""
 
@@ -24,7 +25,7 @@ def set_seed(seed):
 def main(cfg: DictConfig):
     print(os.getcwd())
     set_seed(cfg.seed)
-    game = pyspiel.load_game("splendor_medium")
+    game = pyspiel.load_game(cfg.game)
     runner = RunMMD(cfg, game, expl_callback=False)
     runner.run()
 

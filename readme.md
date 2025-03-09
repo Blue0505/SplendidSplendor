@@ -10,12 +10,13 @@ This is a monorepo containing three implementations of two person Splendor at di
 
 # RL Training
 * DQN
-    - Run `python -m rl.rl_dqn.py`
+    - Run `python -m rl.dqn.py`
     - Model is saved to `rl/model_dqn.pkl`
     - Stats file is saved to `rl/stats_dqn.pkl`
 
 * MMD
-    - 
+    - Hard: Run `python -m rl.mmd game=splendor_hard`
+    - Medium: Run `python -m rl.mmd game=splendor_medium`
 
 # Testing
 There are unit tests for the "difficult" version of Splendor, which the other three were based after. To run them,
