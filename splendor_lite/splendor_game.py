@@ -18,15 +18,15 @@ import numpy as np
 from numpy.typing import NDArray
 import enum
 
-from splendor_hard.board import Board
-from splendor_hard.player import Player
-from splendor_hard.card import Card
-from splendor_hard.gems import Gems
-from splendor_hard.actions import SActions, SAction, SCategory
-import splendor_hard.ansi_escape_codes as ansi
+from splendor_lite.board import Board
+from splendor_lite.player import Player
+from splendor_lite.card import Card
+from splendor_lite.gems import Gems
+from splendor_lite.actions import SActions, SAction, SCategory
+import splendor_lite.ansi_escape_codes as ansi
 
 _NUM_PLAYERS = 2
-_CARDS_FILENAME = "../data/cards.csv"
+_CARDS_FILENAME = "./data/cards.csv"
 _WIN_POINTS = 8
 _MAX_PLAYER_GEMS = 10
 _MAX_TAKE2_GEMS = 4

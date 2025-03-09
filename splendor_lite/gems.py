@@ -1,6 +1,6 @@
 import numpy as np
 from numpy.typing import NDArray
-import splendor_hard.ansi_escape_codes as ansi
+import splendor_lite.ansi_escape_codes as ansi
 
 class Gems:
     """A gem container for the board, players, and cards."""

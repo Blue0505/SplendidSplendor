@@ -8,7 +8,6 @@ class SCategory(enum.IntEnum):
 
     PURCHASE = enum.auto()
     TAKE3 = enum.auto()
-    TAKE2 = enum.auto()
 
 
 class SAction(enum.IntEnum):

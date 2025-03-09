@@ -47,10 +47,10 @@ class Board:
         output = ""
         for i, row in enumerate(self._decks):
             output += f"   Deck {i}: ({i}0) | "
-            for j, card in enumerate(row[-4:]):
+            for j, card in enumerate(row[-2:]):
                 output += f"({i}{j + 1}) {str(card)} | "
             output += "\n"
-        output += f"   Gems: {gem_array_str(self.gems.get_array(), gold=True)}\n"
+        output += f"   Gems: {gem_array_str(self.gems.get_array())}\n"
         return output
 
 

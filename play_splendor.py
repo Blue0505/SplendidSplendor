@@ -1,27 +1,22 @@
 import pyspiel
 import pickle
-import splendor_hard.splendor_game as splendor_game
+#import splendor_hard.splendor_game as splendor_game
+import splendor_lite.splendor_game as splendor_game
 import time
 import sys
 import splendor_hard.ansi_escape_codes as ansi
-from splendor_hard.actions import SAction
+#from splendor_hard.actions import SAction
+from splendor_lite.actions import SAction
 from open_spiel.python.observation import make_observation
 
 _DEBUG = False
 
 def get_action_name(action) -> str:
     action_name: str = SAction(action).name
-
     action_type: str = ""
     action_details: str = ""
 
-    if action_name.startswith("PURCHASE_RESERVE"):
-        action_type = "Purchase reserve"
-        action_details = f"({action_name[-1]})"
-    elif action_name.startswith("RESERVE"):
-        action_type = "Reserve"
-        action_details = f"({action_name[-2:]})"
-    elif action_name.startswith("PURCHASE"):
+    if action_name.startswith("PURCHASE"):
         action_type = "Purchase"
         action_details = f"({action_name[-2:]})"
     elif action_name.startswith("TAKE3"):
@@ -62,19 +57,6 @@ def get_action_name(action) -> str:
             case "GOLD":
                 action_details = f"{ansi.YELLOW}gold"
             
-    elif action_name.startswith("CONSUME_GOLD"):
-        action_type = f"Consume {ansi.YELLOW}gold{ansi.RESET}"
-        match action_name[13:]:
-            case "WHITE":
-                action_details = f"as {ansi.WHITE}white"
-            case "BLUE":
-                action_details = f"as {ansi.BLUE}blue"
-            case "GREEN":
-                action_details = f"as {ansi.GREEN}green"
-            case "RED":
-                action_details = f"as {ansi.RED}red"
-            case "BLACK":
-                action_details = f"as {ansi.GRAY}black"
     elif action_name.startswith("END_SPENDING_TURN"):
         action_type = "End spending turn"
     else:
@@ -108,10 +90,9 @@ def display_tensor(tensor):
 
 
 def main():
-    game = pyspiel.load_game("python_splendor", {"shuffle_cards": True})
+    game = pyspiel.load_game("splendor_lite", {"shuffle_cards": True})
     state = game.new_initial_state()
     obs = make_observation(game)
-
     while not state.is_terminal():
         print(state)
         legal_actions = state.legal_actions()

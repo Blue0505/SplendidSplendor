@@ -1,8 +1,8 @@
 import numpy as np
 from numpy.typing import NDArray
 
-from splendor_hard.card import Card
-from splendor_hard.gems import Gems, gem_array_str
+from splendor_lite.card import Card
+from splendor_lite.gems import Gems, gem_array_str
 
 PLAYER_GEMS_START: int = 0
 MAX_RESERVE: int = 3
@@ -23,8 +23,7 @@ class Player:
 
     def __str__(self):
         return (
-            f"   Gems: {gem_array_str(self.gems.get_array(), gold=True)}\n"
-            f"   {reserved_str}\n"
+            f"   Gems: {gem_array_str(self.gems.get_array())}\n"
             f"   Resources: {gem_array_str(self.get_resources_array())}\n"
             f"   Points: {self.get_points()}\n"
         )
