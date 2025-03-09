@@ -26,7 +26,7 @@ from splendor_hard.actions import SActions, SAction, SCategory
 import splendor_hard.ansi_escape_codes as ansi
 
 _NUM_PLAYERS = 2
-_CARDS_FILENAME = "../data/cards.csv"
+_CARDS_FILENAME = "./data/cards.csv"
 _WIN_POINTS = 15
 _MAX_PLAYER_GEMS = 10
 _MAX_TAKE2_GEMS = 4

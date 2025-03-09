@@ -1,9 +1,0 @@
-I0303 17:49:18.236073 8534586624 rl_environment.py:182] Using game string: python_splendor
-I0303 17:49:18.236642 8534586624 rl_dqn.py:123] Checkpoint directory: /tmp/dqn_test
-I0303 17:49:18.236668 8534586624 rl_dqn.py:124] Save every: 10000
-I0303 17:49:18.236684 8534586624 rl_dqn.py:125] Evaluate every: 1000
-I0303 17:49:18.236697 8534586624 rl_dqn.py:126] Evaluate amount: 1000
-I0303 17:49:18.236709 8534586624 rl_dqn.py:127] Hidden layers sizes: ['139', '128']
-I0303 17:49:18.236721 8534586624 rl_dqn.py:128] Replay buffer capacity: 100000
-I0303 17:49:18.236732 8534586624 rl_dqn.py:129] Batch sizses: 45
-I0303 17:49:18.236744 8534586624 rl_dqn.py:130] Learning rate: 0.001

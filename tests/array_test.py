@@ -9,6 +9,7 @@ import splendor_hard.board as board
 from splendor_hard.card_importer import csv_import
 from splendor_hard.gem import Gem
 from splendor_hard.card import Card
+import os
 from splendor_hard.board import Board
 from splendor_hard.player import Player
 
@@ -16,6 +17,7 @@ from open_spiel.python.observation import make_observation
 
 decks: list[list[Card]] = csv_import("data/cards.csv")
 
+print(os.getcwd())
 class TestArrayMethods(unittest.TestCase):
     def test_card_array(self):
         arr = np.array(Card(0, Gem.RED, (3, 0, 0, 0, 0)))
