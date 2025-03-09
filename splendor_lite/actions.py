@@ -13,7 +13,7 @@ class SCategory(enum.IntEnum):
 class SAction(enum.IntEnum):
     "Action ids used in Splendor."
 
-    PURCHASE_01 = enum.auto()
+    PURCHASE_01 = 0
     PURCHASE_02 = enum.auto()
     PURCHASE_11 = enum.auto()
     PURCHASE_12 = enum.auto()

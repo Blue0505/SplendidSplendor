@@ -68,8 +68,6 @@ _GAME_INFO = pyspiel.GameInfo(
 
 class TurnType(enum.IntEnum):
     NORMAL = 0
-    # SPENDING = enum.auto()  # Player consumes gold for a card.
-    # RETURN = enum.auto()  # Player gives back gems to the board to not exceed 10 gems.
 
 
 class SplendorGame(pyspiel.Game):

@@ -9,6 +9,7 @@ import os
 
 from splendor_medium import splendor_game
 from splendor_hard import splendor_game
+from splendor_lite import splendor_game
 
 """Train an MMD agent."""
 

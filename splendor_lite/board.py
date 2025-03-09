@@ -1,9 +1,9 @@
 from random import shuffle
 import numpy as np
 
-from splendor_hard.card import Card
-from splendor_hard.card_importer import csv_import
-from splendor_hard.gems import Gems, gem_array_str
+from splendor_lite.card import Card
+from splendor_lite.card_importer import csv_import
+from splendor_lite.gems import Gems, gem_array_str
 
 BOARD_COLOR_START: int = 4
 BOARD_GOLD_START: int = 5

@@ -1,2 +1,0 @@
-model_checkpoint_path: "/Users/colevanverth/Desktop/Splendid/rl/runs/model_dqn/q_network_pid0"
-all_model_checkpoint_paths: "/Users/colevanverth/Desktop/Splendid/rl/runs/model_dqn/q_network_pid0"
