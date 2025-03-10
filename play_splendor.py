@@ -1,6 +1,14 @@
 import pyspiel
+import argparse
 import pickle
 from open_spiel.python.observation import make_observation
+from open_spiel.python.algorithms import dqn
+from rl.algorithms.mmd.mmd import MMD 
+import tensorflow.compat.v1 as tf
+from open_spiel.python import rl_environment
+from open_spiel.python.algorithms import random_agent as ha
+import os 
+import sys
 
 import splendor_hard.splendor_game, splendor_medium.splendor_game, splendor_lite.splendor_game
 from splendor_hard.actions import SAction as h_SAction
@@ -10,12 +18,27 @@ import splendor_hard.ansi_escape_codes as ansi
 
 _DEBUG = False
 
-GAME_STRING = "splendor_lite"
+def command_line_action(time_step, game_string):
+    """Gets a valid action from the user on the command line."""
+    current_player = time_step.observations["current_player"]
+    legal_actions = time_step.observations["legal_actions"][current_player]
+    action = -1
+    while action not in legal_actions:
+        for action in legal_actions:
+            print(get_action_name(action, game_string))
+        sys.stdout.flush()
+        action_str = input()
+        try:
+            action = int(action_str)
+        except ValueError:
+            continue
+    return action
 
-def get_action_name(action) -> str:
-    if GAME_STRING == "splendor_hard":
+def get_action_name(action, game_string) -> str:
+    """Turns a numeric action id into a pretty string with text."""
+    if game_string == "splendor_hard":
         action_name: str = h_SAction(action).name
-    elif GAME_STRING == "splendor_medium":
+    elif game_string == "splendor_medium":
         action_name: str = m_SAction(action).name
     else:
         action_name: str = l_SAction(action).name
@@ -82,31 +105,71 @@ def get_action_name(action) -> str:
 
 
 def main():
-    game = pyspiel.load_game(GAME_STRING)
-    state = game.new_initial_state()
-    obs = make_observation(game)
-    while not state.is_terminal():
-        print(state)
-        legal_actions = state.legal_actions()
-        if _DEBUG:
-            obs.set_from(state,0) #type: ignore
-            tensor = obs.tensor #type: ignore
 
-        for action in state.legal_actions():
-            print(get_action_name(action))
+    parser = argparse.ArgumentParser()
 
-        action = -1
-        while action not in legal_actions:
-            try: 
-                action = int(input("Select action."))
-            except Exception as e:
-                print(f"Retry: input was not an action.")
-                continue
+    AGENTS = ["dqn", "mmd"]
+    parser.add_argument('--game_string', type=str, required=True)
+    parser.add_argument('--agent', type=str, required=False)
 
-            if action not in legal_actions:
-                print(f"Retry: {action} is not a legal action.")
+    args = parser.parse_args()
 
-        state.apply_action(action)
+    game = pyspiel.load_game(args.game_string)
+    env = rl_environment.Environment(game)
+
+
+    if args.agent is not None:
+        if args.agent == "dqn":
+            # Temporary DQN initializer using the same hyper-parameters in our last training.
+            sess = tf.Session()
+            agent = dqn.DQN(
+                session=sess,
+                player_id=0,
+                state_representation_size=game.observation_tensor_size(), 
+                num_actions=game.num_distinct_actions(), 
+                learning_rate=0.001, 
+                hidden_layers_sizes=[239, 128],
+                replay_buffer_capacity=100000,
+                epsilon_decay_duration=1e6,
+                batch_size=128
+            )
+            checkpoint_dir = os.getcwd() + "/rl/runs/model_dqn"
+            print(checkpoint_dir)
+            agent.restore(os.getcwd() + "/rl/runs/model_dqn")
+    elif args.agent == "mmd": pass
+        # agent = MMD
+        # TODO!
+    else: 
+        raise SystemExit(f"Agent {args.agent} does not exist.")
+    
+    human_agent = ha.RandomAgent(player_id=1, num_actions=game.num_distinct_actions())
+    agents = [agent, human_agent]
+
+    human_player = 1
+
+    time_step = env.reset()
+    while not time_step.last():
+        print(env._state)
+        player_id = time_step.observations["current_player"]
+        if player_id == human_player:
+            agent_out = agents[human_player].step(time_step, is_evaluation=True)
+            action = command_line_action(time_step, args.game_string)
+        else:
+            agent_out = agents[1 - human_player].step(time_step, is_evaluation=True)
+            action = agent_out.action
+        time_step = env.step([action])
+
+        # logging.info("\n%s", pretty_board(time_step))
+
+        # logging.info("End of game!")
+        # if time_step.rewards[human_player] > 0:
+        #     logging.info("You win")
+        # elif time_step.rewards[human_player] < 0:
+        #     logging.info("You lose")
+        # else:
+        #     logging.info("Draw")
+        # Switch order of players
+        # human_player = 1 - human_player
 
 if __name__ == '__main__':
     main()
