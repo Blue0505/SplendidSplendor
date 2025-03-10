@@ -97,10 +97,20 @@ TODO: WHY DIDN'T WORK
 TODO: WHAT WE TRIED
     * varying the neural network sizes (some success by increasing)
     * increasing batch size (some success by increasing)
-    * lowering epislon rate (no effect, but we thought it might help since we were limited in how many games that we could train because it was slow)
+    * lowering epsilon rate (no effect, but we thought it might help since we were limited in how many games that we could train because it was slow)
     * lowering learning rate (why we thought that it would help, why it didn't really help very much)
 
 #### Qualitative Analysis
+Notes from playing against DQN agent:
+- Won 16-7, lost 10-16
+- Prefers reserving cards first
+- Likes to buy many cards for resources near start of game
+- Seems to cut resources from the other player
+- Reserves and buys more deck 0 cards than expected
+- Collects gems the opponent wants
+- Tends to buy gems directly from the board rather than reserved gems
+- Second game was very close and could've won with one more turn-- AI is actually fun to play against
+
 
 ### Magnetic Mirror Descent Results
 TODO
