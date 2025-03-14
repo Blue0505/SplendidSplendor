@@ -100,7 +100,7 @@ Initially, we attempted to train the DQN agent with self-play as attempted with 
 
 After speaking with our TA, [JB Lanier](https://jblanier.net/) we got more insight into why we were not converging to a stable policy. The key insight was that self-play was causing the agents to adapt to each other's strategy, but in a sort of loop that does not lead to a net improvement overtime. Thus, we decided to try training DQN soley against a random agent to avoid this problem.
 
-![Statistics for DQN](./dqn_stats.png)
+<img src="./dqn_stats.png" alt="Statistics for DQN">
 <a align="center"><b>Fig. 3</b> DQN agent statistics </a>
 
 As shown in Fig. 3, the DQN agent had a much more stable policy overtime when not trained with self-play. Over roughly the first 20000 episodes, the reward averages greatly increase. Similarly, the reward standard deviation, game length average, game length standard deviation, and game wins minus ties all decrease. We also observed a slight rebound in performance after 20000 episodes which we could not explain, but performance stays pretty consistent after that. 
@@ -113,7 +113,7 @@ The agent has developed a clear strategy that allows it to compete with human pl
 
 #### Quantitative Results
 
-![MMD statistics for the three different difficulty levels of Splendor(./mmd_agents.png))
+![MMD statistics for the three different difficulty levels of Splendor](./mmd_stats.png)
 <a align="center"><b>Fig. 4</b> Statistics for the MMD agents </a>
 
 Training MMD yielded the most exciting and consistent results of our project. All our metrics appear to vary mostly monotonically, even after 10,000,000 time steps. Notably, the reward averages and win rates increase faster for the "easy" version of the game; this is expected since the average horizon is significantly shorter than the other two versions. Since our agent continues to improve after 10,000,000 time steps, we likely need better computational resources and a compiled version of Splendor to achieve an AI with super human play. 
