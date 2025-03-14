@@ -101,16 +101,8 @@ TODO: WHAT WE TRIED
     * lowering learning rate (why we thought that it would help, why it didn't really help very much)
 
 #### Qualitative Analysis
-Notes from playing against DQN agent:
-- Won 16-7, lost 10-16
-- Prefers reserving cards first
-- Likes to buy many cards for resources near start of game
-- Seems to cut resources from the other player
-- Reserves and buys more deck 0 cards than expected
-- Collects gems the opponent wants
-- Tends to buy gems directly from the board rather than reserved gems
-- Second game was very close and could've won with one more turn-- AI is actually fun to play against
-
+To test the DQN agent's performance in a more practical setting, we played against it ourselves. While it still cannot consistently win against a random agent, it performs fairly good against human players. In our first game against the agent, the agent won 16-7. In the second game, the agent lost 10-16 but was two turns away from winning. The agent is able to win or at least create close games with human players. Most importantly, we found the agent fun to play against, as it can quickly build up resources and points. While it cannot consistently win against human players, its progress is impressive.
+The agent has developed a clear strategy that allows it to compete with human players. Near the beginning of the game, the agent prioritizes reserving cards over any other actions. It reserves low level cards that have a low cost but do not contribute much to the point score. It purchases many low level cards to gain a resource advantage. This differs from our strategies in two-player games, which generally skip the lowest level of cards in favor of getting points earlier. When it comes to higher level cards, it prefers to purchase them directly from the board instead of reserving them. It also seems to take into account which gems the other player is gathering for reserved cards, taking those gems from the board. While not perfect, the agent has developed clear strategies that make playing against it interesting.
 
 ### Magnetic Mirror Descent Results
 TODO
