@@ -14,7 +14,7 @@ After creating the Splendor environment, we experimented with different reinforc
 
 ## Approaches
 
-TODO: Say somewhere that we should have coded the game in C++ instead. Since we are bottleneckeded so heavily on CPU
+TODO: Say somewhere that we should have coded the game in C++ instead. Since we are bottlenecked so heavily on CPU
 
 ### Environment Setup
 We created three different versions of Splendor at different difficulty versions ("lite", "medium", "hard"). The analysis of our game system corresponds to the "hard" version; we created this version first and the easier versions are derived from it. 
@@ -25,7 +25,7 @@ Defining an action system for Splendor was our first major hurdle. We partitione
 <img src="./actions_diagram.png" alt="Flow chart depicting different turn types of the action space for Splendor." style="
     width: 100%;
 ">
-<a align="center"><b>Fig 1.</b> Splendor action space</a>
+<a align="center"><b>Fig. 1</b> Splendor action space</a>
 
 As illustrated in Fig. 1, the  `SPENDING` turn type (top right) enables a player to spend gold for a card without requiring an action for each variation. This reduces $5^5 \times 12$ actions to $12$ actions. Similarly, the `RETURN` turn type (bottom left) allows a player to return gems from their inventory without needing a special gem drawing action. This reduces $5^2 \times \big( \binom{5}{2} + \binom{5}{3} \big)$ actions to $\binom{5}{2} + \binom{5}{3}$ actions. 
 
@@ -85,30 +85,41 @@ TODO: Explain how we created three different versions of Splendor for this part 
     <img src="./game_length.png" alt="Image 1" style="width: 30%; height: auto;">
     <img src="./win_rates.png" alt="Image 3" style="width: 30%; height: auto;">
 </div>
-<a align="center"><b>Fig 2.</b> Average win amounts of Q-learning agents </a>
+<a align="center"><b>Fig. 2</b> Average win amounts of Q-learning agents </a>
 
-Training with Q-learning helped verify our game was working; however, Q-learning failed to train a competent agent. As shown in Fig. 2, the average game wins over 1000 games against a random agent ossilates heavily even after $5\cdot10^5$ episodes. We hypothesize this is because Q-learning is tabular; that is, the Q-value associated with each state action pair is stored. However, the state space of Splendor is massive and is unlikely to be entirely representable in computer memory. In addition, the amount of time it would take to fill Q-values for a reasonable amount of the state space would likely be too long to be realistic.
+Training with Q-learning helped verify our game was working; however, Q-learning failed to train a competent agent. As shown in Fig. 2, the average game wins over 1000 games against a random agent oscillates heavily even after $5\cdot10^5$ episodes. We hypothesize this is because Q-learning is tabular; that is, the Q-value associated with each state action pair is stored. However, the state space of Splendor is massive and is unlikely to be entirely representable in computer memory. In addition, the amount of time it would take to fill Q-values for a reasonable amount of the state space would likely be too long to be realistic.
 
 ### Deep Q-Learning Results
 #### Quantitative Analysis
 
+Initially, we attempted to train the DQN agent with self-play as attempted with the Q-learning agent. The agent had better quantitative results (e.g. higher win rates); however, the results still oscillated even after two million time steps. Unsure of what was causing the lack of convergence, we experimented with the following hyper-parameters:
+    * **Neural network layers**: We saw some quantitative success by increasing the neural network size. Originally, there were two hidden layers with sizes 64, and 64. We increased this to 239, 128 to ensure that each element of the observation tensor had a corresponding hidden unit in the first layer. 
+    * **Batch size**: We also tried increasing the batch size. We also saw minor improvements by increasing the batch size, which we think is due to a more stable gradient descent calculation when updating the online network.
+    * **Learning rate**: We tried lowering the learning rate with the hope that small changes to the online network early on could lead to more stability in training; we did not notice a negligable effect on the quantiative statistics by lowering the learning rate.
+    * **Epsilon**: We also tried to decrease the rate that epsilon is lowered. We hoped that by exploring randomly for longer in the early parts of training, the agent would have a more stable policy at later timesteps. Unfortunately, we did not notice any effects on the quantitative statistics by doing so.800px
 
+After speaking with our TA, [JB Lanier](https://jblanier.net/) we got more insight into why we were not converging to a stable policy. The key insight was that self-play was causing the agents to adapt to each other's strategy, but in a sort of loop that does not lead to a net improvement overtime. Thus, we decided to try training DQN soley against a random agent to avoid this problem.
 
-TODO: WHY DIDN'T WORK
+![Statistics for DQN](./dqn_stats.png)
+<a align="center"><b>Fig. 3</b> DQN agent statistics </a>
 
-    * self-play: doesn't work with zero-sum because each player oscillates around best strategy (show rock paper scissors diagram)
-TODO: WHAT WE TRIED
-    * varying the neural network sizes (some success by increasing)
-    * increasing batch size (some success by increasing)
-    * lowering epsilon rate (no effect, but we thought it might help since we were limited in how many games that we could train because it was slow)
-    * lowering learning rate (why we thought that it would help, why it didn't really help very much)
+As shown in Fig. 3, the DQN agent had a much more stable policy overtime when not trained with self-play. Over roughly the first 20000 episodes, the reward averages greatly increase. Similarly, the reward standard deviation, game length average, game length standard deviation, and game wins minus ties all decrease. We also observed a slight rebound in performance after 20000 episodes which we could not explain, but performance stays pretty consistent after that. 
 
 #### Qualitative Analysis
-To test the DQN agent's performance in a more practical setting, we played against it ourselves. While it still cannot consistently win against a random agent, it performs fairly good against human players. In our first game against the agent, the agent won 16-7. In the second game, the agent lost 10-16 but was two turns away from winning. The agent is able to win or at least create close games with human players. Most importantly, we found the agent fun to play against, as it can quickly build up resources and points. While it cannot consistently win against human players, its progress is impressive.
+To test the DQN agent's performance in a more practical setting, we played against it ourselves. While the DQN agent cannot win 100 percent of the time against a random agent, it performs fairly good against human players. In our first game against the agent, the agent won 16-7. In the second game, the agent lost 10-16 but was two turns away from winning. The agent is able to win or at least create close games with human players. Most importantly, we found the agent fun to play against, as it can quickly build up resources and points. While it cannot consistently win against human players, its progress is impressive.
 The agent has developed a clear strategy that allows it to compete with human players. Near the beginning of the game, the agent prioritizes reserving cards over any other actions. It reserves low level cards that have a low cost but do not contribute much to the point score. It purchases many low level cards to gain a resource advantage. This differs from our strategies in two-player games, which generally skip the lowest level of cards in favor of getting points earlier. When it comes to higher level cards, it prefers to purchase them directly from the board instead of reserving them. It also seems to take into account which gems the other player is gathering for reserved cards, taking those gems from the board. While not perfect, the agent has developed clear strategies that make playing against it interesting.
 
 ### Magnetic Mirror Descent Results
-TODO
+
+#### Quantitative Results
+
+![MMD statistics for the three different difficulty levels of Splendor(./mmd_agents.png))
+<a align="center"><b>Fig. 4</b> Statistics for the MMD agents </a>
+
+Training MMD yielded the most exciting and consistent results of our project. All our metrics appear to vary mostly monotonically, even after 10,000,000 time steps. Notably, the reward averages and win rates increase faster for the "easy" version of the game; this is expected since the average horizon is significantly shorter than the other two versions. Since our agent continues to improve after 10,000,000 time steps, we likely need better computational resources and a compiled version of Splendor to achieve an AI with super human play. 
+
+#### Qualitative Results
+
 
 
 ## References
