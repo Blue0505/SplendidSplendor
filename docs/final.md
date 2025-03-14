@@ -91,8 +91,11 @@ Training with Q-learning helped verify our game was working; however, Q-learning
 
 ### Deep Q-Learning Results
 #### Quantitative Analysis
-TODO: SHOW STATISTICS
+
+
+
 TODO: WHY DIDN'T WORK
+
     * self-play: doesn't work with zero-sum because each player oscillates around best strategy (show rock paper scissors diagram)
 TODO: WHAT WE TRIED
     * varying the neural network sizes (some success by increasing)

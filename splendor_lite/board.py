@@ -5,7 +5,7 @@ from splendor_lite.card import Card
 from splendor_lite.card_importer import csv_import
 from splendor_lite.gems import Gems, gem_array_str
 
-BOARD_COLOR_START: int = 4
+BOARD_COLOR_START: int = 8
 BOARD_GOLD_START: int = 5
 MIN_DECK_CARDS: int = 2
 

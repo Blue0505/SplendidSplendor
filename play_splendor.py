@@ -110,7 +110,7 @@ def main():
 
     AGENTS = ["dqn", "mmd"]
     parser.add_argument('--game_string', type=str, required=True)
-    parser.add_argument('--agent', type=str, required=False)
+    parser.add_argument('--agent', type=str, required=True)
 
     args = parser.parse_args()
 
