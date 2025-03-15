@@ -118,7 +118,7 @@ The agent developed a clear strategy that allows it to compete with human player
 
 <img src="./mmd_stats.png" alt="MMD statistics for the three different difficulty levels of Splendor" style="width: 100%">
 
-<a style="display: flex; justify-content: center;"><b>Fig. 4</b> <p>Statistics for the MMD agents </p></a>
+<a style="display: flex; justify-content: center;"><b>Fig. 4</b><p>Statistics for the MMD agents</p></a>
 
 Training MMD yielded the most exciting and consistent results of our project. All our metrics appear to vary mostly monotonically, even after 10,000,000 time steps. Notably, the reward averages and win rates increase faster for the "easy" version of the game; this is expected since the average horizon is significantly shorter than the other two versions. Since our agent continues to improve after 10,000,000 time steps, we likely need better computational resources and a compiled version of Splendor to achieve an AI with super human play. 
 
@@ -134,6 +134,8 @@ Training MMD yielded the most exciting and consistent results of our project. Al
 initialize the metadata of the card decks to start each Splendor game. 
 
 [[4] OpenSpiel MMD Algorithm](https://github.com/nathanlct/IIG-RL-Benchmark/blob/main/algorithms/mmd/mmd.py) We used a custom multi-agent implementation of MMD provided by Lancetot et. al. designed for use in OpenSpiel. 
+
+[[5] Magnetic Mirror Descent](https://arxiv.org/abs/2206.05825)
 
 ## AI Tool Usage
 We used ChatGPT for minor debugging purposes and various one-liners relating to libraries
