@@ -140,7 +140,7 @@ def main():
             sess = tf.Session()
             agent = MMD(
                 num_players=2,
-                input_shape=(game.observation_tensor_size(),),
+                input_shape=(game.observation_tensor_size(), 2),
                 num_actions=game.num_distinct_actions(),
                 num_envs=8,
                 clip_coef=1

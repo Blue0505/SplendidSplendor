@@ -6,15 +6,13 @@
 ## Video
 
 ## Project Summary
-Splendor is a resource acquisition board game that is played with two to four players. Although we found repositories that train reinforcement learning (RL) agents against it, we did not see any use of state-of-the-art algorithms such as Magnetic Mirror Descent (MMD) nor any approaches that lent itself towards future experimentation with other algorithms. Thus, our group implemented the two player version of the Splendor board game within the OpenSpiel framework. 
+Splendor is a resource acquisition board game that is played with two to four players. Although we found repositories that train reinforcement learning (RL) agents against it, we did not see any use of state-of-the-art algorithms such as Magnetic Mirror Descent (MMD) nor any approaches that lent itself towards future experimentation with other algorithms. Thus, our group implemented the two player version of the Splendor board game within the OpenSpiel framework [1]. 
 
-We built the environment from scratch using the game's manual. We determined the RL properties of two-person Splendor and integrated them into the environment via the OpenSpiel API; namely, our version of Splendor is imperfect information, zero-sum, no-chance, and has a discrete action space. We carefully designed the action space for Splendor to minimize its size. We built three different difficulties of Splendor ("lite", "medium", and "hard") to run against OpenSpiel's RL algorithms. In addition, we wrote extensive unit tests for the game. Lastly, we created an observation system that condensed the game's state from the its data structures into a numeric representation. 
+We built the environment from scratch using the game's manual. We determined the RL properties of two-person Splendor and integrated them into the environment via the OpenSpiel API; specifically, our version of Splendor is imperfect information, zero-sum, no-chance, and has a discrete action space. We carefully designed the action space for Splendor to minimize its size. We built three different difficulties of Splendor ("lite", "medium", and "hard") to run against OpenSpiel's RL algorithms. In addition, we wrote extensive unit tests for the game. Lastly, we created an observation system that condensed the game's state from the its data structures into a numeric representation. 
 
-After creating the Splendor environment, we experimented with different reinforcement learning algorithms via OpenSpiel's catalog. Our first attempt trained a Splendor playing agent with the Q-learning algorithm through self-play. Due to the large state space of Splendor, the tabular nature of Q-learning was insufficient for training a capable agent. Naturally, we pivoted to training an agent through self play with Deep Q-Learning (DQN). DQN yielded higher quality results, especially after experimentation with hyper-parameters; however, the zero-sum nature of Splendor ultimately hindered long term improvement from the agent. Consequently, we trained an agent using MMD provided by Lanctot et. al. in an OpenSpiel fork [1].
+After creating the Splendor environment, we experimented with different reinforcement learning algorithms via OpenSpiel's catalog. Our first attempt trained a Splendor playing agent with the Q-learning algorithm through self-play. Due to the large state space of Splendor, the tabular nature of Q-learning was insufficient for training a capable agent. Naturally, we pivoted to training an agent through self play with Deep Q-Learning (DQN). DQN yielded higher quality results, especially after experimentation with hyper-parameters; however, the zero-sum nature of Splendor ultimately hindered long term improvement from the agent. Consequently, we trained an agent using MMD provided by Lanctot et. al. in an OpenSpiel fork [2].
 
 ## Approaches
-
-TODO: Say somewhere that we should have coded the game in C++ instead. Since we are bottlenecked so heavily on CPU
 
 ### Environment Setup
 We created three different versions of Splendor at different difficulty versions ("lite", "medium", "hard"). The analysis of our game system corresponds to the "hard" version; we created this version first and the easier versions are derived from it. 
@@ -56,14 +54,14 @@ Each reward category $c$ had a different weight $\alpha_c$ and value associated 
 
 ### Algorithms
 #### Q-Learning
-As a baseline to verify that our algorithm worked, we trained a Splendor playing agent with Q-Learning. Q-Learning exploits the lower variance of an approach such as Bellman's Equations whilst not needing to calculate exponentially many trajectories like Monte Carlo. Q-learning associates a *Q-value* with state action pairs that are defined recursively in terms of future action pairs; specifically, assuming deterministic state dynamics, the Q-value function is recursively defined $Q_{\pi}(s) = r(s, a) + \gamma \max_{a'}Q_{\pi}(s', a')$. The best policy $\pi$ can then be chosen at each state by choosing the action $a$ associated with the largest Q-value, that is, $\arg \max Q_a(s, a)$.
+As a baseline to verify that our algorithm worked, we trained a Splendor playing agent with Q-Learning. Q-Learning exploits the lower variance of an approach such as Bellman's Equations whilst not needing to calculate exponentially many trajectories like a Monte Carlo based approach. Q-learning associates a *Q-value* with state action pairs that are defined recursively in terms of future action pairs; specifically, the Q-value function is recursively defined $Q_{\pi}(s) = r(s, a) + \gamma \max_{a'}Q_{\pi}(s', a')$. The best policy $\pi$ can then be chosen at each state by choosing the action $a$ associated with the largest Q-value, that is, $\arg \max Q_a(s, a)$.
 
 At this point in our project, our AI pipeline consisted only of capturing the number of wins each agent won against a random agent averaged over 1000 episodes.
 
 #### Deep Q-Learning
-Due to the limitations imposed by the tabular nature of Q-Learning, we then pivoted to Deep Q-Learning. In contrast to Q-Learning, Deep Q-Learning estimates the Q-value function using two neural networks. There is an online network and a target network which is periodically set to be equal to the online network. We enforced the epsilon greedy policy to train our agent. With a $\epsilon$ percent chance, the agent picks a random move, and with a $1 - \epsilon$ chance the agent picks the action associated with the highest estimated Q-value. As an agent explores through the states, the algorithm descends over $Q_\theta$ towards Q-value's recursive definition using $Q_{\bar{\theta}}$; specifically, it descends over $((r(s,a) + \gamma \max_{a'} Q_{\bar{\theta}}(s', a')) - Q_{\theta}(s, a))^2$.
+Due to the limitations imposed by the tabular nature of Q-Learning, we pivoted to Deep Q-Learning. In contrast to Q-Learning, Deep Q-Learning estimates the Q-value function using two neural networks. There is an *online network* ($Q_\theta() and a *target network* (Q_{\bar{\thetwhich is periodically set to be equal to the online network. We enforced the epsilon greedy policy to train our agent. With probability epsilon, the agent picks a random move, and with probability 1 minus epsilon chance the agent picks the action associated with the highest estimated Q-value. As an agent explores through the states, the algorithm descends over $Q_\theta$ towards Q-value's recursive definition using $Q_{\bar{\theta}}$; specifically, it descends over $((r(s,a) + \gamma \max_{a'} Q_{\bar{\theta}}(s', a')) - Q_{\theta}(s, a))^2$.
 
-At this point in our project, we implemented a more sophisticated AI pipeline. We continued to evaluate the two self-playing agents every 1000 games for 1000 games against a random agent. However, began capturing more statistics, namely:
+At this point in our project, we implemented a more sophisticated AI pipeline. We continued to evaluate the two self-playing agents every 1000 games for 1000 games against a random agent. We also began capturing more statistics, namely:
 * Mean rewards
 * Standard deviation of rewards
 * Average game length
@@ -93,10 +91,10 @@ Training with Q-learning helped verify our game was working; however, Q-learning
 #### Quantitative Analysis
 
 Initially, we attempted to train the DQN agent with self-play as attempted with the Q-learning agent. The agent had better quantitative results (e.g. higher win rates); however, the results still oscillated even after two million time steps. Unsure of what was causing the lack of convergence, we experimented with the following hyper-parameters:
-    * **Neural network layers**: We saw some quantitative success by increasing the neural network size. Originally, there were two hidden layers with sizes 64, and 64. We increased this to 239, 128 to ensure that each element of the observation tensor had a corresponding hidden unit in the first layer. 
-    * **Batch size**: We also tried increasing the batch size. We also saw minor improvements by increasing the batch size, which we think is due to a more stable gradient descent calculation when updating the online network.
-    * **Learning rate**: We tried lowering the learning rate with the hope that small changes to the online network early on could lead to more stability in training; we did not notice a negligable effect on the quantiative statistics by lowering the learning rate.
-    * **Epsilon**: We also tried to decrease the rate that epsilon is lowered. We hoped that by exploring randomly for longer in the early parts of training, the agent would have a more stable policy at later timesteps. Unfortunately, we did not notice any effects on the quantitative statistics by doing so.800px
+* **Neural network layers**: We saw some quantitative success by increasing the neural network size. Originally, there were two hidden layers with sizes 64, and 64. We increased this to 239, 128 to ensure that each element of the observation tensor had a corresponding hidden unit in the first layer. 
+* **Batch size**: We also tried increasing the batch size. We also saw minor improvements by increasing the batch size, which we think is due to a more stable gradient descent calculation when updating the online network.
+ * **Learning rate**: We tried lowering the learning rate with the hope that small changes to the online network early on could lead to more stability in training; we did not notice a negligable effect on the quantiative statistics by lowering the learning rate.
+* **Epsilon**: We also tried to decrease the rate that epsilon is lowered. We hoped that by exploring randomly for longer in the early parts of training, the agent would have a more stable policy at later timesteps. Unfortunately, we did not notice any effects on the quantitative statistics by doing so.800px
 
 After speaking with our TA, [JB Lanier](https://jblanier.net/) we got more insight into why we were not converging to a stable policy. The key insight was that self-play was causing the agents to adapt to each other's strategy, but in a sort of loop that does not lead to a net improvement overtime. Thus, we decided to try training DQN soley against a random agent to avoid this problem.
 
@@ -107,6 +105,7 @@ As shown in Fig. 3, the DQN agent had a much more stable policy overtime when no
 
 #### Qualitative Analysis
 To test the DQN agent's performance in a more practical setting, we played against it ourselves. While the DQN agent cannot win 100 percent of the time against a random agent, it performs fairly good against human players. In our first game against the agent, the agent won 16-7. In the second game, the agent lost 10-16 but was two turns away from winning. The agent is able to win or at least create close games with human players. Most importantly, we found the agent fun to play against, as it can quickly build up resources and points. While it cannot consistently win against human players, its progress is impressive.
+
 The agent has developed a clear strategy that allows it to compete with human players. Near the beginning of the game, the agent prioritizes reserving cards over any other actions. It reserves low level cards that have a low cost but do not contribute much to the point score. It purchases many low level cards to gain a resource advantage. This differs from our strategies in two-player games, which generally skip the lowest level of cards in favor of getting points earlier. When it comes to higher level cards, it prefers to purchase them directly from the board instead of reserving them. It also seems to take into account which gems the other player is gathering for reserved cards, taking those gems from the board. While not perfect, the agent has developed clear strategies that make playing against it interesting.
 
 ### Magnetic Mirror Descent Results
@@ -121,9 +120,17 @@ Training MMD yielded the most exciting and consistent results of our project. Al
 #### Qualitative Results
 
 
-
 ## References
-[1] TODO
+
+[[2] OpenSpiel MMD Algorithm](https://github.com/nathanlct/IIG-RL-Benchmark/blob/main/algorithms/mmd/mmd.py)
+- [OpenSpiel](https://github.com/google-deepmind/open_spiel): We prototyped the Splendor game by modifying the `open_spiel/python/games/kuhn_poker.py` file. We also used
+and modified the `open_spiel/python/examples/tic_tac_toe_qlearner.py` to run Q-learning against our game.
+- [Splendor Rules](https://cdn.1j1ju.com/medias/7f/91/ba-splendor-rulebook.pdf): We used the official rules to inform our action system for the Splendor game. 
+- [Splendor Card Info Spreadsheet](https://docs.google.com/spreadsheets/d/15ghp8rJ_vdVgxZIVJGawAYQXRMZSVHJYpZRfQUplAhE/edit?usp=sharing): We used this spreadsheet to
+initialize the metadata of the card decks when the Splendor game starts. 
+- [ChatGPT](https://chatgpt.com/): We used ChatGPT for minor debugging purposes and various one-liners relating to libraries
+we used such as Numpy and PyPlot. We did not use AI tools to generate a significant blocks of code for our project. 
+- [Python Documentation](https://docs.python.org/3/)
 
 ## AI Tool Usage
 TODO
