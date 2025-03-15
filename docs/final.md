@@ -94,9 +94,9 @@ Initially, we attempted to train the DQN agent with self-play as attempted with 
 * **Neural network layers**: We saw some quantitative success by increasing the neural network size. Originally, there were two hidden layers with sizes 64 and 64. We increased this to 239 and 128 to ensure that each element of the observation tensor had a corresponding hidden unit in the first layer. 
 * **Batch size**: We also tried increasing the batch size. We also saw minor improvements by increasing the batch size, which we think is due to a more stable gradient descent calculation when updating the online network.
  * **Learning rate**: We tried lowering the learning rate with the hope that small changes to the online network early on could lead to more stability in training; we did not notice a negligable effect on the quantiative statistics by lowering the learning rate.
-* **Epsilon**: We also tried to decrease the rate that epsilon is lowered. We hoped that by exploring randomly for longer in the early parts of training, the agent would have a more stable policy at later timesteps. Unfortunately, we did not notice any effects on the quantitative statistics by doing so.
+* **Epsilon decay**: We also tried to decrease the rate that epsilon is lowered. We hoped that by exploring randomly for longer in the early parts of training, the agent would have a more stable policy at later timesteps. Unfortunately, we did not notice any effects on the quantitative statistics by doing so.
 
-After speaking with our TA, [JB Lanier](https://jblanier.net/), we got more insight into why we were not converging to a stable policy. The key insight was that self-play was causing the agents to adapt to each other's strategy, but in a loop that not lead to a net improvement overtime. Thus, we decided to try training DQN solely against a random agent to avoid this problem.
+After speaking with our TA, [JB Lanier](https://jblanier.net/), we got more insight into why we were not converging to a stable policy. The key insight was that self-play was causing the agents to adapt to each other's strategy, but in a loop that does not lead to a net improvement overtime. Thus, we decided to try training a DQN agent solely against a random agent. 
 
 <img src="./dqn_stats.png" alt="Statistics for DQN" style="width: 100%">
 <a align="center"><b>Fig. 3</b> DQN agent statistics </a>
@@ -110,7 +110,7 @@ As shown in Fig. 3, the DQN agent had a much more stable policy overtime when no
 #### Qualitative Analysis
 To test the DQN agent's performance in a more practical setting, we played against it ourselves. While the DQN agent cannot win 100 percent of the time against a random agent, it performs fairly good against human players. In our first game against the agent, the agent won 16-7. In the second game, the agent lost 10-16 but was two turns away from winning. The agent is able to win or at least create close games with human players. Most importantly, we found the agent fun to play against, as it can quickly build up resources and points. While it cannot consistently win against human players, its progress is impressive.
 
-The agent has developed a clear strategy that allows it to compete with human players. Near the beginning of the game, the agent prioritizes reserving cards over any other actions. It reserves low level cards that have a low cost but do not contribute much to the point score. It purchases many low level cards to gain a resource advantage. This differs from our strategies in two-player games, which generally skip the lowest level of cards in favor of getting points earlier. When it comes to higher level cards, it prefers to purchase them directly from the board instead of reserving them. It also seems to take into account which gems the other player is gathering for reserved cards, taking those gems from the board. While not perfect, the agent has developed clear strategies that make playing against it interesting.
+The agent developed a clear strategy that allows it to compete with human players. Near the beginning of the game, the agent prioritizes reserving cards over any other actions. It reserves low level cards that have a low cost but do not contribute much to the point score. It purchases many low level cards to gain a resource advantage. This differs from our strategies in two-player games, which generally skip the lowest level of cards in favor of getting points earlier. When it comes to higher level cards, it prefers to purchase them directly from the board instead of reserving them. It also seems to take into account which gems the other player is gathering for reserved cards, taking those gems from the board. While not perfect, the agent has developed clear strategies that make playing against it interesting.
 
 ### Magnetic Mirror Descent Results
 
@@ -118,7 +118,7 @@ The agent has developed a clear strategy that allows it to compete with human pl
 
 <img src="./mmd_stats.png" alt="MMD statistics for the three different difficulty levels of Splendor" style="width: 100%">
 
-<a align="center"><b>Fig. 4</b> Statistics for the MMD agents </a>
+<a style="display: flex; justify-content: center;"><b>Fig. 4</b> <p>Statistics for the MMD agents </p></a>
 
 Training MMD yielded the most exciting and consistent results of our project. All our metrics appear to vary mostly monotonically, even after 10,000,000 time steps. Notably, the reward averages and win rates increase faster for the "easy" version of the game; this is expected since the average horizon is significantly shorter than the other two versions. Since our agent continues to improve after 10,000,000 time steps, we likely need better computational resources and a compiled version of Splendor to achieve an AI with super human play. 
 
@@ -126,12 +126,14 @@ Training MMD yielded the most exciting and consistent results of our project. Al
 
 
 ## References
-[[1] OpenSpiel](https://github.com/google-deepmind/open_spiel): We prototyped the Splendor game by modifying the `open_spiel/python/games/kuhn_poker.py` file. We also used
-and modified the `open_spiel/python/examples/tic_tac_toe_qlearner.py` to run Q-learning against our game.
+[[1] OpenSpiel](https://github.com/google-deepmind/open_spiel): We prototyped the Splendor game by modifying the `open_spiel/python/games/kuhn_poker.py` file. We made use of the DQN and Q-Learning algorithms provided within OpenSpiel. We also used and modified the `open_spiel/python/examples/tic_tac_toe_qlearner.py` to run Q-learning and DQN learning which we modified `open_spiel/python/examples/breakthrough_dqn.py` and ran against our Splendor implementation. 
+
 [[2] Splendor Rules](https://cdn.1j1ju.com/medias/7f/91/ba-splendor-rulebook.pdf): We used the official rules to inform our action system for the Splendor game. 
+
 [[3] Splendor Card Info Spreadsheet](https://docs.google.com/spreadsheets/d/15ghp8rJ_vdVgxZIVJGawAYQXRMZSVHJYpZRfQUplAhE/edit?usp=sharing): We used this spreadsheet to
 initialize the metadata of the card decks to start each Splendor game. 
-[[4] OpenSpiel MMD Algorithm](https://github.com/nathanlct/IIG-RL-Benchmark/blob/main/algorithms/mmd/mmd.py)
+
+[[4] OpenSpiel MMD Algorithm](https://github.com/nathanlct/IIG-RL-Benchmark/blob/main/algorithms/mmd/mmd.py) We used a custom multi-agent implementation of MMD provided by Lancetot et. al. designed for use in OpenSpiel. 
 
 ## AI Tool Usage
 We used ChatGPT for minor debugging purposes and various one-liners relating to libraries

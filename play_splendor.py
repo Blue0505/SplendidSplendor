@@ -1,5 +1,6 @@
 import pyspiel
 import argparse
+import hydra
 import pickle
 from open_spiel.python.observation import make_observation
 from open_spiel.python.algorithms import dqn
@@ -137,7 +138,7 @@ def main():
             print(checkpoint_dir)
             agent.restore(os.getcwd() + "/rl/runs/model_dqn")
         elif args.agent == "mmd_hard":
-            sess = tf.Session()
+            #sess = tf.Session()
             agent = MMD(
                 num_players=2,
                 input_shape=(game.observation_tensor_size(), 2),
@@ -183,3 +184,12 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+# @hydra.main(version_base=None, config_path="configs", config_name="experiment")
+# def load_mmd(cfg: DictConfig):
+#     print(os.getcwd())
+#     set_seed(cfg.seed)
+#     game = pyspiel.load_game(cfg.game)
+#     runner = RunMMD(cfg, game, expl_callback=None)
+#     runner.load_cp(cp_path)
+#     return runner
