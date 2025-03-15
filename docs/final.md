@@ -71,7 +71,7 @@ At this point in our project, we implemented a more sophisticated AI pipeline. W
 
 
 #### Magnetic Mirror Descent
-Lastly, we used magnetic mirror descent to train our Splendor agent.
+Lastly, we used magnetic mirror descent to train our Splendor agent. 
 TODO: Give a quick description
 TODO: Explain how we created three different versions of Splendor for this part of the training
 
@@ -118,7 +118,7 @@ The agent developed a clear strategy that allows it to compete with human player
 
 <img src="./mmd_stats.png" alt="MMD statistics for the three different difficulty levels of Splendor" style="width: 100%">
 
-<a style="display: flex; justify-content: center;"><b>Fig. 4</b><p>Statistics for the MMD agents</p></a>
+<a style="display: flex; justify-content: center; gap: 8px; "><b>Fig. 4</b>Statistics for the MMD agents/a>
 
 Training MMD yielded the most exciting and consistent results of our project. All our metrics appear to vary mostly monotonically, even after 10,000,000 time steps. Notably, the reward averages and win rates increase faster for the "easy" version of the game; this is expected since the average horizon is significantly shorter than the other two versions. Since our agent continues to improve after 10,000,000 time steps, we likely need better computational resources and a compiled version of Splendor to achieve an AI with super human play. 
 
