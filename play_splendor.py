@@ -137,18 +137,18 @@ def main():
             checkpoint_dir = os.getcwd() + "/rl/runs/model_dqn"
             print(checkpoint_dir)
             agent.restore(os.getcwd() + "/rl/runs/model_dqn")
-        elif args.agent == "mmd_hard":
-            #sess = tf.Session()
-            agent = MMD(
-                num_players=2,
-                input_shape=(game.observation_tensor_size(), 2),
-                num_actions=game.num_distinct_actions(),
-                num_envs=8,
-                clip_coef=1
-            )
-            checkpoint_dir = os.getcwd() + "/rl/runs/model_splendor_hard_mmd"
-            print(checkpoint_dir)
-            agent.load(os.getcwd() + "/rl/runs/model_splendor_hard_mmd.pkl")
+        # elif args.agent == "mmd_hard":
+        #     sess = tf.Session()
+        #     agent = MMD(
+        #         num_players=2,
+        #         input_shape=(game.observation_tensor_size(), 2),
+        #         num_actions=game.num_distinct_actions(),
+        #         num_envs=8,
+        #         clip_coef=1
+        #     )
+        #     checkpoint_dir = os.getcwd() + "/rl/runs/model_splendor_hard_mmd"
+        #     print(checkpoint_dir)
+        #     agent.load(os.getcwd() + "/rl/runs/model_splendor_hard_mmd.pkl")
         
     else: 
         raise SystemExit(f"Agent {args.agent} does not exist.")

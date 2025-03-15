@@ -71,7 +71,7 @@ At this point in our project, we implemented a more sophisticated AI pipeline. W
 
 
 #### Magnetic Mirror Descent
-Lastly, we used magnetic mirror descent to train our Splendor agent. 
+Lastly, we used magnetic mirror descent to train our Splendor agent. With MMD, we can now self-train our agent and get real results instead of only training on a random agent. MMD utilizes proximal regularization and a non-Euclidean proximal gradient method [5]. It is designed specifically for self-play in two-player games. At this point, we also created "medium" and "lite" versions of the game. These versions simplify the game and remove the requirement of "spending" and "return" turns, vastly reducing the complexity of the action space. We expected this reduction in complexity to result in an agent that trains faster and is not negatively impacted by one turn being represented as multiple turns. We decided to run MMD, as well as DQN, on all versions of the game and look at their performance.
 TODO: Give a quick description
 TODO: Explain how we created three different versions of Splendor for this part of the training
 
@@ -135,4 +135,4 @@ initialize the metadata of the card decks to start each Splendor game.
 
 ## AI Tool Usage
 We used ChatGPT for minor debugging purposes and various one-liners relating to libraries
-we used such as NumPy and PyPlot. We did not use AI tools to generate a significant blocks of code for our project. 
+we used such as NumPy and PyPlot. We did not use AI tools to generate any significant blocks of code for our project. 
