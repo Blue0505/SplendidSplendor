@@ -23,7 +23,7 @@ Defining an action system for Splendor was our first major hurdle. We partitione
 <img src="./actions_diagram.png" alt="Flow chart depicting different turn types of the action space for Splendor." style="
     width: 100%;
 ">
-<a align="center"><b>Fig. 1</b> Splendor action space</a>
+<a style="display: flex; justify-content: center; gap: 8px; "><b>Fig. 1</b>Splendor action space</a>
 
 As illustrated in Fig. 1, the  `SPENDING` turn type (top right) enables a player to spend gold for a card without requiring an action for each variation. This reduces $5^5 \times 12$ actions to $12$ actions. Similarly, the `RETURN` turn type (bottom left) allows a player to return gems from their inventory without needing a special gem drawing action. This reduces $5^2 \times \big( \binom{5}{2} + \binom{5}{3} \big)$ actions to $\binom{5}{2} + \binom{5}{3}$ actions. 
 
@@ -83,7 +83,7 @@ TODO: Explain how we created three different versions of Splendor for this part 
     <img src="./game_length.png" alt="Image 1" style="width: 30%; height: auto;">
     <img src="./win_rates.png" alt="Image 3" style="width: 30%; height: auto;">
 </div>
-<a align="center"><b>Fig. 2</b> Average win amounts of Q-learning agents </a>
+<a style="display: flex; justify-content: center; gap: 8px; "><b>Fig. 2</b>Average win amounts of Q-learning agents</a>
 
 Training with Q-learning helped verify our game was working; however, Q-learning failed to train a competent agent. As shown in Fig. 2, the average game wins over 1000 games against a random agent oscillates heavily even after $5\cdot10^5$ episodes. We hypothesize this is because Q-learning is tabular; that is, the Q-value associated with each state action pair is stored. However, the state space of Splendor is massive and is unlikely to be entirely representable in computer memory. In addition, the amount of time it would take to fill Q-values for a reasonable amount of the state space would likely be too long to be realistic.
 
@@ -99,11 +99,7 @@ Initially, we attempted to train the DQN agent with self-play as attempted with 
 After speaking with our TA, [JB Lanier](https://jblanier.net/), we got more insight into why we were not converging to a stable policy. The key insight was that self-play was causing the agents to adapt to each other's strategy, but in a loop that does not lead to a net improvement overtime. Thus, we decided to try training a DQN agent solely against a random agent. 
 
 <img src="./dqn_stats.png" alt="Statistics for DQN" style="width: 100%">
-<a align="center"><b>Fig. 3</b> DQN agent statistics </a>
-
-
-
-
+<a style="display: flex; justify-content: center; gap: 8px; "><b>Fig. 3</b>DQN agent statists</a>
 
 As shown in Fig. 3, the DQN agent had a much more stable policy overtime when not trained with self-play. Over roughly the first 20000 episodes, the reward averages greatly increase. Similarly, the reward standard deviation, game length average, game length standard deviation, and game wins minus ties all decrease. We also observed a slight rebound in performance after 20000 episodes which we could not explain, but performance stays pretty consistent after that. 
 
@@ -118,7 +114,7 @@ The agent developed a clear strategy that allows it to compete with human player
 
 <img src="./mmd_stats.png" alt="MMD statistics for the three different difficulty levels of Splendor" style="width: 100%">
 
-<a style="display: flex; justify-content: center; gap: 8px; "><b>Fig. 4</b>Statistics for the MMD agents/a>
+<a style="display: flex; justify-content: center; gap: 8px; "><b>Fig. 4</b>Statistics for the MMD agents</a>
 
 Training MMD yielded the most exciting and consistent results of our project. All our metrics appear to vary mostly monotonically, even after 10,000,000 time steps. Notably, the reward averages and win rates increase faster for the "easy" version of the game; this is expected since the average horizon is significantly shorter than the other two versions. Since our agent continues to improve after 10,000,000 time steps, we likely need better computational resources and a compiled version of Splendor to achieve an AI with super human play. 
 
