@@ -55,7 +55,7 @@ Each reward category $c$ had a different weight $\alpha_c$ and value associated 
 
 ### Algorithms
 #### Q-Learning
-As a baseline to verify that our algorithm worked, we trained a Splendor playing agent with Q-Learning [5]. Q-Learning exploits the lower variance of an approach such as Bellman's Equations whilst not needing to calculate exponentially many trajectories like a Monte Carlo based approach. Q-learning associates a *Q-value* with state action pairs that are defined recursively in terms of future action pairs; specifically, the Q-value function is recursively defined $Q_{\pi}(s) = r(s, a) + \gamma \max_{a'}Q_{\pi}(s', a')$. The best policy $\pi$ can then be chosen at each state by choosing the action $a$ associated with the largest Q-value, that is, $\arg \max Q_a(s, a)$.
+As a baseline to verify that our algorithm worked, we trained a Splendor playing agent with Q-Learning [5]. Q-Learning exploits the lower variance of an approach such as Bellman's Equations whilst not needing to calculate exponentially many trajectories like a Monte Carlo based approach. Q-learning associates a *Q-value* with state action pairs that are defined recursively in terms of future action pairs; specifically, the Q-value function is recursively defined $Q_{\pi}(s) = r(s, a) + \gamma \max_{a'}Q_{\pi}(s', a')$. The best policy $\pi$ can then be chosen at each state by choosing the action $a$ associated with the largest Q-value, that is, $\arg \max_a Q(s, a)$.
 
 At this point in our project, our AI pipeline consisted only of capturing the number of wins each agent won against a random agent averaged over 1000 episodes.
 
